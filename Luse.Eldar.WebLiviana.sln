@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Luse.Eldar.WebLiviana", "E:\Proyectos\Luse.Eldar.WebLiviana\", "{B68220B1-9C88-42CC-9930-3626FC6A5428}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_52245"
+		Debug.AspNetCompiler.PhysicalPath = "E:\Proyectos\Luse.Eldar.WebLiviana\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52245\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_52245"
+		Release.AspNetCompiler.PhysicalPath = "E:\Proyectos\Luse.Eldar.WebLiviana\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52245\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "52245"
+		SlnRelativePath = "E:\Proyectos\Luse.Eldar.WebLiviana\"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B68220B1-9C88-42CC-9930-3626FC6A5428}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B68220B1-9C88-42CC-9930-3626FC6A5428}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3ADB0D4A-8267-4AD3-8726-984D07EB02DB}
+	EndGlobalSection
+EndGlobal
