@@ -11,7 +11,7 @@
                         <input type="text" runat="server" clientidmode="Static" class="form-control" id="txtNroComercio" />
                         <asp:HiddenField ClientIDMode="Static" ID="User" runat="server" />
                     <asp:HiddenField ClientIDMode="Static" ID="Pass" runat="server" />
-
+                         
                     </div>
                 </div>
                 <div class="form-group">
