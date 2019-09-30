@@ -1,0 +1,1636 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="LoginRapipago">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AccessId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccessType" type="tns:eTipoAccesoSistema" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDAgencia" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="NombreAgencia" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="CodPuesto" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="Agente" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="sucursal" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="eTipoAccesoSistema">
+        <s:restriction base="s:string">
+          <s:enumeration value="Web" />
+          <s:enumeration value="Mobile" />
+          <s:enumeration value="Pos" />
+          <s:enumeration value="Externo" />
+          <s:enumeration value="BPos" />
+          <s:enumeration value="AutoServicio" />
+          <s:enumeration value="Escritorio" />
+          <s:enumeration value="WebPortatil" />
+          <s:enumeration value="Phone" />
+          <s:enumeration value="POSSG" />
+          <s:enumeration value="WebNueva" />
+          <s:enumeration value="PhoneSMS" />
+          <s:enumeration value="PosDUAL" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="LoginRapipagoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="LoginRapipagoResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDAgencia" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="NombreAgencia" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="CodPuesto" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="Agente" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="sucursal" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveSolicitudPrestamo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDPrestamoBase" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="Destino" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SaveSolicitudPrestamoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SaveSolicitudPrestamoResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginWeb">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AccessId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccessType" type="tns:eTipoAccesoSistema" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDAgencia" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="NombreAgencia" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Saldo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pSaldoSUBE" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DireccionAgencia" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDPrestamoBase" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="AptoCredito" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="MensajeCredito" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginWebResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="LoginWebResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDAgencia" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="NombreAgencia" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Saldo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pSaldoSUBE" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DireccionAgencia" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDPrestamoBase" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="AptoCredito" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="MensajeCredito" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSaldo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSaldoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSaldoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CambiarPassword">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pMsn" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CambiarPasswordResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="CambiarPasswordResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="pMsn" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSaldoWeb">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pSaldo" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="pTotalVentas" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="pCantVerntas" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSaldoWebResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSaldoWebResult" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pSaldo" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="pTotalVentas" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="pCantVerntas" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSaldoK">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pSaldo" type="s:decimal" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSaldoKResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetSaldoKResult" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="pSaldo" type="s:decimal" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetListMovStockPhone">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IDUsuario" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetListMovStockPhoneResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetListMovStockPhoneResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMovStockWebLiviana">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pFechaDesde" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pFechaHasta" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMovStockWebLivianaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMovStockWebLivianaResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNews">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pMsn" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNewsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetNewsResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="pMsn" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTransaccionesWebLiviana">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pFechaDesde" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pDestino" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pFechaHasta" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTransaccionesWebLivianaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTransaccionesWebLivianaResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVentaForDestinoWebLiviana">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pDestino" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVentaForDestinoWebLivianaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetVentaForDestinoWebLivianaResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTransacciones">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pFechaDesde" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pFechaHasta" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pMaxRegistros" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTransaccionesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTransaccionesResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVentaForRefOperador">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pRefOperador" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVentaForRefOperadorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetVentaForRefOperadorResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVentaForByKinaku">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pIDTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Target" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetVentaForByKinakuResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetVentaForByKinakuResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AbrirTurno">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UsuarioPass" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AbrirTurnoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AbrirTurnoResult" type="tns:ObjetoRetorno" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ObjetoRetorno">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="oArraylista" type="tns:ArrayOfAnyType" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAnyType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="anyType" nillable="true" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="LastTenTurn">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IDUsuario" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LastTenTurnResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LastTenTurnResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LastTurnByDate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IDUsuario" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pFecha" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LastTurnByDateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LastTurnByDateResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTurnByID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IDUsuario" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pIDTurno" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTurnByIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTurnByIDResult" type="tns:ObjetoRetorno" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CerrarTurno">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IDUsuario" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CerrarTurnoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CerrarTurnoResult" type="tns:ObjetoRetorno" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleWithRefOperador">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pDestino" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPrefijo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="pReferenciaOperador" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pIDProveedor" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="TimeSeconds" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleWithRefOperadorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NewSaleWithRefOperadorResult" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TimeSeconds" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleWithRefOperadorWebLiviana">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pDestino" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPrefijo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="pIDProveedor" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pGuidTicket" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleWithRefOperadorWebLivianaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NewSaleWithRefOperadorWebLivianaResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pGuidTicket" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleWithRefOperadorSube">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pDestino" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="pReferenciaOperador" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleWithRefOperadorSubeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NewSaleWithRefOperadorSubeResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitudStockWebLiviana">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UserId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPass" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="pEsSaldoSube" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SolicitudStockWebLivianaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SolicitudStockWebLivianaResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleWithRefOperadorPOSSG">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pDestino" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPrefijo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="pReferenciaOperador" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pIDProveedor" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="TimeSeconds" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleWithRefOperadorPOSSGResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NewSaleWithRefOperadorPOSSGResult" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TimeSeconds" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleWithRefOperadorTEST">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pDestino" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPrefijo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="pReferenciaOperador" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pIDProveedor" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="TimeSeconds" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleWithRefOperadorTESTResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NewSaleWithRefOperadorTESTResult" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="TimeSeconds" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSalePinWithReferenciaOperador">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pProveedor" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="pIDProducto" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="pReferenciaOperador" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Pin" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Serie" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CAT" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="FechaVencimiento" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSalePinWithReferenciaOperadorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NewSalePinWithReferenciaOperadorResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Pin" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Serie" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CAT" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="FechaVencimiento" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleDirecTV">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pNroAbonado" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pMonto" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="pIDProveedor" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="pReferenciaOperador" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleDirecTVResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NewSaleDirecTVResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSalePinWebLiviana">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Pass" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pIDProducto" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pNumeroSerie" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPinSeguridad" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pFechaExp" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pMsn" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSalePinWebLivianaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NewSalePinWebLivianaResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="pNumeroSerie" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPinSeguridad" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pFechaExp" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pMsn" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProductsWebLiviana">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UserId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Pass" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pIDProveedor" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProductsWebLivianaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetProductsWebLivianaResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleDirecTVWebLiviana">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pNroAbonado" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pMonto" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="pIDProveedor" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pGuidTicket" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleDirecTVWebLivianaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NewSaleDirecTVWebLivianaResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pGuidTicket" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleDirecTVByKinaku">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pNroAbonado" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pMonto" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="pIDProveedor" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="pReferenciaOperador" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleDirecTVByKinakuResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NewSaleDirecTVByKinakuResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="LoginRapipagoSoapIn">
+    <wsdl:part name="parameters" element="tns:LoginRapipago" />
+  </wsdl:message>
+  <wsdl:message name="LoginRapipagoSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginRapipagoResponse" />
+  </wsdl:message>
+  <wsdl:message name="SaveSolicitudPrestamoSoapIn">
+    <wsdl:part name="parameters" element="tns:SaveSolicitudPrestamo" />
+  </wsdl:message>
+  <wsdl:message name="SaveSolicitudPrestamoSoapOut">
+    <wsdl:part name="parameters" element="tns:SaveSolicitudPrestamoResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoginWebSoapIn">
+    <wsdl:part name="parameters" element="tns:LoginWeb" />
+  </wsdl:message>
+  <wsdl:message name="LoginWebSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginWebResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSaldoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSaldo" />
+  </wsdl:message>
+  <wsdl:message name="GetSaldoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSaldoResponse" />
+  </wsdl:message>
+  <wsdl:message name="CambiarPasswordSoapIn">
+    <wsdl:part name="parameters" element="tns:CambiarPassword" />
+  </wsdl:message>
+  <wsdl:message name="CambiarPasswordSoapOut">
+    <wsdl:part name="parameters" element="tns:CambiarPasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSaldoWebSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSaldoWeb" />
+  </wsdl:message>
+  <wsdl:message name="GetSaldoWebSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSaldoWebResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSaldoKSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSaldoK" />
+  </wsdl:message>
+  <wsdl:message name="GetSaldoKSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSaldoKResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetListMovStockPhoneSoapIn">
+    <wsdl:part name="parameters" element="tns:GetListMovStockPhone" />
+  </wsdl:message>
+  <wsdl:message name="GetListMovStockPhoneSoapOut">
+    <wsdl:part name="parameters" element="tns:GetListMovStockPhoneResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMovStockWebLivianaSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMovStockWebLiviana" />
+  </wsdl:message>
+  <wsdl:message name="GetMovStockWebLivianaSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMovStockWebLivianaResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetNewsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetNews" />
+  </wsdl:message>
+  <wsdl:message name="GetNewsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetNewsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTransaccionesWebLivianaSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTransaccionesWebLiviana" />
+  </wsdl:message>
+  <wsdl:message name="GetTransaccionesWebLivianaSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTransaccionesWebLivianaResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetVentaForDestinoWebLivianaSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVentaForDestinoWebLiviana" />
+  </wsdl:message>
+  <wsdl:message name="GetVentaForDestinoWebLivianaSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVentaForDestinoWebLivianaResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTransaccionesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTransacciones" />
+  </wsdl:message>
+  <wsdl:message name="GetTransaccionesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTransaccionesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetVentaForRefOperadorSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVentaForRefOperador" />
+  </wsdl:message>
+  <wsdl:message name="GetVentaForRefOperadorSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVentaForRefOperadorResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetVentaForByKinakuSoapIn">
+    <wsdl:part name="parameters" element="tns:GetVentaForByKinaku" />
+  </wsdl:message>
+  <wsdl:message name="GetVentaForByKinakuSoapOut">
+    <wsdl:part name="parameters" element="tns:GetVentaForByKinakuResponse" />
+  </wsdl:message>
+  <wsdl:message name="AbrirTurnoSoapIn">
+    <wsdl:part name="parameters" element="tns:AbrirTurno" />
+  </wsdl:message>
+  <wsdl:message name="AbrirTurnoSoapOut">
+    <wsdl:part name="parameters" element="tns:AbrirTurnoResponse" />
+  </wsdl:message>
+  <wsdl:message name="LastTenTurnSoapIn">
+    <wsdl:part name="parameters" element="tns:LastTenTurn" />
+  </wsdl:message>
+  <wsdl:message name="LastTenTurnSoapOut">
+    <wsdl:part name="parameters" element="tns:LastTenTurnResponse" />
+  </wsdl:message>
+  <wsdl:message name="LastTurnByDateSoapIn">
+    <wsdl:part name="parameters" element="tns:LastTurnByDate" />
+  </wsdl:message>
+  <wsdl:message name="LastTurnByDateSoapOut">
+    <wsdl:part name="parameters" element="tns:LastTurnByDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTurnByIDSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTurnByID" />
+  </wsdl:message>
+  <wsdl:message name="GetTurnByIDSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTurnByIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="CerrarTurnoSoapIn">
+    <wsdl:part name="parameters" element="tns:CerrarTurno" />
+  </wsdl:message>
+  <wsdl:message name="CerrarTurnoSoapOut">
+    <wsdl:part name="parameters" element="tns:CerrarTurnoResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleWithRefOperadorSoapIn">
+    <wsdl:part name="parameters" element="tns:NewSaleWithRefOperador" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleWithRefOperadorSoapOut">
+    <wsdl:part name="parameters" element="tns:NewSaleWithRefOperadorResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleWithRefOperadorWebLivianaSoapIn">
+    <wsdl:part name="parameters" element="tns:NewSaleWithRefOperadorWebLiviana" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleWithRefOperadorWebLivianaSoapOut">
+    <wsdl:part name="parameters" element="tns:NewSaleWithRefOperadorWebLivianaResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleWithRefOperadorSubeSoapIn">
+    <wsdl:part name="parameters" element="tns:NewSaleWithRefOperadorSube" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleWithRefOperadorSubeSoapOut">
+    <wsdl:part name="parameters" element="tns:NewSaleWithRefOperadorSubeResponse" />
+  </wsdl:message>
+  <wsdl:message name="SolicitudStockWebLivianaSoapIn">
+    <wsdl:part name="parameters" element="tns:SolicitudStockWebLiviana" />
+  </wsdl:message>
+  <wsdl:message name="SolicitudStockWebLivianaSoapOut">
+    <wsdl:part name="parameters" element="tns:SolicitudStockWebLivianaResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleWithRefOperadorPOSSGSoapIn">
+    <wsdl:part name="parameters" element="tns:NewSaleWithRefOperadorPOSSG" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleWithRefOperadorPOSSGSoapOut">
+    <wsdl:part name="parameters" element="tns:NewSaleWithRefOperadorPOSSGResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleWithRefOperadorTESTSoapIn">
+    <wsdl:part name="parameters" element="tns:NewSaleWithRefOperadorTEST" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleWithRefOperadorTESTSoapOut">
+    <wsdl:part name="parameters" element="tns:NewSaleWithRefOperadorTESTResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewSalePinWithReferenciaOperadorSoapIn">
+    <wsdl:part name="parameters" element="tns:NewSalePinWithReferenciaOperador" />
+  </wsdl:message>
+  <wsdl:message name="NewSalePinWithReferenciaOperadorSoapOut">
+    <wsdl:part name="parameters" element="tns:NewSalePinWithReferenciaOperadorResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleDirecTVSoapIn">
+    <wsdl:part name="parameters" element="tns:NewSaleDirecTV" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleDirecTVSoapOut">
+    <wsdl:part name="parameters" element="tns:NewSaleDirecTVResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewSalePinWebLivianaSoapIn">
+    <wsdl:part name="parameters" element="tns:NewSalePinWebLiviana" />
+  </wsdl:message>
+  <wsdl:message name="NewSalePinWebLivianaSoapOut">
+    <wsdl:part name="parameters" element="tns:NewSalePinWebLivianaResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProductsWebLivianaSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProductsWebLiviana" />
+  </wsdl:message>
+  <wsdl:message name="GetProductsWebLivianaSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProductsWebLivianaResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleDirecTVWebLivianaSoapIn">
+    <wsdl:part name="parameters" element="tns:NewSaleDirecTVWebLiviana" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleDirecTVWebLivianaSoapOut">
+    <wsdl:part name="parameters" element="tns:NewSaleDirecTVWebLivianaResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleDirecTVByKinakuSoapIn">
+    <wsdl:part name="parameters" element="tns:NewSaleDirecTVByKinaku" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleDirecTVByKinakuSoapOut">
+    <wsdl:part name="parameters" element="tns:NewSaleDirecTVByKinakuResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ExternalSalesSoap">
+    <wsdl:operation name="LoginRapipago">
+      <wsdl:input message="tns:LoginRapipagoSoapIn" />
+      <wsdl:output message="tns:LoginRapipagoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveSolicitudPrestamo">
+      <wsdl:input message="tns:SaveSolicitudPrestamoSoapIn" />
+      <wsdl:output message="tns:SaveSolicitudPrestamoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LoginWeb">
+      <wsdl:input message="tns:LoginWebSoapIn" />
+      <wsdl:output message="tns:LoginWebSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSaldo">
+      <wsdl:input message="tns:GetSaldoSoapIn" />
+      <wsdl:output message="tns:GetSaldoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CambiarPassword">
+      <wsdl:input message="tns:CambiarPasswordSoapIn" />
+      <wsdl:output message="tns:CambiarPasswordSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSaldoWeb">
+      <wsdl:input message="tns:GetSaldoWebSoapIn" />
+      <wsdl:output message="tns:GetSaldoWebSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSaldoK">
+      <wsdl:input message="tns:GetSaldoKSoapIn" />
+      <wsdl:output message="tns:GetSaldoKSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetListMovStockPhone">
+      <wsdl:input message="tns:GetListMovStockPhoneSoapIn" />
+      <wsdl:output message="tns:GetListMovStockPhoneSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMovStockWebLiviana">
+      <wsdl:input message="tns:GetMovStockWebLivianaSoapIn" />
+      <wsdl:output message="tns:GetMovStockWebLivianaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetNews">
+      <wsdl:input message="tns:GetNewsSoapIn" />
+      <wsdl:output message="tns:GetNewsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTransaccionesWebLiviana">
+      <wsdl:input message="tns:GetTransaccionesWebLivianaSoapIn" />
+      <wsdl:output message="tns:GetTransaccionesWebLivianaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVentaForDestinoWebLiviana">
+      <wsdl:input message="tns:GetVentaForDestinoWebLivianaSoapIn" />
+      <wsdl:output message="tns:GetVentaForDestinoWebLivianaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTransacciones">
+      <wsdl:input message="tns:GetTransaccionesSoapIn" />
+      <wsdl:output message="tns:GetTransaccionesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVentaForRefOperador">
+      <wsdl:input message="tns:GetVentaForRefOperadorSoapIn" />
+      <wsdl:output message="tns:GetVentaForRefOperadorSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVentaForByKinaku">
+      <wsdl:input message="tns:GetVentaForByKinakuSoapIn" />
+      <wsdl:output message="tns:GetVentaForByKinakuSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AbrirTurno">
+      <wsdl:input message="tns:AbrirTurnoSoapIn" />
+      <wsdl:output message="tns:AbrirTurnoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LastTenTurn">
+      <wsdl:input message="tns:LastTenTurnSoapIn" />
+      <wsdl:output message="tns:LastTenTurnSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="LastTurnByDate">
+      <wsdl:input message="tns:LastTurnByDateSoapIn" />
+      <wsdl:output message="tns:LastTurnByDateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTurnByID">
+      <wsdl:input message="tns:GetTurnByIDSoapIn" />
+      <wsdl:output message="tns:GetTurnByIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CerrarTurno">
+      <wsdl:input message="tns:CerrarTurnoSoapIn" />
+      <wsdl:output message="tns:CerrarTurnoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperador">
+      <wsdl:input message="tns:NewSaleWithRefOperadorSoapIn" />
+      <wsdl:output message="tns:NewSaleWithRefOperadorSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorWebLiviana">
+      <wsdl:input message="tns:NewSaleWithRefOperadorWebLivianaSoapIn" />
+      <wsdl:output message="tns:NewSaleWithRefOperadorWebLivianaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorSube">
+      <wsdl:input message="tns:NewSaleWithRefOperadorSubeSoapIn" />
+      <wsdl:output message="tns:NewSaleWithRefOperadorSubeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SolicitudStockWebLiviana">
+      <wsdl:input message="tns:SolicitudStockWebLivianaSoapIn" />
+      <wsdl:output message="tns:SolicitudStockWebLivianaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorPOSSG">
+      <wsdl:input message="tns:NewSaleWithRefOperadorPOSSGSoapIn" />
+      <wsdl:output message="tns:NewSaleWithRefOperadorPOSSGSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorTEST">
+      <wsdl:input message="tns:NewSaleWithRefOperadorTESTSoapIn" />
+      <wsdl:output message="tns:NewSaleWithRefOperadorTESTSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NewSalePinWithReferenciaOperador">
+      <wsdl:input message="tns:NewSalePinWithReferenciaOperadorSoapIn" />
+      <wsdl:output message="tns:NewSalePinWithReferenciaOperadorSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleDirecTV">
+      <wsdl:input message="tns:NewSaleDirecTVSoapIn" />
+      <wsdl:output message="tns:NewSaleDirecTVSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NewSalePinWebLiviana">
+      <wsdl:input message="tns:NewSalePinWebLivianaSoapIn" />
+      <wsdl:output message="tns:NewSalePinWebLivianaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProductsWebLiviana">
+      <wsdl:input message="tns:GetProductsWebLivianaSoapIn" />
+      <wsdl:output message="tns:GetProductsWebLivianaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleDirecTVWebLiviana">
+      <wsdl:input message="tns:NewSaleDirecTVWebLivianaSoapIn" />
+      <wsdl:output message="tns:NewSaleDirecTVWebLivianaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleDirecTVByKinaku">
+      <wsdl:input message="tns:NewSaleDirecTVByKinakuSoapIn" />
+      <wsdl:output message="tns:NewSaleDirecTVByKinakuSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ExternalSalesSoap" type="tns:ExternalSalesSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="LoginRapipago">
+      <soap:operation soapAction="http://tempuri.org/LoginRapipago" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveSolicitudPrestamo">
+      <soap:operation soapAction="http://tempuri.org/SaveSolicitudPrestamo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginWeb">
+      <soap:operation soapAction="http://tempuri.org/LoginWeb" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSaldo">
+      <soap:operation soapAction="http://tempuri.org/GetSaldo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CambiarPassword">
+      <soap:operation soapAction="http://tempuri.org/CambiarPassword" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSaldoWeb">
+      <soap:operation soapAction="http://tempuri.org/GetSaldoWeb" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSaldoK">
+      <soap:operation soapAction="http://tempuri.org/GetSaldoK" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListMovStockPhone">
+      <soap:operation soapAction="http://tempuri.org/GetListMovStockPhone" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMovStockWebLiviana">
+      <soap:operation soapAction="http://tempuri.org/GetMovStockWebLiviana" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNews">
+      <soap:operation soapAction="http://tempuri.org/GetNews" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTransaccionesWebLiviana">
+      <soap:operation soapAction="http://tempuri.org/GetTransaccionesWebLiviana" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVentaForDestinoWebLiviana">
+      <soap:operation soapAction="http://tempuri.org/GetVentaForDestinoWebLiviana" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTransacciones">
+      <soap:operation soapAction="http://tempuri.org/GetTransacciones" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVentaForRefOperador">
+      <soap:operation soapAction="http://tempuri.org/GetVentaForRefOperador" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVentaForByKinaku">
+      <soap:operation soapAction="http://tempuri.org/GetVentaForByKinaku" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AbrirTurno">
+      <soap:operation soapAction="http://tempuri.org/AbrirTurno" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LastTenTurn">
+      <soap:operation soapAction="http://tempuri.org/LastTenTurn" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LastTurnByDate">
+      <soap:operation soapAction="http://tempuri.org/LastTurnByDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTurnByID">
+      <soap:operation soapAction="http://tempuri.org/GetTurnByID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CerrarTurno">
+      <soap:operation soapAction="http://tempuri.org/CerrarTurno" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperador">
+      <soap:operation soapAction="http://tempuri.org/NewSaleWithRefOperador" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorWebLiviana">
+      <soap:operation soapAction="http://tempuri.org/NewSaleWithRefOperadorWebLiviana" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorSube">
+      <soap:operation soapAction="http://tempuri.org/NewSaleWithRefOperadorSube" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitudStockWebLiviana">
+      <soap:operation soapAction="http://tempuri.org/SolicitudStockWebLiviana" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorPOSSG">
+      <soap:operation soapAction="http://tempuri.org/NewSaleWithRefOperadorPOSSG" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorTEST">
+      <soap:operation soapAction="http://tempuri.org/NewSaleWithRefOperadorTEST" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSalePinWithReferenciaOperador">
+      <soap:operation soapAction="http://tempuri.org/NewSalePinWithReferenciaOperador" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleDirecTV">
+      <soap:operation soapAction="http://tempuri.org/NewSaleDirecTV" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSalePinWebLiviana">
+      <soap:operation soapAction="http://tempuri.org/NewSalePinWebLiviana" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProductsWebLiviana">
+      <soap:operation soapAction="http://tempuri.org/GetProductsWebLiviana" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleDirecTVWebLiviana">
+      <soap:operation soapAction="http://tempuri.org/NewSaleDirecTVWebLiviana" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleDirecTVByKinaku">
+      <soap:operation soapAction="http://tempuri.org/NewSaleDirecTVByKinaku" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ExternalSalesSoap12" type="tns:ExternalSalesSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="LoginRapipago">
+      <soap12:operation soapAction="http://tempuri.org/LoginRapipago" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveSolicitudPrestamo">
+      <soap12:operation soapAction="http://tempuri.org/SaveSolicitudPrestamo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginWeb">
+      <soap12:operation soapAction="http://tempuri.org/LoginWeb" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSaldo">
+      <soap12:operation soapAction="http://tempuri.org/GetSaldo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CambiarPassword">
+      <soap12:operation soapAction="http://tempuri.org/CambiarPassword" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSaldoWeb">
+      <soap12:operation soapAction="http://tempuri.org/GetSaldoWeb" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSaldoK">
+      <soap12:operation soapAction="http://tempuri.org/GetSaldoK" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetListMovStockPhone">
+      <soap12:operation soapAction="http://tempuri.org/GetListMovStockPhone" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMovStockWebLiviana">
+      <soap12:operation soapAction="http://tempuri.org/GetMovStockWebLiviana" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNews">
+      <soap12:operation soapAction="http://tempuri.org/GetNews" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTransaccionesWebLiviana">
+      <soap12:operation soapAction="http://tempuri.org/GetTransaccionesWebLiviana" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVentaForDestinoWebLiviana">
+      <soap12:operation soapAction="http://tempuri.org/GetVentaForDestinoWebLiviana" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTransacciones">
+      <soap12:operation soapAction="http://tempuri.org/GetTransacciones" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVentaForRefOperador">
+      <soap12:operation soapAction="http://tempuri.org/GetVentaForRefOperador" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVentaForByKinaku">
+      <soap12:operation soapAction="http://tempuri.org/GetVentaForByKinaku" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AbrirTurno">
+      <soap12:operation soapAction="http://tempuri.org/AbrirTurno" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LastTenTurn">
+      <soap12:operation soapAction="http://tempuri.org/LastTenTurn" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LastTurnByDate">
+      <soap12:operation soapAction="http://tempuri.org/LastTurnByDate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTurnByID">
+      <soap12:operation soapAction="http://tempuri.org/GetTurnByID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CerrarTurno">
+      <soap12:operation soapAction="http://tempuri.org/CerrarTurno" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperador">
+      <soap12:operation soapAction="http://tempuri.org/NewSaleWithRefOperador" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorWebLiviana">
+      <soap12:operation soapAction="http://tempuri.org/NewSaleWithRefOperadorWebLiviana" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorSube">
+      <soap12:operation soapAction="http://tempuri.org/NewSaleWithRefOperadorSube" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SolicitudStockWebLiviana">
+      <soap12:operation soapAction="http://tempuri.org/SolicitudStockWebLiviana" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorPOSSG">
+      <soap12:operation soapAction="http://tempuri.org/NewSaleWithRefOperadorPOSSG" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorTEST">
+      <soap12:operation soapAction="http://tempuri.org/NewSaleWithRefOperadorTEST" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSalePinWithReferenciaOperador">
+      <soap12:operation soapAction="http://tempuri.org/NewSalePinWithReferenciaOperador" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleDirecTV">
+      <soap12:operation soapAction="http://tempuri.org/NewSaleDirecTV" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSalePinWebLiviana">
+      <soap12:operation soapAction="http://tempuri.org/NewSalePinWebLiviana" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProductsWebLiviana">
+      <soap12:operation soapAction="http://tempuri.org/GetProductsWebLiviana" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleDirecTVWebLiviana">
+      <soap12:operation soapAction="http://tempuri.org/NewSaleDirecTVWebLiviana" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleDirecTVByKinaku">
+      <soap12:operation soapAction="http://tempuri.org/NewSaleDirecTVByKinaku" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ExternalSales">
+    <wsdl:port name="ExternalSalesSoap" binding="tns:ExternalSalesSoap">
+      <soap:address location="http://adm.cargaplus.com.ar/WebServices/EXTSALES/ExternalSales.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ExternalSalesSoap12" binding="tns:ExternalSalesSoap12">
+      <soap12:address location="http://adm.cargaplus.com.ar/WebServices/EXTSALES/ExternalSales.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,50 @@
+﻿.prestamo {
+    text-align: center;
+    height: 80px;
+    /*margin-left: 36%;
+    width: 30%;*/
+    background-image: url(../img/prestamo_ya_02.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.subpres :hover {
+    /*height: 98px;
+    margin-top: 2px;*/
+    height: 133px;
+    width: 400px;
+    margin-left: -50px;
+}
+.subpres {
+    height: 80px;
+    margin-left: 36%;
+    width: 30%;
+    padding-bottom: 40px;
+    position:relative;
+    z-index:10;
+    
+}
+    /* Responsive: Portrait tablets and up */
+    @media screen and (max-width: 600px) {
+        .prestamo :hover {
+            height: 45px;
+        }
+
+        .subpres :hover {
+            /*height: 98px;
+    margin-top: 2px;*/
+            height: 60px;
+            width: 200px;
+            margin-left: -30px;
+        }
+        .prestamo {
+            height: 50px;
+            /*margin-left: 40%;
+            text-align: center;
+        width: 30%;
+        background-image: url(../img/prestamo_ya_01.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        padding-bottom: 40px;*/
+        }
+    }

@@ -1,0 +1,130 @@
+﻿/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set widths on the form inputs since otherwise they're 100% wide */
+
+select,
+textarea {
+    max-width: 280px;
+}
+
+h10 {
+    font-size: 30px;
+}
+
+span {
+    font-size: 30px;
+    height: 60px;
+    width: 70%;
+}
+
+input {
+    max-width: 280px;
+    height: 60px;
+    width: 50%;
+}
+
+#spansube {
+    font-size: 30px;
+}
+
+
+/*@media screen and (max-width: 769px) {
+
+ 
+}*/
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+    .jumbotron {
+        margin-top: 20px;
+    }
+
+    span {
+        font-size: 8px;
+    }
+
+    input {
+        font-size: 8px;
+    }
+
+    .form-control {
+        text-decoration-color: white;
+    }
+
+    #spansube {
+        font-size: 8px;
+    }
+
+    h2 {
+        font-size: 10px;
+    }
+
+    .body-content {
+        padding: 0;
+    }
+
+}
+
+/*.jumbotronCargaplus {
+    padding-top: @jumbotron-padding;
+    padding-bottom: @jumbotron-padding;
+    margin-bottom: @jumbotron-padding;
+    color: @jumbotron-color;
+    background-color: @jumbotron-bg;
+    h1, .h1
+
+{
+    color: @jumbotron-heading-color;
+}
+
+
+p {
+    margin-bottom: (@jumbotron-padding / 2);
+    font-size: @jumbotron-font-size;
+    font-weight: 200;
+}
+
+
+hr {
+    border-top-color: darken(@jumbotron-bg, 10%);
+}
+
+
+.container &,
+.container-fluid & {
+    padding-right: (@grid-gutter-width / 2);
+    padding-left: (@grid-gutter-width / 2);
+    border-radius: @border-radius-large;
+    // Only round corners at higher resolutions if contained in a container
+}
+
+
+.container {
+    max-width: 100%;
+}
+
+
+@media screen and (min-width: @screen-sm-min) {
+    padding-top: (@jumbotron-padding * 1.6); padding-bottom: (@jumbotron-padding * 1.6); .container &,
+    .container-fluid & {
+        padding-right: (@jumbotron-padding * 2);
+        padding-left: (@jumbotron-padding * 2);
+    }
+
+
+    h1,
+    .h1 {
+        font-size: @jumbotron-heading-font-size;
+    }
+}
+}*/
