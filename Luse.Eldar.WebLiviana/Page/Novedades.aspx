@@ -2,8 +2,32 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="Server">
     <div class="subpres">
+        <a href="http://geolar.com.ar/cargaplus/accesorios_plus.html#"  target="_blank">
+            <div class="BtnAuxiliarcelulartecnologia">
+
+                <img class="imgcssgrande" src="../Img/boton_moto_01.png" />
+            </div>
+        </a>
+        <a href="http://geolar.com.ar/cargaplus/factura_plus.html#"  target="_blank">
+            <div class="BtnAuxiliarAccesorios">
+
+                <img class="imgcssgrande" src="../Img/boton_celular_01.png" />
+            </div>
+        </a>
         <a href="CreditApto.aspx">
             <div class="prestamo">
+                <img class="imgcssprestamo" src="../Img/prestamo_ya_02.png" />
+            </div>
+        </a>
+        <a href="http://geolar.com.ar/cargaplus/celulares_plus.html#" target="_blank">
+            <div class="BtnAuxiliarcelular">
+
+                <img class="imgcssgrande" src="../Img/boton_celular_01.png" />
+            </div>
+        </a>
+        <a href="http://geolar.com.ar/cargaplus/motos_plus.html#" target="_blank">
+            <div class="BtnAuxiliarMotos">
+                <img class="imgcssgrande" src="../Img/boton_moto_01.png" />
             </div>
         </a>
     </div>

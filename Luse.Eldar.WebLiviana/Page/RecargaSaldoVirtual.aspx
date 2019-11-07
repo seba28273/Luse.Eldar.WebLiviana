@@ -3,7 +3,32 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="Server">
     <div class="subpres">
         <a href="CreditApto.aspx">
+            <div class="BtnAuxiliarcelulartecnologia">
+
+                <img class="imgcssgrande" src="../Img/boton_moto_01.png" />
+            </div>
+        </a>
+        <a href="CreditApto.aspx">
+            <div class="BtnAuxiliarAccesorios">
+
+                <img class="imgcssgrande" src="../Img/boton_celular_01.png" />
+            </div>
+        </a>
+        <a href="CreditApto.aspx">
             <div class="prestamo">
+                <img class="imgcssprestamo" src="../Img/prestamo_ya_02.png" />
+            </div>
+        </a>
+        <a href="CreditApto.aspx">
+            <div class="BtnAuxiliarcelular">
+
+                <img class="imgcssgrande" src="../Img/boton_celular_01.png" />
+            </div>
+        </a>
+        <a href="CreditApto.aspx">
+            <div class="BtnAuxiliarMotos">
+
+                <img class="imgcssgrande" src="../Img/boton_moto_01.png" />
             </div>
         </a>
     </div>
@@ -28,17 +53,17 @@
                 <div class="input-group">
 
                     <%--<span class="input-group-addon">Compañia</span>--%>
-                    <asp:DropDownList
-                        ClientIDMode="Static" ID="cboCompania" runat="server" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    </asp:DropDownList>
+                    <asp:dropdownlist
+                        clientidmode="Static" id="cboCompania" runat="server" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    </asp:dropdownlist>
 
-                    <asp:HiddenField ClientIDMode="Static" ID="User" runat="server" />
-                    <asp:HiddenField ClientIDMode="Static" ID="Pass" runat="server" />
-                    <asp:HiddenField ClientIDMode="Static" ID="IDAgencia" runat="server" />
-                    <asp:HiddenField ClientIDMode="Static" ID="NombreAgencia" runat="server" />
-                    <asp:HiddenField ClientIDMode="Static" ID="DireccionAgencia" runat="server" />
-                    <asp:HiddenField ClientIDMode="Static" ID="MontoVentas" runat="server" />
-                    <asp:HiddenField ClientIDMode="Static" ID="AptoCredito" runat="server" />
+                    <asp:hiddenfield clientidmode="Static" id="User" runat="server" />
+                    <asp:hiddenfield clientidmode="Static" id="Pass" runat="server" />
+                    <asp:hiddenfield clientidmode="Static" id="IDAgencia" runat="server" />
+                    <asp:hiddenfield clientidmode="Static" id="NombreAgencia" runat="server" />
+                    <asp:hiddenfield clientidmode="Static" id="DireccionAgencia" runat="server" />
+                    <asp:hiddenfield clientidmode="Static" id="MontoVentas" runat="server" />
+                    <asp:hiddenfield clientidmode="Static" id="AptoCredito" runat="server" />
                 </div>
                 <br />
 
@@ -84,8 +109,8 @@
     <div id="Mensajes2"></div>
     <script src="../Scripts/jquery-1.10.2.js" type="text/javascript"></script>
     <%--<script type="text/javascript" src="../Scripts/jquery.timers.js"></script>--%>
-        
-    
+
+
     <script lang="javascript">
 
         // Solo permite ingresar numeros.
@@ -337,7 +362,7 @@
                 // $("#dvfondo").im("");
 
             });
-            
+
 
         });
 
