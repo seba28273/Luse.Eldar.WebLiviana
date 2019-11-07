@@ -1,7 +1,41 @@
 ﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="RecargaSube.aspx.vb" Inherits="Page_RecargaSube" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="Server">
+    <div class="subpres">
+      <%--  <a href="http://www.cargaplus.com.ar/accesorios_plus.html#"  target="_blank">
+            <div class="BtnAuxiliarcelulartecnologia">
 
+                <img class="imgcssgrande" src="../Img/boton_moto_01.png" />
+            </div>
+        </a>--%>
+        <a href="http://www.cargaplus.com.ar/factura_plus.html#"  target="_blank">
+            <div class="BtnAuxiliarAccesorios">
+
+                <img class="imgcssgrande" src="../Img/boton_factura_02.png" />
+            </div>
+        </a>
+        <a href="CreditApto.aspx">
+            <div class="prestamo">
+                <img class="imgcssprestamo" src="../Img/btnPrestNew.png" />
+            </div>
+        </a>
+        <a href="https://www.cargaplus.com.ar/sube.html">
+            <div class="prestamo">
+                <img class="imgcssprestamo" src="../Img/btnSubeNew.png" />
+            </div>
+        </a>
+        <a href="http://www.cargaplus.com.ar/celulares_plus.html#" target="_blank">
+            <div class="BtnAuxiliarcelular">
+
+                <img class="imgcssgrande" src="../Img/boton_celular_01.png" />
+            </div>
+        </a>
+       <%-- <a href="http://www.cargaplus.com.ar/motos_plus.html#" target="_blank">
+            <div class="BtnAuxiliarMotos">
+                <img class="imgcssgrande" src="../Img/boton_moto_01.png" />
+            </div>
+        </a>--%>
+    </div>
     <div class="jumbotron" style="position: relative;">
         <h2>Carga Electronica SUBE</h2>
         <img src="../Img/SubeAzul.jpg" class="imgpag" style="position: absolute; right: 10px; bottom: 10px;" />
