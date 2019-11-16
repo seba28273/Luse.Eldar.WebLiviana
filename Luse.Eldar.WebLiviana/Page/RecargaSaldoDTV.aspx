@@ -19,7 +19,7 @@
                 <img class="imgcssprestamo" src="../Img/btnPrestNew.png" />
             </div>
         </a>
-        <a href="https://www.cargaplus.com.ar/sube.html">
+        <a href="https://www.cargaplus.com.ar/sube.html" target="_blank">
             <div class="prestamo">
                 <img class="imgcssprestamo" src="../Img/btnSubeNew.png" />
             </div>

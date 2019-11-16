@@ -571,6 +571,7 @@ Public Class Servicios
 
     End Function
 
+    <WebMethod()>
     Public Function NewSaleSube(pObj As Parametros) As List(Of RespuestaRecarga)
         Dim oEldar As New LuSe.WsTransaccional.ExternalSales
         Dim oList As New List(Of RespuestaRecarga)
@@ -834,8 +835,8 @@ Public Class Servicios
 
         oMontosDisponibles = New MontosDisponibles
         'Ej 50 / 100 / 150 / 200 / 250 / 300 / 400 / 500 / 600 / 700 / 800)
-        oMontosDisponibles.IDMonto = 50
-        oMontosDisponibles.Descripcion = "50"
+        oMontosDisponibles.IDMonto = 60
+        oMontosDisponibles.Descripcion = "60"
         oList.Add(oMontosDisponibles)
         oMontosDisponibles = New MontosDisponibles
         oMontosDisponibles.IDMonto = 100

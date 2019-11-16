@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>EldarWeb</title>
+    <title>Recargas Virtuales - CargaPlus</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../Content/bootstrap.css">
@@ -82,6 +82,7 @@
                             <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="RecargaSaldoDTV.aspx"><i class="glyphicon glyphicon-hd-video"></i> Recarga DTV</a></li>
+                                <li><a href="RecargaSube.aspx"><i class="glyphicon glyphicon-phone"></i> Recarga Sube</a></li>
                                 <li><a href="RecargaSaldoVirtual.aspx"><i class="glyphicon glyphicon-phone"></i> Recarga Virtual</a></li>
                                 <li><a href="RecargaPin.aspx"><i class="glyphicon glyphicon-phone-alt"></i> Recarga Pines</a></li>
 
@@ -155,7 +156,7 @@
             <footer>
                 <br />
                 <br />
-                <p>&copy; <%: DateTime.Now.Year %> - Eldar - Ver.: 1.0.2</p>
+                <p>&copy; <%: DateTime.Now.Year %> - Eldar - Ver.: 1.0.4</p>
             </footer>
         </div>
     </form>

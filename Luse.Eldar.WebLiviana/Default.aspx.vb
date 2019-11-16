@@ -58,7 +58,7 @@ Partial Class Default2
         'Cargar estas variables segun el usuario para saber si el mismo tendra autorizaciones
 
 
-        Response.Redirect("Page/RecargaSaldoVirtual.aspx")
+        Response.Redirect("Page/Noticias.aspx")
         'Response.Redirect("Page/Menu.aspx", False)
         'Server.Transfer("Page/Menu.aspx")
 
