@@ -37,7 +37,7 @@
         </a>--%>
     </div>
     <div class="jumbotron"  style="position: relative;">
-         <ul id="mnuSaldo" style="position: absolute; text-orientation:sideways;     list-style-type: none; top: 10px; max-width: 200px;">
+         <ul id="mnuSaldo" style="position: absolute; text-orientation:sideways; list-style-type: none; top: 10px; max-width: 200px;">
             <li><button type="button" id="btnSaldo" class="btn btn-success">Saldo <span id="Saldo" class="badge"></span></button>
             </li>
             <li><button type="button" id="btnTotalVentas" class="btn btn-primary">Total Ventas OK<span id="TotalVentas" class="badge"></span></button>

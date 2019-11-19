@@ -38,7 +38,7 @@
     </div>
     <div class="jumbotron" style="position: relative;">
         <h2>Recarga Pines</h2>
-        <img src="../Img/CPImg.png" class="imgpag" style="position: absolute; right: 25px; bottom: 20px;" />
+        <%--<img src="../Img/CPImg.png" class="imgpag" style="position: absolute; right: 25px; bottom: 20px;" />--%>
         <ul id="mnuSaldo" style="position: absolute; text-orientation:sideways;     list-style-type: none; top: 10px; max-width: 200px;">
             <li><button type="button" id="btnSaldo" class="btn btn-success">Saldo <span id="Saldo" class="badge"></span></button>
             </li>

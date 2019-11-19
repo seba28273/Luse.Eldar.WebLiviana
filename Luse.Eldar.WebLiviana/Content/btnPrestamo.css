@@ -2,8 +2,6 @@
 .BtnAuxiliarcelular {
     height: 115px;
     width: 115px;
-    margin: 0px 10px 0px 10px;
-
     /*margin-left: 36%;
     width: 30%;*/
     /*background-image: url(../Img/boton_celular_01.png);
@@ -14,7 +12,7 @@
 .BtnAuxiliarMotos {
     height: 115px;
     width: 115px;
-    margin: 0px 10px 0px 10px;
+    /*margin: 0px 10px 0px 10px;*/
 
     /*margin-left: 36%;
     width: 30%;*/
@@ -27,7 +25,6 @@
 .BtnAuxiliarcelulartecnologia {
     height: 115px;
     width: 115px;
-    margin: 0px 10px 0px 10px;
 
     /*margin-left: 36%;
     width: 30%;*/
@@ -39,7 +36,6 @@
 .BtnAuxiliarAccesorios {
     height: 115px;
     width: 115px;
-    margin: 0px 10px 0px 10px;
 
     /*margin-left: 36%;
     width: 30%;*/
@@ -63,6 +59,12 @@
     width: auto;
     z-index: 10;
 }
+.imgcssgrande {
+    vertical-align: middle;
+    height: 115px;
+    width: 115px;
+    z-index: 10;
+}
 .imgcssprestamo:hover {
     /*visibility: hidden;*/
     transform: scale(1.5);
@@ -70,20 +72,15 @@
 .prestamo {
     text-align: center;
     height: 115px;
-    width: 262px;
-    margin: 0px 10px 0px 10px;
-    /*margin-left: 36%;
+    width: auto;
+    /* margin: 0px 10px 0px 10px;
+    margin-left: 36%;
     width: 30%;*/
     /*background-image: url(../img/prestamo_ya_02.png);
     background-size: contain;
     background-repeat: no-repeat;*/
 }
-.imgcssgrande {
-    vertical-align: middle;
-    height: 115px;
-    width: auto;
-    z-index: 10;
-}
+
 
 .prestamo :hover {
     /*height: 98px;
@@ -92,6 +89,15 @@
     width: 400px;*/
     transform: scale(1.5);
 }
+.imgNews {
+    vertical-align: middle;
+    width: 750px;
+    height: 500px;
+    display: block;
+    margin: auto;
+    margin-top: 21px;
+}
+
 
 .subpres {
     /*height: 80px;
@@ -110,24 +116,76 @@
 @media screen and (max-width: 600px) {
     .prestamo :hover {
         height: 45px;
+        width: 86px;
     }
 
-    .subpres :hover {
-        /*height: 98px;
-    margin-top: 2px;*/
-        height: 60px;
-        width: 200px;
-        margin-left: -30px;
+    /*.subpres :hover {
+        height: auto;
+        width: auto;
+    }*/
+
+    .imgcssgrande {
+        height: 45px;
+        width: auto;
     }
 
+        .imgcssgrande :hover {
+            transform: scale(2);
+        }
+
+    .imgcssprestamo {
+        height: 45px;
+        width: auto;
+    }
+    .BtnAuxiliarMotos :hover {
+        height: 50px;
+        width: auto;
+    }
+
+    .BtnAuxiliarcelulartecnologia:hover {
+        height: 50px;
+        width: auto;
+    }
+
+    .BtnAuxiliarAccesorios :hover {
+        height: 50px;
+        width: auto;
+    }
+
+    .imgNews {
+        vertical-align: middle;
+        width: 397px;
+        height: 345px;
+        display: block;
+        margin: auto;
+        margin-top: 21px;
+    
+    }
+    .BtnAuxiliarcelular :hover {
+        height: 50px;
+        width: auto;
+    }
+    .BtnAuxiliarMotos {
+        height: 50px;
+        width: auto;
+    }
+
+    .BtnAuxiliarcelulartecnologia {
+        height: 50px;
+        width: auto;
+    }
+
+    .BtnAuxiliarAccesorios {
+        height: 50px;
+        width: auto;
+    }
+
+    .BtnAuxiliarcelular {
+        height: 50px;
+        width: auto;
+    }
     .prestamo {
         height: 50px;
-        /*margin-left: 40%;
-            text-align: center;
-        width: 30%;
-        background-image: url(../img/prestamo_ya_01.png);
-        background-size: contain;
-        background-repeat: no-repeat;
-        padding-bottom: 40px;*/
+        width: auto;
     }
 }

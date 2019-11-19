@@ -5256,9 +5256,9 @@ a.list-group-item.active > .badge,
     color: inherit;
     box-shadow: 3px 3px 3px 0.4px;
     background-image: url("../Img/cp400px.png");
-    background-size:400px;
+    background-size: 400px;
     background-repeat: no-repeat;
-    background-position-x:center;
+    background-position-x: center;
 }
 
     .jumbotron h1 {
@@ -5270,7 +5270,26 @@ a.list-group-item.active > .badge,
         line-height: 1.4;
     }
 
-.container .jumbotron {
+.jumbotronlogin {
+    padding: 30px;
+    margin-bottom: 30px;
+    font-weight: 200;
+    line-height: 2.1428571435;
+    color: inherit;
+    box-shadow: 3px 3px 3px 0.4px;
+
+}
+
+    .jumbotronlogin h1 {
+        line-height: 1;
+        color: inherit;
+    }
+
+    .jumbotronlogin p {
+        line-height: 1.4;
+    }
+
+.container .jumbotron .jumbotronlogin {
     border-radius: 6px;
 }
 
@@ -5280,7 +5299,7 @@ a.list-group-item.active > .badge,
         padding-bottom: 48px;
     }
 
-    .container .jumbotron {
+    .container .jumbotron .jumbotronlogin {
         padding-right: 60px;
         padding-left: 60px;
     }
@@ -5288,6 +5307,16 @@ a.list-group-item.active > .badge,
     .jumbotron h1 {
         font-size: 63px;
     }
+
+    .jumbotronlogin {
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+
+        .jumbotronlogin h1 {
+            font-size: 63px;
+        }
+
 }
 
 .thumbnail {

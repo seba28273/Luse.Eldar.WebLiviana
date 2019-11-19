@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
 
-       <div class="jumbotron" style="position:relative;">
+       <div class="jumbotronlogin" style="position:relative;">
             <h2>Inicio Sesion</h2>
             <img src="../Img/cp200px.png" class ="imgpag" style="position:absolute; right:30px; bottom:5px; max-width:300px;"  />
 

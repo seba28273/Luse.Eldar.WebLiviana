@@ -20,7 +20,7 @@
         <a href="https://www.facebook.com/cargaplus/" target="_blank">
             <div style="vertical-align: middle; width: 100%; height: 100%;">
 
-                <img style="vertical-align: middle; width: 750px; height: 500px; display:block; margin:auto; margin-top:21px"
+                <img class="imgNews"
                     src="https://www.cargaplus.com.ar/img/sorteo_g5plus_paraweb.jpg" />
             </div>
 

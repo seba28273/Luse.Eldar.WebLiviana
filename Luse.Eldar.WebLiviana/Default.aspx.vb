@@ -59,6 +59,7 @@ Partial Class Default2
 
 
         Response.Redirect("Page/Noticias.aspx")
+        'Response.Redirect("Page/RecargaSube.aspx")
         'Response.Redirect("Page/Menu.aspx", False)
         'Server.Transfer("Page/Menu.aspx")
 

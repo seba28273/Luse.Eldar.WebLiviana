@@ -82,7 +82,7 @@
                             <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="RecargaSaldoDTV.aspx"><i class="glyphicon glyphicon-hd-video"></i> Recarga DTV</a></li>
-                                <li><a href="RecargaSube.aspx"><i class="glyphicon glyphicon-phone"></i> Recarga Sube</a></li>
+                                <%--<li><a href="RecargaSube.aspx"><i class="glyphicon glyphicon-credit-card"></i> Recarga Sube</a></li>--%>
                                 <li><a href="RecargaSaldoVirtual.aspx"><i class="glyphicon glyphicon-phone"></i> Recarga Virtual</a></li>
                                 <li><a href="RecargaPin.aspx"><i class="glyphicon glyphicon-phone-alt"></i> Recarga Pines</a></li>
 
