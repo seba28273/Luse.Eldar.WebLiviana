@@ -21,7 +21,7 @@
             <div style="vertical-align: middle; width: 100%; height: 100%;">
 
                 <img class="imgNews"
-                    src="https://www.cargaplus.com.ar/img/sorteo_g5plus_paraweb.jpg" />
+                    src="https://www.cargaplus.com.ar/img/sorteo_g5plus_paraweb.gif" />
             </div>
 
         </a>

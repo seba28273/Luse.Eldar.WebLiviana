@@ -987,6 +987,50 @@ Public Class Servicios
 
     End Function
 
+
+    <WebMethod()>
+    Public Function GetVentasResumida(pObj As Parametros) As List(Of Respuesta)
+
+        Dim oRta As New Respuesta
+        Dim oDs As DataSet
+        Dim olstRta As New List(Of Respuesta)
+        Try
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
+            If pObj.Fecha = "" Then
+                pObj.Fecha = Format(Now.Date, "yyyy-MM-dd")
+
+            End If
+            If pObj.FechaHasta = "" Then
+                pObj.FechaHasta = Format(Now.Date, "yyyy-MM-dd")
+
+            End If
+            oDs = oFusion.GetTransaccionesWebLivianaResumido(pObj.User, pObj.Pass, pObj.Fecha, pObj.FechaHasta)
+
+
+            Dim mRes As New StringBuilder
+            mRes.Append("[")
+
+            For Each Item As DataRow In oDs.Tables(0).Rows
+                mRes.Append("{""Proveedor"":""" & Item("NombreProveedor") & """,""Monto"": """ & Item("Monto") & """, ""Cantidad"": """ & Item("Cantidad") & """},")
+
+            Next
+            Dim oREST As String
+            oREST = mRes.ToString.Substring(0, mRes.Length - 1)
+
+
+            oRta.Estado = True
+            oRta.Mensaje = oREST & "]"
+            olstRta.Add(oRta)
+            Return olstRta
+        Catch ex As Exception
+            oRta.Estado = False
+            oRta.Mensaje = "Error: " & ex.Message
+            olstRta.Add(oRta)
+            Return olstRta
+        End Try
+
+    End Function
+
     <WebMethod()>
     Public Function GetVentas(pObj As Parametros) As List(Of Respuesta)
 
@@ -1017,6 +1061,68 @@ Public Class Servicios
                 mRes.Append("{""Producto"":""" & Item("NombreProducto") & """,""Fecha"":""" & Item("Fecha") & """,""Monto"": """ & Item("Monto") & """, ""IdTransaccion"": """ & Item("IdTransaccion") & """,""Destino"": """ & Item("Destino") & """,""Usuario"": """ & Item("UserCode") & """,""IDVenta"": """ & Item("IDVenta") & """,""Estado"": """ & Item("Estado") & """},")
 
             Next
+            Dim oREST As String
+            oREST = mRes.ToString.Substring(0, mRes.Length - 1)
+
+
+            oRta.Estado = True
+            oRta.Mensaje = oREST & "]"
+            olstRta.Add(oRta)
+            Return olstRta
+        Catch ex As Exception
+            oRta.Estado = False
+            oRta.Mensaje = "Error: " & ex.Message
+            olstRta.Add(oRta)
+            Return olstRta
+        End Try
+
+    End Function
+
+
+    <WebMethod()>
+    Public Function GetMovCtaCte(pObj As Parametros) As List(Of Respuesta)
+
+        Dim oRta As New Respuesta
+        Dim oDs As DataSet
+        Dim oRes As String
+        Dim olstRta As New List(Of Respuesta)
+        Try
+            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            If pObj.Fecha = "" Then
+                pObj.Fecha = Format(Now.Date, "yyyy-MM-dd")
+            End If
+            If pObj.FechaHasta = "" Then
+                pObj.FechaHasta = Format(Now.Date, "yyyy-MM-dd")
+            End If
+            oRes = oFusion.GetMovCtaCteWebLiviana(pObj.User, pObj.Pass, pObj.Fecha, pObj.FechaHasta)
+
+            oDs = LuSe.Framework.Common.Helper.XmlFunctions.XMLToDataSet(oRes)
+
+            Dim mRes As New StringBuilder
+            mRes.Append("[")
+            Dim mSaldoInicial As String = ""
+            Dim mSaldo As String = ""
+            Dim blnHayVentas As Boolean = False
+            If mSaldoInicial = "" Then
+                mSaldoInicial = Math.Round(Convert.ToDecimal(oDs.Tables(0).Rows(oDs.Tables(0).Rows.Count - 1)("Saldo").ToString.Replace(".", ",")), 2) - Math.Round(Convert.ToDecimal(oDs.Tables(0).Rows(oDs.Tables(0).Rows.Count - 1)("Importe").ToString.Replace(".", ",")), 2)
+            End If
+            For Each Item As DataRow In oDs.Tables(0).Rows
+                blnHayVentas = True
+                If mSaldo = "" Then
+                    mSaldo = Math.Round(Convert.ToDecimal(Item(4).ToString.Replace(".", ",")), 2)
+                    mRes.Append("{""Fecha"":"""",""Descripcion"":""Saldo Actual"",""Monto"": """ & mSaldo & """, ""Saldo"": """"},")
+                End If
+                mRes.Append("{""Fecha"":""" & Convert.ToDateTime(Item("Fecha")) & """,""Descripcion"":""" & Item("Observaciones") & """,""Monto"": """ & Math.Round(Convert.ToDecimal(Item("Importe").ToString.Replace(".", ",")), 2) & """, ""Saldo"": """ & Math.Round(Convert.ToDecimal(Item("Saldo").ToString.Replace(".", ",")), 2) & """},")
+
+            Next
+            mRes.Append("{""Fecha"":"""",""Descripcion"":""Saldo Inicial"",""Monto"": """ & mSaldoInicial & """, ""Saldo"": """"},")
+
+
+            If Not blnHayVentas Then
+
+                Throw New Exception("Sin Movimientos por el momento")
+            End If
+
             Dim oREST As String
             oREST = mRes.ToString.Substring(0, mRes.Length - 1)
 

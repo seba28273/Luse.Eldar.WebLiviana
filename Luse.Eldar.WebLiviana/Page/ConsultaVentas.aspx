@@ -1,14 +1,15 @@
 ﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="ConsultaVentas.aspx.vb"
     Inherits="Page_ConsultaVentas" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-  <div class="subpres">
-      <%--  <a href="http://www.cargaplus.com.ar/accesorios_plus.html#"  target="_blank">
+    <div class="subpres">
+        <%--  <a href="http://www.cargaplus.com.ar/accesorios_plus.html#"  target="_blank">
             <div class="BtnAuxiliarcelulartecnologia">
 
                 <img class="imgcssgrande" src="../Img/boton_moto_01.png" />
             </div>
         </a>--%>
-        <a href="http://www.cargaplus.com.ar/factura_plus.html#"  target="_blank">
+        <a href="http://www.cargaplus.com.ar/factura_plus.html#" target="_blank">
             <div class="BtnAuxiliarAccesorios">
 
                 <img class="imgcssgrande" src="../Img/boton_factura_02.png" />
@@ -30,7 +31,7 @@
                 <img class="imgcssgrande" src="../Img/boton_celular_01.png" />
             </div>
         </a>
-       <%-- <a href="http://www.cargaplus.com.ar/motos_plus.html#" target="_blank">
+        <%-- <a href="http://www.cargaplus.com.ar/motos_plus.html#" target="_blank">
             <div class="BtnAuxiliarMotos">
                 <img class="imgcssgrande" src="../Img/boton_moto_01.png" />
             </div>
@@ -83,17 +84,18 @@
                 <asp:HiddenField ClientIDMode="Static" ID="Pass" runat="server" />
                 <asp:HiddenField ClientIDMode="Static" ID="MontoVentas" runat="server" />
                 <asp:HiddenField ClientIDMode="Static" ID="AptoCredito" runat="server" />
-                    <asp:HiddenField ClientIDMode="Static" ID="NombreAgencia" runat="server" />
-                    <asp:HiddenField ClientIDMode="Static" ID="DireccionAgencia" runat="server" />
+                <asp:HiddenField ClientIDMode="Static" ID="NombreAgencia" runat="server" />
+                <asp:HiddenField ClientIDMode="Static" ID="DireccionAgencia" runat="server" />
                 <br />
                 <div class="form-group">
                     <div class="input-group">
                         <button type="button" runat="server" id="btnIngresar" clientidmode="Static" class="btn btn-primary">Buscar</button>
-                        
+
                     </div>
                 </div>
-
+                
                 <div class="table-responsive">
+                    
                     <table clientidmode="Static" id="tablaVentas" class="table">
                         <thead>
                             <tr id="fila0" class="info">
@@ -112,11 +114,26 @@
                     </table>
                 </div>
 
+                <div class="table-responsive">
+                    <table clientidmode="Static" id="tablaVentasResumidas" class="table">
+                         <span style="font-size: unset" class="btn btn-info">RESUMEN DE VENTAS OK POR AGENCIA</span>
+                        <thead>
+                            <tr id="filaRes0" class="info">
+                                <th>#</th>
+                                <th>Proveedor</th>
+                                <th>Cantidad</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+
+                    </table>
+                </div>
+
                 <div class="form-group">
                     <div class="input-group">
-                       
-                        <button type="button" id="btnTotalUsuario" style="font-size:unset" class="btn btn-success">Ventas OK</button>
-                        <button type="button" id="btnCantidadVentas" style="font-size:unset" class="btn btn-info">Cant Vta OK</button>
+
+                        <button type="button" id="btnTotalUsuario" style="font-size: unset" class="btn btn-success">Ventas OK</button>
+                        <button type="button" id="btnCantidadVentas" style="font-size: unset" class="btn btn-info">Cant Vta OK</button>
                     </div>
                 </div>
 
@@ -139,7 +156,7 @@
 
     <script lang="javascript">
 
-        
+
         function GetDate() {
 
             var fecha = new Date(); //Fecha actual
@@ -215,6 +232,13 @@
                 $("#fila" + n).remove();
                 n++;
             });
+
+            var nn = 1;
+            $("#tablaVentasResumidas tbody tr").each(function () {
+                $("#filaRes" + nn).remove();
+                nn++;
+            });
+
             //BORRA LAS n-1 FILAS VISIBLES DE LA TABLA
             //LAS BORRA DE LA ULTIMA FILA HASTA LA SEGUNDA
             //DEJANDO LA PRIMERA FILA VISIBLE, MÁS LA FILA PLANTILLA OCULTA
@@ -252,7 +276,7 @@
 
         function PrintSale(ctl) {
             var _row = null;
-           
+
             _row = $(ctl).parents("tr");
             var cols = _row.children("td");
             console.log(cols);
@@ -263,9 +287,9 @@
             else {
                 mMsn = "Error";
             }
-            
+
             var mTextoTicket;
-            mTextoTicket = $("#NombreAgencia").val() + "|" + $("#DireccionAgencia").val() + "|" + cols[5].innerText + "|" + cols[3].innerText + "|" + cols[4].innerText + "|" + cols[7].innerText + "|" + mMsn  
+            mTextoTicket = $("#NombreAgencia").val() + "|" + $("#DireccionAgencia").val() + "|" + cols[5].innerText + "|" + cols[3].innerText + "|" + cols[4].innerText + "|" + cols[7].innerText + "|" + mMsn
             //mTextoTicket = "Eldar|San Martin 1074 22|162239039-2059615634|057000864019732099|100|Ok|La Venta se realizo con exito|Directv"
             var url = "https://ventas.cargaplus.com.ar/mailtemplates/MostrarImpresionTicket.aspx?Div=" + mTextoTicket + "|" + cols[2].innerText + "|" + cols[1].innerText;
 
@@ -284,8 +308,8 @@
             ActualizarSaldos();
 
             GetDate();
-            
-           
+
+
 
             $("#btnIngresar").click(function () {
 
@@ -313,105 +337,107 @@
                 }
 
                 var stringData = JSON.stringify(SendObj);
-
                 $.ajax({
                     type: "POST",
-                    url: "../Servicios/Servicios.asmx/GetVentas",
+                    url: "../Servicios/Servicios.asmx/GetVentasResumida",
                     data: "{'pObj':" + stringData + "}",
                     contentType: "application/json; charset=utf-8",
                     crossDomain: true,
                     dataType: "json",
-
                     beforeSend: function (response) {
                         $('#lblCargando').css({ display: 'block' });
                         $('#lblCargando').html('Procesando...');
 
                     },
                     success: function (response) {
-                        console.log(response);
-                        $('#btnIngresar').attr('disabled', false);
-
-                        ActualizarSaldos();
-
-                        $('#lblCargando').css({ display: 'none' });
-                        //if (response.codError == 200) {
-
-                        if (response.d[0].Mensaje == "]") {
-
-                            $("#lblCargando").css("display", "none");
-                            $("#lblresultokfail").css("display", "block");
-                            $("#lblresultokfail").html("No existen Registros para la Fecha indicada");
-                            return;
-                        } else {
-                            var models = JSON.parse(response.d[0].Mensaje);
-                        }
-
-                       // $("#btnTotalUsuario").css("display", "none");
+       
                         var mNombre;
-                        var mEstado;
                         var mMonto;
                         var mClase = "";
                         var aaa = 0;
-                        var TotalVentasUsuario = 0;
-                        var CantidadVentas = 0;
+                        var models = JSON.parse(response.d[0].Mensaje);
                         for (var i = 0; i < models.length; i++) {
-                            if ($('#chkUsrActivo').is(":checked")) {
-                               // $("#btnTotalUsuario").css("display", "block");
-                                if (models[i].Usuario == $("#User").val()) {
 
-
-                                    mNombre = "fila" + (aaa + 1);
-                                    if (mClase == "") {
-                                        mClase = "success";
-                                    }
-                                    else {
-                                        mClase = "";
-                                    }
-                                    try {
-
-                                        mMonto = models[i].Monto.split(',')[0];
-                                    } catch (e) {
-                                        mMonto = models[i].Monto;
-                                    }
-                                    if (models[i].Estado == "2") {
-                                        mEstado = "OK";
-                                        TotalVentasUsuario = TotalVentasUsuario + parseInt(mMonto);
-                                        CantidadVentas = CantidadVentas + 1;
-                                    }
-                                    else if (models[i].Estado == "4") {
-                                        mEstado = "ANULADA";
-                                    } else {
-                                        mEstado = "ERROR";
-                                    }
-
-
-                                    
-                                    
-
-                                    $("#tablaVentas").append("<tr id=" + mNombre + " class='" + mClase + "'>" +
-                                        "<td> " + (aaa + 1) + "</td > " +
-                                        "<td> " + models[i].Fecha + "</td > " +
-                                        "<td> " + models[i].Producto + "</td >" +
-                                        "<td> " + models[i].Destino + "</td >" +
-                                        "<td> " + mMonto + "</td >" +
-                                        "<td> " + models[i].IdTransaccion + "</td >" +
-                                        "<td> " + models[i].Usuario + "</td >" +
-                                        "<td> " + mEstado + "</td >" +
-                                        "<td style='width: 34px; height: 33px;'>" +
-                                        "<button type='button' " +
-                                        "onclick='PrintSale(this);' " +
-                                        "class='btn btn-outline-light'>" +
-                                        "</button>" +
-                                        "</td>" +
-                                        "</tr > ");
-
-                                    aaa = aaa + 1;
-                                }
-
+                            mNombre = "filaRes" + (aaa + 1);
+                            if (mClase == "") {
+                                mClase = "success";
                             }
                             else {
+                                mClase = "";
+                            }
+                            try {
 
-                                mNombre = "fila" + (i + 1);
+                                mMonto = models[i].Monto.split(',')[0];
+                            } catch (e) {
+                                mMonto = models[i].Monto;
+                            }
+
+                            $("#tablaVentasResumidas").append("<tr id=" + mNombre + " class='" + mClase + "'>" +
+                                "<td> " + (aaa + 1) + "</td > " +
+                                "<td> " + models[i].Proveedor + "</td > " +
+                                "<td> " + models[i].Cantidad + "</td >" +
+                                "<td> " + mMonto + "</td >" +
+                                "</tr > ");
+
+                            aaa = aaa + 1;
+                        }
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#lblCargando").css("display", "none");
+                        $("#lblresultokfail").css("display", "block");
+                        $("#lblresultokfail").html("Error al consultar los registros");
+                    },
+
+                });
+
+            $.ajax({
+                type: "POST",
+                url: "../Servicios/Servicios.asmx/GetVentas",
+                data: "{'pObj':" + stringData + "}",
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+
+                beforeSend: function (response) {
+                    $('#lblCargando').css({ display: 'block' });
+                    $('#lblCargando').html('Procesando...');
+
+                },
+                success: function (response) {
+                    console.log(response);
+                    $('#btnIngresar').attr('disabled', false);
+
+                    ActualizarSaldos();
+
+                    $('#lblCargando').css({ display: 'none' });
+                    //if (response.codError == 200) {
+
+                    if (response.d[0].Mensaje == "]") {
+
+                        $("#lblCargando").css("display", "none");
+                        $("#lblresultokfail").css("display", "block");
+                        $("#lblresultokfail").html("No existen Registros para la Fecha indicada");
+                        return;
+                    } else {
+                        var models = JSON.parse(response.d[0].Mensaje);
+                    }
+
+                    // $("#btnTotalUsuario").css("display", "none");
+                    var mNombre;
+                    var mEstado;
+                    var mMonto;
+                    var mClase = "";
+                    var aaa = 0;
+                    var TotalVentasUsuario = 0;
+                    var CantidadVentas = 0;
+                    for (var i = 0; i < models.length; i++) {
+                        if ($('#chkUsrActivo').is(":checked")) {
+                            // $("#btnTotalUsuario").css("display", "block");
+                            if (models[i].Usuario == $("#User").val()) {
+
+
+                                mNombre = "fila" + (aaa + 1);
                                 if (mClase == "") {
                                     mClase = "success";
                                 }
@@ -424,7 +450,6 @@
                                 } catch (e) {
                                     mMonto = models[i].Monto;
                                 }
-
                                 if (models[i].Estado == "2") {
                                     mEstado = "OK";
                                     TotalVentasUsuario = TotalVentasUsuario + parseInt(mMonto);
@@ -434,21 +459,10 @@
                                     mEstado = "ANULADA";
                                 } else {
                                     mEstado = "ERROR";
-
                                 }
-
-
-                                try {
-
-                                    mMonto = models[i].Monto.split(',')[0];
-                                } catch (e) {
-                                    mMonto = models[i].Monto;
-                                }
-
-                                
 
                                 $("#tablaVentas").append("<tr id=" + mNombre + " class='" + mClase + "'>" +
-                                    "<td> " + (i + 1) + "</td > " +
+                                    "<td> " + (aaa + 1) + "</td > " +
                                     "<td> " + models[i].Fecha + "</td > " +
                                     "<td> " + models[i].Producto + "</td >" +
                                     "<td> " + models[i].Destino + "</td >" +
@@ -457,41 +471,90 @@
                                     "<td> " + models[i].Usuario + "</td >" +
                                     "<td> " + mEstado + "</td >" +
                                     "<td style='width: 34px; height: 33px;'>" +
-                                    "<button style='width: 34px; height: 33px;' class='glyphicon glyphicon-print' type='button' " +
+                                    "<button type='button' " +
                                     "onclick='PrintSale(this);' " +
                                     "class='btn btn-outline-light'>" +
                                     "</button>" +
                                     "</td>" +
                                     "</tr > ");
+
+                                aaa = aaa + 1;
                             }
+
                         }
-                        $("#lblresultok").css("display", "none");
-                        $("#lblresultokfail").css("display", "none");
-                        $("#btnTotalUsuario").html("Ventas OK $" + TotalVentasUsuario);
-                        $("#btnCantidadVentas").html("Cant. Ventas OK " + CantidadVentas);
-                        
-                        //}
-                        //else {
+                        else {
+
+                            mNombre = "fila" + (i + 1);
+                            if (mClase == "") {
+                                mClase = "success";
+                            }
+                            else {
+                                mClase = "";
+                            }
+                            try {
+
+                                mMonto = models[i].Monto.split(',')[0];
+                            } catch (e) {
+                                mMonto = models[i].Monto;
+                            }
+
+                            if (models[i].Estado == "2") {
+                                mEstado = "OK";
+                                TotalVentasUsuario = TotalVentasUsuario + parseInt(mMonto);
+                                CantidadVentas = CantidadVentas + 1;
+                            }
+                            else if (models[i].Estado == "4") {
+                                mEstado = "ANULADA";
+                            } else {
+                                mEstado = "ERROR";
+
+                            }
 
 
-                        //    $("#lblresultok").css("display", "none");
-                        //    $("#lblresultokfail").css("display", "block");
-                        //    $("#lblresultokfail").html(response.descError);
-                        //}
+                            try {
+
+                                mMonto = models[i].Monto.split(',')[0];
+                            } catch (e) {
+                                mMonto = models[i].Monto;
+                            }
 
 
-                    },
 
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log(jqXHR.responseText);
-                        console.log(errorThrown);
-                        $("#lblCargando").css("display", "none");
-                        $("#lblresultokfail").css("display", "block");
-                        $("#lblresultokfail").html("Error al consultar los registros");
-                    },
+                            $("#tablaVentas").append("<tr id=" + mNombre + " class='" + mClase + "'>" +
+                                "<td> " + (i + 1) + "</td > " +
+                                "<td> " + models[i].Fecha + "</td > " +
+                                "<td> " + models[i].Producto + "</td >" +
+                                "<td> " + models[i].Destino + "</td >" +
+                                "<td> " + mMonto + "</td >" +
+                                "<td> " + models[i].IdTransaccion + "</td >" +
+                                "<td> " + models[i].Usuario + "</td >" +
+                                "<td> " + mEstado + "</td >" +
+                                "<td style='width: 34px; height: 33px;'>" +
+                                "<button style='width: 34px; height: 33px;' class='glyphicon glyphicon-print' type='button' " +
+                                "onclick='PrintSale(this);' " +
+                                "class='btn btn-outline-light'>" +
+                                "</button>" +
+                                "</td>" +
+                                "</tr > ");
+                        }
+                    }
+                    $("#lblresultok").css("display", "none");
+                    $("#lblresultokfail").css("display", "none");
+                    $("#btnTotalUsuario").html("Ventas OK $" + TotalVentasUsuario);
+                    $("#btnCantidadVentas").html("Cant. Ventas OK " + CantidadVentas);
 
-                });
+                },
+
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.responseText);
+                    console.log(errorThrown);
+                    $("#lblCargando").css("display", "none");
+                    $("#lblresultokfail").css("display", "block");
+                    $("#lblresultokfail").html("Error al consultar los registros");
+                },
+
             });
+        });
 
 
         });
