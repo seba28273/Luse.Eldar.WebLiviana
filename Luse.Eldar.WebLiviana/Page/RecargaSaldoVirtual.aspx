@@ -251,6 +251,7 @@
             //});
             $("#btnGrabar").click(function () {
 
+                
                 if ($("#txtDestino").val() == "") {
                     $("#lblCargando").css("display", "none");
                     $("#lblCargando").html("");
@@ -297,6 +298,7 @@
                     dataType: "json",
 
                     beforeSend: function (response) {
+                        $('#btnGrabar').attr('disabled', true);
                         $('#lblCargando').css({ display: 'block' });
                         $('#lblCargando').html('Realizando Recarga...');
                     },
@@ -314,8 +316,8 @@
                         var mTextoTicket = models[0].TemplateTicket;
 
                         $('#lblCargando').css({ display: 'none' });
-
-
+                        $('#btnGrabar').attr('disabled', false);
+                        $("#txtMonto").val(0);
                         var opcion_seleccionada = $("#cboCompania option:selected").text();
                         //alert(opcion_seleccionada);
                         if (val == 'Ok') {
@@ -340,7 +342,8 @@
 
                         }
                         else {
-
+                            $("#txtMonto").val(0);
+                            $('#btnGrabar').attr('disabled', false);
                             $("#lblresultok").css("display", "none");
                             $("#lblresultokfail").css("display", "block");
                             $("#lblresultokfail").html(text);

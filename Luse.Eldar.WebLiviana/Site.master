@@ -109,7 +109,7 @@
                                 <li><a href="ConsultaVentas.aspx"><i class="glyphicon glyphicon-list-alt"></i> Consulta Venta</a></li>
                                 <li><a href="MovimientosStock.aspx"><i class="glyphicon glyphicon-barcode"></i> Movimientos de Stock</a></li>
                                 <li><a href="MovimientosCtaCte.aspx"><i class="glyphicon glyphicon-file"></i> Movimientos de Cta. Cte.</a></li>
-
+                                <li><a href="ConsultaPrestamos.aspx"><i class="glyphicon glyphicon-file"></i> Consulta Prestamos.</a></li>
                             </ul>
 
                         </li>

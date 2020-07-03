@@ -217,6 +217,7 @@
                     dataType: "json",
 
                     beforeSend: function (response) {
+                        $('#btnGrabar').attr('disabled', true);
                         $('#lblCargando').css({ display: 'block' });
                         $('#lblCargando').html('Realizando Recarga...');
                     },
@@ -231,6 +232,7 @@
 
                         var UrlSitioTicket = models[0].UrlSitioTicket;
                         var mTextoTicket = models[0].TemplateTicket;
+                        $('#btnGrabar').attr('disabled', false);
 
                         $('#lblCargando').css({ display: 'none' });
 
@@ -257,7 +259,7 @@
 
                         }
                         else {
-
+                            $('#btnGrabar').attr('disabled', false);
                             $("#lblresultok").css("display", "none");
                             $("#lblresultokfail").css("display", "block");
                             $("#lblresultokfail").html(text);

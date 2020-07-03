@@ -136,6 +136,16 @@ Public Class Servicios
             End Set
         End Property
 
+        Private mIDPrestamo As Long
+        Public Property IDPrestamo() As Long
+            Get
+                Return mIDPrestamo
+            End Get
+            Set(ByVal value As Long)
+                mIDPrestamo = value
+            End Set
+        End Property
+
 
         Private mMonto As Integer
         Public Property Monto() As Integer
@@ -1078,6 +1088,84 @@ Public Class Servicios
 
     End Function
 
+
+
+    <WebMethod()>
+    Public Function GetCuotasPrestamo(pObj As Parametros) As List(Of Respuesta)
+
+        Dim oRta As New Respuesta
+        Dim oDs As DataSet
+        Dim olstRta As New List(Of Respuesta)
+        Try
+            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+
+
+            oDs = oFusion.GetCuotasPrestamo(pObj.User, pObj.Pass, pObj.IDPrestamo)
+
+
+            Dim mRes As New StringBuilder
+            mRes.Append("[")
+
+            For Each Item As DataRow In oDs.Tables(0).Rows
+                mRes.Append("{""NroCuota"":""" & Item("NroCuota") & """,""FechaProgramada"":""" & Item("FechaProgramada") & """,""FechaEjecucion"":""" & Item("FechaEjecucion") & """,""Reintentos"": """ & Item("Reintentos") & """, ""Monto"": """ & Item("Monto") & """, ""Ejecutada"": """ & Item("Ejecutada") & """},")
+
+            Next
+            Dim oREST As String
+            oREST = mRes.ToString.Substring(0, mRes.Length - 1)
+
+
+            oRta.Estado = True
+            oRta.Mensaje = oREST & "]"
+            olstRta.Add(oRta)
+            Return olstRta
+        Catch ex As Exception
+            oRta.Estado = False
+            oRta.Mensaje = "Error: " & ex.Message
+            olstRta.Add(oRta)
+            Return olstRta
+        End Try
+
+    End Function
+
+    <WebMethod()>
+    Public Function GetPrestamos(pObj As Parametros) As List(Of Respuesta)
+
+        Dim oRta As New Respuesta
+        Dim oDs As DataSet
+        Dim olstRta As New List(Of Respuesta)
+        Try
+            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+
+            oDs = oFusion.GetPrestamo(pObj.User, pObj.Pass, pObj.IDAgencia)
+
+
+            Dim mRes As New StringBuilder
+            mRes.Append("[")
+
+            For Each Item As DataRow In oDs.Tables(0).Rows
+                mRes.Append("{""NroPrestamo"":""" & Item("IDRecaudador") & """,""FechaVencimiento"":""" & Item("FechaVencimiento") & """,""Monto"": """ & Item("CapitalPrestamo") & """, ""CuotasCobrada"": """ & Item("CuotasCobrada") & """},")
+
+            Next
+            Dim oREST As String
+
+            oREST = mRes.ToString.Substring(0, mRes.Length - 1)
+
+
+            oRta.Estado = True
+            oRta.Mensaje = oREST & "]"
+            If oRta.Mensaje = "]" Then
+                oRta.Mensaje = "[]"
+            End If
+            olstRta.Add(oRta)
+            Return olstRta
+        Catch ex As Exception
+            oRta.Estado = False
+            oRta.Mensaje = "Error: " & ex.Message
+            olstRta.Add(oRta)
+            Return olstRta
+        End Try
+
+    End Function
 
     <WebMethod()>
     Public Function GetMovCtaCte(pObj As Parametros) As List(Of Respuesta)

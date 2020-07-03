@@ -283,6 +283,52 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="GetPrestamo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pIDAgencia" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPrestamoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPrestamoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCuotasPrestamo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDPrestamo" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCuotasPrestamoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCuotasPrestamoResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="GetVentaForDestinoWebLiviana">
         <s:complexType>
           <s:sequence>
@@ -840,6 +886,18 @@
   <wsdl:message name="GetTransaccionesWebLivianaSoapOut">
     <wsdl:part name="parameters" element="tns:GetTransaccionesWebLivianaResponse" />
   </wsdl:message>
+  <wsdl:message name="GetPrestamoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPrestamo" />
+  </wsdl:message>
+  <wsdl:message name="GetPrestamoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPrestamoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCuotasPrestamoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCuotasPrestamo" />
+  </wsdl:message>
+  <wsdl:message name="GetCuotasPrestamoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCuotasPrestamoResponse" />
+  </wsdl:message>
   <wsdl:message name="GetVentaForDestinoWebLivianaSoapIn">
     <wsdl:part name="parameters" element="tns:GetVentaForDestinoWebLiviana" />
   </wsdl:message>
@@ -1018,6 +1076,14 @@
     <wsdl:operation name="GetTransaccionesWebLiviana">
       <wsdl:input message="tns:GetTransaccionesWebLivianaSoapIn" />
       <wsdl:output message="tns:GetTransaccionesWebLivianaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPrestamo">
+      <wsdl:input message="tns:GetPrestamoSoapIn" />
+      <wsdl:output message="tns:GetPrestamoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCuotasPrestamo">
+      <wsdl:input message="tns:GetCuotasPrestamoSoapIn" />
+      <wsdl:output message="tns:GetCuotasPrestamoSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetVentaForDestinoWebLiviana">
       <wsdl:input message="tns:GetVentaForDestinoWebLivianaSoapIn" />
@@ -1216,6 +1282,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetTransaccionesWebLiviana">
       <soap:operation soapAction="http://tempuri.org/GetTransaccionesWebLiviana" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPrestamo">
+      <soap:operation soapAction="http://tempuri.org/GetPrestamo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCuotasPrestamo">
+      <soap:operation soapAction="http://tempuri.org/GetCuotasPrestamo" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1525,6 +1609,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetTransaccionesWebLiviana">
       <soap12:operation soapAction="http://tempuri.org/GetTransaccionesWebLiviana" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPrestamo">
+      <soap12:operation soapAction="http://tempuri.org/GetPrestamo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCuotasPrestamo">
+      <soap12:operation soapAction="http://tempuri.org/GetCuotasPrestamo" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
