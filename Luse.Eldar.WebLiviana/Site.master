@@ -76,7 +76,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
 
-                        <li class="dropdown">
+                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="glyphicon-glyphicon-fire"></i>Recargas
                             <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -84,6 +84,16 @@
                                <li><a href="RecargaSube.aspx"><i class="glyphicon glyphicon-credit-card"></i> Recarga Sube</a></li>
                                 <li><a href="RecargaSaldoVirtual.aspx"><i class="glyphicon glyphicon-phone"></i> Recarga Virtual</a></li>
                                 <li><a href="RecargaPin.aspx"><i class="glyphicon glyphicon-phone-alt"></i> Recarga Pines</a></li>
+
+                            </ul>
+
+                        </li>
+                        <li id="mnuRP" runat ="server"   class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="glyphicon-glyphicon-fire"></i>Rapipago (Nuevo)
+                            <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="ConsultaFactura.aspx"><i class="glyphicon glyphicon-hd-video"></i> Cobrar Factura</a></li>
+                               <li><a href="AnularFactura.aspx"><i class="glyphicon glyphicon-credit-card"></i> Anular Factura</a></li>
 
                             </ul>
 
@@ -108,6 +118,7 @@
                                 <li><a href="SolicitudSaldo.aspx"><i class="glyphicon glyphicon-usd"></i> Solicitud Saldo</a></li>
                                 <li><a href="ConsultaVentas.aspx"><i class="glyphicon glyphicon-list-alt"></i> Consulta Venta</a></li>
                                 <li><a href="MovimientosStock.aspx"><i class="glyphicon glyphicon-barcode"></i> Movimientos de Stock</a></li>
+                                <li><a href="MovimientosCtaCteRapipago.aspx"><i class="glyphicon glyphicon-file"></i> Movimientos de .</a></li>
                                 <li><a href="MovimientosCtaCte.aspx"><i class="glyphicon glyphicon-file"></i> Movimientos de Cta. Cte.</a></li>
                                 <li><a href="ConsultaPrestamos.aspx"><i class="glyphicon glyphicon-file"></i> Consulta Prestamos.</a></li>
                             </ul>
@@ -155,7 +166,7 @@
             <footer>
                 <br />
                 <br />
-                <p>&copy; <%: DateTime.Now.Year %> - Eldar - Ver.: 1.2.3</p>
+                <p>&copy; <%: DateTime.Now.Year %> - Eldar - Ver.: 1.2.4</p>
             </footer>
         </div>
     </form>

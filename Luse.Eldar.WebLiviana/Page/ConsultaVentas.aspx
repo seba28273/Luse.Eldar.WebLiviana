@@ -106,6 +106,7 @@
                                 <th>Monto</th>
                                 <th>IdTransaccion</th>
                                 <th>Usuario</th>
+                                <th>Respuesta</th>
                                 <th>Estado</th>
                                 <th>Imprimir</th>
                             </tr>
@@ -289,7 +290,7 @@
             }
 
             var mTextoTicket;
-            mTextoTicket = $("#NombreAgencia").val() + "|" + $("#DireccionAgencia").val() + "|" + cols[5].innerText + "|" + cols[3].innerText + "|" + cols[4].innerText + "|" + cols[7].innerText + "|" + mMsn
+            mTextoTicket = $("#NombreAgencia").val() + "|" + $("#DireccionAgencia").val() + "|" + cols[5].innerText + "|" + cols[3].innerText + "|" + cols[4].innerText + "|" + cols[8].innerText + "|" + mMsn
             //mTextoTicket = "Eldar|San Martin 1074 22|162239039-2059615634|057000864019732099|100|Ok|La Venta se realizo con exito|Directv"
             var url = "https://ventas.cargaplus.com.ar/mailtemplates/MostrarImpresionTicket.aspx?Div=" + mTextoTicket + "|" + cols[2].innerText + "|" + cols[1].innerText;
 
@@ -469,6 +470,7 @@
                                     "<td> " + mMonto + "</td >" +
                                     "<td> " + models[i].IdTransaccion + "</td >" +
                                     "<td> " + models[i].Usuario + "</td >" +
+                                    "<td> " + models[i].Respuesta + "</td >" +
                                     "<td> " + mEstado + "</td >" +
                                     "<td style='width: 34px; height: 33px;'>" +
                                     "<button type='button' " +
@@ -528,6 +530,7 @@
                                 "<td> " + mMonto + "</td >" +
                                 "<td> " + models[i].IdTransaccion + "</td >" +
                                 "<td> " + models[i].Usuario + "</td >" +
+                                "<td> " + models[i].Respuesta + "</td >" +
                                 "<td> " + mEstado + "</td >" +
                                 "<td style='width: 34px; height: 33px;'>" +
                                 "<button style='width: 34px; height: 33px;' class='glyphicon glyphicon-print' type='button' " +

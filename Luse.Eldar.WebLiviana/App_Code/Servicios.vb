@@ -3,6 +3,20 @@ Imports System.ComponentModel
 Imports System.Data
 Imports System.Web.Configuration
 
+
+Imports System.Web
+
+Imports System.Web.Services.Protocols
+Imports System.Web.Script.Serialization
+Imports System.Net
+Imports System.IO
+Imports Newtonsoft.Json
+Imports Newtonsoft.Json.Linq
+Imports Newtonsoft.Json.Converters
+Imports Newtonsoft.Json.Serialization
+Imports Newtonsoft
+Imports System.Data.SqlClient
+
 ' Para permitir que se llame a este servicio web desde un script, usando ASP.NET AJAX, quite la marca de comentario de la línea siguiente.
 <System.Web.Script.Services.ScriptService()>
 <System.Web.Services.WebService(Namespace:="http://tempuri.org/")>
@@ -11,6 +25,1139 @@ Imports System.Web.Configuration
 Public Class Servicios
     Inherits System.Web.Services.WebService
 
+
+
+    Public Function AcceptAllCertifications(sender As Object, certification As System.Security.Cryptography.X509Certificates.X509Certificate, chain As System.Security.Cryptography.X509Certificates.X509Chain, sslPolicyErrors As System.Net.Security.SslPolicyErrors) As Boolean
+
+        Return True
+    End Function
+
+    Dim oConn As New SqlConnection(WebConfigurationManager.AppSettings("ConnStringEldar").ToString())
+    Dim ocmd As New SqlCommand()
+
+    Public Function GrabarVenta(IDAgencia As Long, IDAcceso As Long, pMonto As Decimal, pEmpresa As String, pCodPuesto As String,
+                                     pCodBarra As String, pIDTransaccion As String, pRefOperador As String) As Boolean
+
+        oConn.Open()
+        Try
+
+            ocmd = New SqlCommand("Venta_iRapipago", oConn)
+            ocmd.CommandType = CommandType.StoredProcedure
+            ocmd.Parameters.AddWithValue("@IDAgencia", IDAgencia)
+            ocmd.Parameters.AddWithValue("@IDAcceso", IDAcceso)
+            ocmd.Parameters.AddWithValue("@Monto", pMonto)
+            ocmd.Parameters.AddWithValue("@Empresa", pEmpresa)
+            ocmd.Parameters.AddWithValue("@CodPuesto", pCodPuesto)
+            ocmd.Parameters.AddWithValue("@CodBarra", pCodBarra)
+            ocmd.Parameters.AddWithValue("@IDTransaccion", pIDTransaccion)
+            ocmd.Parameters.AddWithValue("@RefOperador", pRefOperador)
+
+            If ocmd.ExecuteNonQuery() > 0 Then
+                Return True
+            Else
+                Return False
+            End If
+
+        Catch ex As Exception
+            Throw ex
+        Finally
+            oConn.Close()
+        End Try
+    End Function
+
+
+    Public Class FormasPago
+        Public Property PES As String
+    End Class
+
+    Public Class DatosFormulario
+    End Class
+
+    Public Class ItemEnviar
+        Public Property barra As String
+        Public Property idMod As String
+        Public Property codEmp As String
+        Public Property Empresa As String
+        Public Property fechaHoraLectura As String
+        Public Property importeItem As String
+        Public Property idItem As String
+        Public Property formasPago As FormasPago
+        Public Property datosFormulario As DatosFormulario
+    End Class
+
+    Public Class CabeceraEnviar
+        Public Property items As ItemEnviar()
+        Public Property codPuesto As String
+        Public Property idMobile As String
+        Public Property importeTotal As String
+        Public Property idTrxAnterior As String
+    End Class
+
+
+    <WebMethod()>
+    Public Function Pagar(datosFormulario As String, pIDAgencia As String, pIDAcceso As String) As Pago
+
+        Dim ser As New JavaScriptSerializer()
+        Dim oResError As New RespuestaRapipago
+        Dim oRes As New Pago
+        Dim oRespuestaPago As New Pago
+        Dim oResEnvio As New CabeceraEnviar
+        Dim postStream As Stream = Nothing
+        Dim request As HttpWebRequest
+        Dim response As HttpWebResponse = Nothing
+        Dim address As Uri
+        Dim dataSend As String
+        Dim byteData() As Byte
+
+        address = New Uri(WebConfigurationManager.AppSettings("UrlRapipago").ToString() & "factura/pago")
+        Try
+            ' Create the web request  
+            request = DirectCast(WebRequest.Create(address), HttpWebRequest)
+
+            ' SETEA A POST  
+            request.Method = "POST"
+
+            request.ContentType = "application/json"
+
+            dataSend = datosFormulario
+
+            oResEnvio = JsonConvert.DeserializeObject(Of CabeceraEnviar)(datosFormulario)
+
+
+            ' Create a byte array of the data we want to send  
+            byteData = UTF8Encoding.UTF8.GetBytes(dataSend)
+
+            ' Set the content length in the request headers  
+            request.ContentLength = byteData.Length
+
+            ' Write data  
+            Try
+                postStream = request.GetRequestStream()
+                postStream.Write(byteData, 0, byteData.Length)
+            Finally
+                If Not postStream Is Nothing Then postStream.Close()
+            End Try
+            ' Get response  
+            response = DirectCast(request.GetResponse(), HttpWebResponse)
+
+            ' Get the response stream into a reader  
+            Using StreamReader As New StreamReader(response.GetResponseStream())
+
+                Dim result As String = StreamReader.ReadToEnd()
+
+
+                oRes = JsonConvert.DeserializeObject(Of Pago)(result)
+
+                If oRes.codResul = 0 Then
+                    ConfirmarOperacion(oRes.codPuesto, oRes.idTrx)
+                End If
+
+                'Enviar Recarga Eldar
+                For Each item As Item In oRes.items.ToList
+                    If item.codResulItem = 0 Then
+                        For Each itemCab As ItemEnviar In oResEnvio.items
+                            If item.barra = itemCab.barra Then
+                                GrabarVenta(pIDAgencia, pIDAcceso, Convert.ToDecimal(itemCab.importeItem.Replace(".", ",")), itemCab.Empresa,
+                                oRes.codPuesto, item.barra, item.idItem, oRes.idTrx)
+                            End If
+                        Next
+                    End If
+
+                Next
+
+                'Enviar Recarga Eldar
+                oRespuestaPago = New Pago
+                Dim ThisToken As JObject = Newtonsoft.Json.JsonConvert.DeserializeObject(Of JObject)(result)
+                If ThisToken("items").HasValues Then
+                    For i = 0 To ThisToken("items").Count - 1
+
+
+                        Dim ThisTokenTicket As JArray = Newtonsoft.Json.JsonConvert.DeserializeObject(Of JArray)(JsonConvert.SerializeObject(ThisToken("items")))
+                        Dim oItem As New Item
+                        If ThisTokenTicket.Item(i).Item("ticket").HasValues Then
+                            For a = 0 To ThisTokenTicket.Item(i).Item("ticket").Count - 1
+
+                                For c = 0 To ThisTokenTicket.Item(i).Item("ticket").Item(a).Count - 1
+                                    Dim oJValue As New JValue(ThisTokenTicket.Item(i).Item("ticket").Item(a).Item(c).ToString)
+
+                                    oItem.tic.Add(oJValue.Value)
+                                Next
+
+                            Next
+                        End If
+
+
+                        oItem.codResulItem = ThisTokenTicket.Item(i).Item("codResulItem").ToString
+                        oItem.descResulItem = ThisTokenTicket.Item(i).Item("descResulItem").ToString
+                        oItem.barra = ThisTokenTicket.Item(i).Item("barra").ToString
+                        oItem.idItem = ThisTokenTicket.Item(i).Item("idItem").ToString
+
+                        oRespuestaPago.items.Add(oItem)
+                        If oItem.codResulItem <> 0 Then
+
+                            Dim oRespuesta As New RespuestaRapipago
+                            Dim oObj As New ParametrosRapiPago
+                            oObj.CodBarra = oItem.barra
+                            oObj.codPuesto = oRes.codPuesto
+                            oRespuesta = GetFacturas(oObj)
+                            If oRespuesta.cantColisiones = 1 Then
+                                oItem.Empresa = oRespuesta.facturas(0).descEmp
+                                oItem.Importe = oRespuesta.facturas(0).importe
+                                'ElseIf oRespuesta.cantColisiones = 9999 Then
+                                '    'Hay una operacion sin confirmar la busco y actualizo
+                                'Respuesta: por mas que mande 10 facturas a pagar todas se hacen bajo un mismo idtrx
+                                'por lo que si oRes.CodResul=0 significa que por lo menos una de las operaciones se hizo OK
+                                '    For p = 1 To 10
+                                '        'Busco Operaciones Pendientes
+
+                                '    Next
+
+
+                                '    oItem.NombreEmpresa = oRespuesta.facturas(0).descEmp
+                                '    oItem.Importe = oRespuesta.facturas(0).importe
+                            Else
+                                oItem.Empresa = oItem.barra
+                                oItem.Importe = 0
+                            End If
+
+                        End If
+                    Next
+                End If
+                Return oRespuestaPago
+
+            End Using
+
+        Finally
+            If Not response Is Nothing Then response.Close()
+        End Try
+
+    End Function
+
+
+    <WebMethod()>
+    Public Function AnularFacturas(datosFormulario As String) As Pago
+
+        Dim ser As New JavaScriptSerializer()
+        Dim oResError As New RespuestaRapipago
+        Dim oRes As New Pago
+        Dim postStream As Stream = Nothing
+        Dim request As HttpWebRequest
+        Dim response As HttpWebResponse = Nothing
+        Dim address As Uri
+        Dim dataSend As String
+        Dim byteData() As Byte
+
+        address = New Uri(WebConfigurationManager.AppSettings("UrlRapipago").ToString() & "factura/anulacion")
+        Try
+            ' Create the web request  
+            request = DirectCast(WebRequest.Create(address), HttpWebRequest)
+
+            ' SETEA A POST  
+            request.Method = "POST"
+
+            request.ContentType = "application/json"
+
+            dataSend = datosFormulario
+
+            ' Create a byte array of the data we want to send  
+            byteData = UTF8Encoding.UTF8.GetBytes(dataSend)
+
+            ' Set the content length in the request headers  
+            request.ContentLength = byteData.Length
+
+            ' Write data  
+            Try
+                postStream = request.GetRequestStream()
+                postStream.Write(byteData, 0, byteData.Length)
+            Finally
+                If Not postStream Is Nothing Then postStream.Close()
+            End Try
+            ' Get response  
+            response = DirectCast(request.GetResponse(), HttpWebResponse)
+
+            ' Get the response stream into a reader  
+            Using StreamReader As New StreamReader(response.GetResponseStream())
+
+                Dim result As String = StreamReader.ReadToEnd()
+
+
+                oRes = JsonConvert.DeserializeObject(Of Pago)(result)
+
+                If oRes.codResul = 0 Then
+                    ConfirmarOperacion(oRes.codPuesto, oRes.idTrx)
+                End If
+
+
+                Dim ThisToken As JObject = Newtonsoft.Json.JsonConvert.DeserializeObject(Of JObject)(result)
+                If ThisToken("facturas").HasValues Then
+                    For i = 0 To ThisToken("facturas").Count - 1
+
+
+                        Dim ThisTokenTicket As JArray = Newtonsoft.Json.JsonConvert.DeserializeObject(Of JArray)(JsonConvert.SerializeObject(ThisToken("facturas")))
+                        Dim oItem As New Item
+                        If ThisTokenTicket.Item(i).Item("ticket").HasValues Then
+                            For a = 0 To ThisTokenTicket.Item(i).Item("ticket").Count - 1
+
+                                For c = 0 To ThisTokenTicket.Item(i).Item("ticket").Item(a).Count - 1
+                                    Dim oJValue As New JValue(ThisTokenTicket.Item(i).Item("ticket").Item(a).Item(c).ToString)
+
+                                    oItem.tic.Add(oJValue.Value)
+                                Next
+
+                            Next
+                        End If
+
+
+                        oItem.codResulItem = ThisTokenTicket.Item(i).Item("codResulItem").ToString
+                        oItem.descResulItem = ThisTokenTicket.Item(i).Item("descResulItem").ToString
+                        oItem.barra = ThisTokenTicket.Item(i).Item("barra").ToString
+                        ''oItem.idItem = ThisTokenTicket.Item(i).Item("idItem").ToString
+                        oRes.items.Add(oItem)
+                        If oItem.codResulItem <> 0 Then
+
+                            Dim oRespuesta As New RespuestaRapipago
+                            Dim oObj As New ParametrosRapiPago
+                            oObj.CodBarra = oItem.barra
+                            oObj.codPuesto = oRes.codPuesto
+                            oRespuesta = GetFacturas(oObj)
+                            If oRespuesta.cantColisiones = 1 Then
+                                oItem.Empresa = oRespuesta.facturas(0).descEmp
+                                oItem.Importe = oRespuesta.facturas(0).importe
+                                'ElseIf oRespuesta.cantColisiones = 9999 Then
+                                '    'Hay una operacion sin confirmar la busco y actualizo
+                                'Respuesta: por mas que mande 10 facturas a pagar todas se hacen bajo un mismo idtrx
+                                'por lo que si oRes.CodResul=0 significa que por lo menos una de las operaciones se hizo OK
+                                '    For p = 1 To 10
+                                '        'Busco Operaciones Pendientes
+
+                                '    Next
+
+
+                                '    oItem.NombreEmpresa = oRespuesta.facturas(0).descEmp
+                                '    oItem.Importe = oRespuesta.facturas(0).importe
+                            Else
+                                oItem.Empresa = oItem.barra
+                                oItem.Importe = 0
+                            End If
+
+                        End If
+                    Next
+                End If
+                Return oRes
+
+            End Using
+
+        Finally
+            If Not response Is Nothing Then response.Close()
+        End Try
+
+    End Function
+
+
+    Public Function ConfirmarOperacion(codPuesto As String, idTrxAnterior As String) As Boolean
+        Try
+
+
+            Dim ser As New JavaScriptSerializer()
+            Dim oResError As New RespuestaRapipago
+            Dim oRes As New Grilla
+            Dim postStream As Stream = Nothing
+
+            Dim request As HttpWebRequest
+            Dim response As HttpWebResponse = Nothing
+            Dim address As Uri
+            Dim dataSend As String
+
+            Dim data As StringBuilder
+            Dim byteData() As Byte
+
+
+
+            address = New Uri(WebConfigurationManager.AppSettings("UrlRapipago").ToString() & "transaccion/confirmar")
+            Try
+                ' Create the web request  
+                request = DirectCast(WebRequest.Create(address), HttpWebRequest)
+
+                ' SETEA A POST  
+                request.Method = "POST"
+
+                request.ContentType = "application/json"
+
+                dataSend = "{""codPuesto"":""" & codPuesto & """,""idTrxAnterior"": """ & idTrxAnterior & """}"
+
+                ' Create a byte array of the data we want to send  
+                byteData = UTF8Encoding.UTF8.GetBytes(dataSend)
+
+                ' Set the content length in the request headers  
+                request.ContentLength = byteData.Length
+
+                ' Write data  
+                Try
+                    postStream = request.GetRequestStream()
+                    postStream.Write(byteData, 0, byteData.Length)
+                Finally
+                    If Not postStream Is Nothing Then postStream.Close()
+                End Try
+
+
+                ' Get response  
+                response = DirectCast(request.GetResponse(), HttpWebResponse)
+
+                ' Get the response stream into a reader  
+                Using StreamReader As New StreamReader(response.GetResponseStream())
+
+                    Dim result As String = StreamReader.ReadToEnd()
+
+
+                    oRes = JsonConvert.DeserializeObject(Of Grilla)(result)
+
+                    If oRes.codResul = 0 Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+
+                End Using
+
+            Finally
+                If Not response Is Nothing Then response.Close()
+            End Try
+        Catch ex As Exception
+
+        End Try
+    End Function
+
+    <WebMethod()>
+    Public Function GetGrilla(codPuesto As String, idMod As String, idTrxAnterior As String, datosFormulario As String) As Grilla
+
+        Dim ser As New JavaScriptSerializer()
+        Dim oResError As New RespuestaRapipago
+        Dim oRes As New Grilla
+        Dim postStream As Stream = Nothing
+
+        Dim request As HttpWebRequest
+        Dim response As HttpWebResponse = Nothing
+        Dim address As Uri
+        Dim dataSend As String
+
+        Dim data As StringBuilder
+        Dim byteData() As Byte
+
+
+
+        address = New Uri(WebConfigurationManager.AppSettings("UrlRapipago").ToString() & "factura/grilla")
+        Try
+            ' Create the web request  
+            request = DirectCast(WebRequest.Create(address), HttpWebRequest)
+
+            ' SETEA A POST  
+            request.Method = "POST"
+
+            request.ContentType = "application/json"
+
+            dataSend = "{""codPuesto"":""" & codPuesto & """, ""idMod"":  """ & idMod & """,""idTrxAnterior"": """" , ""datosFormulario"": " & datosFormulario & "}"
+
+            ' Create a byte array of the data we want to send  
+            byteData = UTF8Encoding.UTF8.GetBytes(dataSend)
+
+            ' Set the content length in the request headers  
+            request.ContentLength = byteData.Length
+
+            ' Write data  
+            Try
+                postStream = request.GetRequestStream()
+                postStream.Write(byteData, 0, byteData.Length)
+            Finally
+                If Not postStream Is Nothing Then postStream.Close()
+            End Try
+
+
+            ' Get response  
+            response = DirectCast(request.GetResponse(), HttpWebResponse)
+
+            ' Get the response stream into a reader  
+            Using StreamReader As New StreamReader(response.GetResponseStream())
+
+                Dim result As String = StreamReader.ReadToEnd()
+
+
+                oRes = JsonConvert.DeserializeObject(Of Grilla)(result)
+
+                If oRes.codResul = 0 Then
+
+                    Dim ThisToken As JObject = Newtonsoft.Json.JsonConvert.DeserializeObject(Of JObject)(result)
+                    If ThisToken("valoresGrilla").HasValues Then
+                        For i = 0 To ThisToken("valoresGrilla").Count - 1
+
+
+                            Dim ThisTokenValoresGrilla As JArray = Newtonsoft.Json.JsonConvert.DeserializeObject(Of JArray)(JsonConvert.SerializeObject(ThisToken("valoresGrilla")))
+                            Dim oItem As New Valoresgrilla
+                            Dim oJValuecod As JValue
+                            Dim oJValueval As JValue
+                            If ThisTokenValoresGrilla.Item(i).HasValues Then
+                                For a = 0 To ThisTokenValoresGrilla.Item(i).Count - 1
+                                    oItem = New Valoresgrilla
+                                    oJValuecod = New JValue(ThisTokenValoresGrilla.Item(i).Item(a).Item("codCampo").ToString)
+                                    oJValueval = New JValue(ThisTokenValoresGrilla.Item(i).Item(a).Item("valor").ToString)
+                                    oItem.codCampo = oJValuecod.Value
+                                    oItem.valor = oJValueval.Value
+                                    oRes.valoresGri.Add(oItem)
+
+                                Next
+                            End If
+                        Next
+                    End If
+
+                End If
+
+                Return oRes
+
+            End Using
+
+        Finally
+            If Not response Is Nothing Then response.Close()
+        End Try
+
+    End Function
+
+    <WebMethod()>
+    Public Function GetForm(pObj As ParametrosRapiPago) As Formulario
+
+        Dim ser As New JavaScriptSerializer()
+        Dim oResError As New RespuestaRapipago
+        Dim sUrlRequest As String
+        Dim oRes As New Formulario
+        Dim postStream As Stream = Nothing
+
+        sUrlRequest = WebConfigurationManager.AppSettings("UrlRapipago").ToString() & "formulario?codPuesto=" & pObj.codPuesto & "&idMod=" & pObj.idMod
+
+
+        Dim request As HttpWebRequest
+        Dim response As HttpWebResponse = Nothing
+
+        Try
+            ' Create the web request  
+            request = DirectCast(WebRequest.Create(sUrlRequest), HttpWebRequest)
+
+            ' Get response  
+            response = DirectCast(request.GetResponse(), HttpWebResponse)
+
+            ' Get the response stream into a reader  
+            Using StreamReader As New StreamReader(response.GetResponseStream())
+
+                Dim result As String = StreamReader.ReadToEnd()
+
+                oRes = JsonConvert.DeserializeObject(Of Formulario)(result)
+                ' oRes = ser.Deserialize(Of Rootobject)(result)
+
+                Return oRes
+
+            End Using
+
+        Finally
+            If Not response Is Nothing Then response.Close()
+        End Try
+
+    End Function
+
+    <WebMethod()>
+    Public Function GetFacturas(pObj As ParametrosRapiPago) As RespuestaRapipago
+
+        Dim ser As New JavaScriptSerializer()
+        Dim oResError As New RespuestaRapipago
+        Dim sUrlRequest As String
+        Dim oRes As New RespuestaRapipago
+        Dim postStream As Stream = Nothing
+        If (pObj.CodBarra = " ") Then
+            sUrlRequest = WebConfigurationManager.AppSettings("UrlRapipago").ToString() & "factura?codPuesto=" & pObj.codPuesto & "&barra=''&codEmp=" & pObj.codEmpresa
+        Else
+            sUrlRequest = WebConfigurationManager.AppSettings("UrlRapipago").ToString() & "factura?codPuesto=" & pObj.codPuesto & "&barra=" & pObj.CodBarra '& "&codEmp=" & pObj.codEmpresa
+        End If
+
+        Dim request As HttpWebRequest
+        Dim response As HttpWebResponse = Nothing
+
+        Try
+            ' Create the web request  
+            request = DirectCast(WebRequest.Create(sUrlRequest), HttpWebRequest)
+
+            ' Get response  
+            response = DirectCast(request.GetResponse(), HttpWebResponse)
+
+            ' Get the response stream into a reader  
+            Using StreamReader As New StreamReader(response.GetResponseStream())
+
+                Dim result As String = StreamReader.ReadToEnd()
+
+                oRes = ser.Deserialize(Of RespuestaRapipago)(result)
+
+                ''120-No se ha ingresado el Id de transacción anterior, el puesto tiene una transacción pendiente a confirmar.
+                'If oRes.codResul = 120 Then
+                '    oRes.cantColisiones = 9999
+                'End If
+
+                Return oRes
+            End Using
+
+        Finally
+            If Not response Is Nothing Then response.Close()
+        End Try
+
+    End Function
+
+    <WebMethod()>
+    Public Function GetEmpresas(pObj As ParametrosRapiPago) As CabeceraEmpresas
+
+        Dim ser As New JavaScriptSerializer()
+        Dim oResError As New RespuestaRapipago
+        Dim sUrlRequest As String
+        Dim oRes As New CabeceraEmpresas
+        Dim postStream As Stream = Nothing
+
+
+        If pObj.codEmpresa <> "" Then
+            sUrlRequest = WebConfigurationManager.AppSettings("UrlRapipago").ToString() & "empresa?codPuesto=" & pObj.codPuesto & "&descEmp=" & pObj.codEmpresa
+        Else
+            sUrlRequest = WebConfigurationManager.AppSettings("UrlRapipago").ToString() & "empresa?codPuesto=" & pObj.codPuesto
+        End If
+
+
+
+
+        Dim request As HttpWebRequest
+        Dim response As HttpWebResponse = Nothing
+
+        Try
+            ' Create the web request  
+            request = DirectCast(WebRequest.Create(sUrlRequest), HttpWebRequest)
+
+            ' Get response  
+            response = DirectCast(request.GetResponse(), HttpWebResponse)
+
+            ' Get the response stream into a reader  
+            Using StreamReader As New StreamReader(response.GetResponseStream())
+
+                Dim result As String = StreamReader.ReadToEnd()
+
+                oRes = ser.Deserialize(Of CabeceraEmpresas)(result)
+
+                Return oRes
+
+            End Using
+
+        Finally
+            If Not response Is Nothing Then response.Close()
+        End Try
+
+    End Function
+
+
+    <WebMethod()>
+    Public Function GetFacturasNew(pObj As ParametrosRapiPago) As RespuestaRapipago
+
+        Dim ser As New JavaScriptSerializer()
+        Dim oResError As New RespuestaRapipago
+        Dim sUrlRequest As String
+        Dim oRes As New RespuestaRapipago
+        Dim postStream As Stream = Nothing
+        If (pObj.CodBarra = " ") Then
+            sUrlRequest = WebConfigurationManager.AppSettings("UrlRapipago").ToString() & "factura?codPuesto=" & pObj.codPuesto & "&barra=''&codEmp=" & pObj.codEmpresa
+        Else
+            sUrlRequest = WebConfigurationManager.AppSettings("UrlRapipago").ToString() & "factura?codPuesto=" & pObj.codPuesto & "&barra=" & pObj.CodBarra & "&codEmp=" & pObj.codEmpresa
+        End If
+
+        Dim request As HttpWebRequest
+        Dim response As HttpWebResponse = Nothing
+
+        Try
+            ' Create the web request  
+            request = DirectCast(WebRequest.Create(sUrlRequest), HttpWebRequest)
+
+            ' Get response  
+            response = DirectCast(request.GetResponse(), HttpWebResponse)
+
+            ' Get the response stream into a reader  
+            Using StreamReader As New StreamReader(response.GetResponseStream())
+
+                Dim result As String = StreamReader.ReadToEnd()
+
+                oRes = ser.Deserialize(Of RespuestaRapipago)(result)
+
+                ''120-No se ha ingresado el Id de transacción anterior, el puesto tiene una transacción pendiente a confirmar.
+                'If oRes.codResul = 120 Then
+                '    oRes.cantColisiones = 9999
+                'End If
+
+                Return oRes
+            End Using
+
+        Finally
+            If Not response Is Nothing Then response.Close()
+        End Try
+
+    End Function
+
+
+    Public Class Pago
+        Public Property codPuesto As Integer
+        Public Property items() As New List(Of Item)
+        Public Property codResul As Integer
+        Public Property descResul As String
+        Public Property idTrx As String
+    End Class
+
+    Public Class Item
+        Public Property barra As String
+        Public Property tic() As New List(Of String)
+        Public Property codResulItem As Integer
+        Public Property descResulItem As String
+        Public Property idItem As String
+        Public Property Empresa As String
+        Public Property Importe As String
+    End Class
+
+    Public Class Grilla
+        Public Property codPuesto As Integer
+        Public Property codResul As Integer
+        Public Property descResul As String
+        Public Property titulo As String
+        Public Property camposGrilla As List(Of Camposgrilla)
+        Public Property valoresGri() As New List(Of Valoresgrilla)
+        Public Property codEmp As String
+    End Class
+
+    Public Class Camposgrilla
+        Public Property codCampo As String
+        Public Property descCampo As String
+    End Class
+
+    Public Class Valoresgrilla
+        Public Property codCampo As String
+        Public Property valor As String
+
+
+    End Class
+
+
+    Public Class Empresas
+
+
+        Private mtopes As List(Of topes)
+        Public Property topes() As List(Of topes)
+            Get
+                Return mtopes
+            End Get
+            Set(ByVal value As List(Of topes))
+                mtopes = value
+            End Set
+        End Property
+
+        Private mcodEmp As String
+        Public Property codEmp() As String
+            Get
+                Return mcodEmp
+            End Get
+            Set(ByVal value As String)
+                mcodEmp = value
+            End Set
+        End Property
+
+        Private mdescEmp As String
+        Public Property descEmp() As String
+            Get
+                Return mdescEmp
+            End Get
+            Set(ByVal value As String)
+                mdescEmp = value
+            End Set
+        End Property
+
+        Private mmodalidades As List(Of Modalidades)
+        Public Property modalidades() As List(Of Modalidades)
+            Get
+                Return mmodalidades
+            End Get
+            Set(ByVal value As List(Of Modalidades))
+                mmodalidades = value
+            End Set
+        End Property
+
+
+
+    End Class
+
+    Public Class Modalidades
+        Private manula As String
+        Public Property anula() As String
+            Get
+                Return manula
+            End Get
+            Set(ByVal value As String)
+                manula = value
+            End Set
+        End Property
+
+        Private mdescMod As String
+        Public Property descMod() As String
+            Get
+                Return mdescMod
+            End Get
+            Set(ByVal value As String)
+                mdescMod = value
+            End Set
+        End Property
+
+        Private mesCobroOnline As String
+        Public Property esCobroOnline() As String
+            Get
+                Return mesCobroOnline
+            End Get
+            Set(ByVal value As String)
+                mesCobroOnline = value
+            End Set
+        End Property
+
+        Private mesPago As String
+        Public Property esPago() As String
+            Get
+                Return mesPago
+            End Get
+            Set(ByVal value As String)
+                mesPago = value
+            End Set
+        End Property
+
+        Private mesRecarga As String
+        Public Property esRecarga() As String
+            Get
+                Return mesRecarga
+            End Get
+            Set(ByVal value As String)
+                mesRecarga = value
+            End Set
+        End Property
+
+        Private midMod As String
+        Public Property idMod() As String
+            Get
+                Return midMod
+            End Get
+            Set(ByVal value As String)
+                midMod = value
+            End Set
+        End Property
+
+        Private mtipoCobranza As String
+        Public Property tipoCobranza() As String
+            Get
+                Return mtipoCobranza
+            End Get
+            Set(ByVal value As String)
+                mtipoCobranza = value
+            End Set
+        End Property
+
+    End Class
+    Public Class CabeceraEmpresas
+        Private mcodPuesto As String
+        Public Property codPuesto() As String
+            Get
+                Return mcodPuesto
+            End Get
+            Set(ByVal value As String)
+                mcodPuesto = value
+            End Set
+        End Property
+
+        Private mcodResul As Integer
+        Public Property codResul() As Integer
+            Get
+                Return mcodResul
+            End Get
+            Set(ByVal value As Integer)
+                mcodResul = value
+            End Set
+        End Property
+
+        Private mdescResul As String
+        Public Property descResul() As String
+            Get
+                Return mdescResul
+            End Get
+            Set(ByVal value As String)
+                mdescResul = value
+            End Set
+        End Property
+
+        Private mempresas As List(Of Empresas)
+        Public Property empresas() As List(Of Empresas)
+            Get
+                Return mempresas
+            End Get
+            Set(ByVal value As List(Of Empresas))
+                mempresas = value
+            End Set
+        End Property
+
+    End Class
+
+
+    Public Class Formulario
+        Public Property codPuesto As Integer
+        Public Property titulo As String
+        Public Property campos As List(Of Campos)
+        Public Property codResul As Integer
+        Public Property descResul As String
+    End Class
+
+    Public Class Campos
+        Public Property etiqueta As String
+        Public Property nombre As String
+        Public Property tipo As String
+        Public Property longitud As Integer
+        Public Property listaValores() As Listavalores
+        Public Property tipoComponenteVisual As String
+        Public Property idFormaSeparacionCampos As String
+    End Class
+
+    Public Class Listavalores
+        <JsonProperty("1")>
+        Public Property _1 As String
+        <JsonProperty("2")>
+        Public Property _2 As String
+        <JsonProperty("3")>
+        Public Property _3 As String
+    End Class
+
+    Public Class facturas
+
+
+
+        Public Property anula As String
+
+        Public Property barra As String
+
+        Public Property codEmp As String
+
+        Public Property codResulItem As Integer
+
+
+        Public Property codTI As String
+
+        Public Property descEmp As String
+
+        Public Property descMod As String
+
+        Public Property descResulItem As String
+
+
+        Public Property descTI As String
+
+        Public Property idMod As String
+
+        Public Property importe As String
+
+        Public Property tipoCobranza As String
+
+        Public Property topes As List(Of topes)
+
+    End Class
+
+    Public Class topes
+
+
+        Public Property maximoNegativo As String
+
+        Public Property maximoPositivo As String
+
+        Public Property minimoNegativo As String
+
+        Public Property minimoPositivo As String
+
+
+    End Class
+
+    Public Class ParametrosRapiPago
+
+        Private midTrxAnterior As String
+
+        Public Property idTrxAnterior() As String
+            Get
+
+                Return midTrxAnterior
+            End Get
+            Set(ByVal value As String)
+                midTrxAnterior = value
+            End Set
+        End Property
+        Private midMod As String
+        Public Property idMod() As String
+            Get
+                Return midMod
+            End Get
+            Set(ByVal value As String)
+                midMod = value
+            End Set
+        End Property
+
+        Private mcodEmpresa As String
+        Public Property codEmpresa() As String
+            Get
+                Return mcodEmpresa
+            End Get
+            Set(ByVal value As String)
+                mcodEmpresa = value
+            End Set
+        End Property
+
+        Private mcodPuesto As String
+        Public Property codPuesto() As String
+            Get
+                Return mcodPuesto
+            End Get
+            Set(ByVal value As String)
+                mcodPuesto = value
+            End Set
+        End Property
+
+        Private mCodBarra As String
+        Public Property CodBarra() As String
+            Get
+                Return mCodBarra
+            End Get
+            Set(ByVal value As String)
+                mCodBarra = value
+            End Set
+        End Property
+
+        Private mNroOrdenComercial As String
+        Public Property NroOrdenComercial() As String
+            Get
+                Return mNroOrdenComercial
+            End Get
+            Set(ByVal value As String)
+                mNroOrdenComercial = value
+            End Set
+        End Property
+
+        Private mUser As String
+        Public Property User() As String
+            Get
+                Return mUser
+            End Get
+            Set(ByVal value As String)
+                mUser = value
+            End Set
+        End Property
+
+        Private mPass As String
+        Public Property Pass() As String
+            Get
+                Return mPass
+            End Get
+            Set(ByVal value As String)
+                mPass = value
+            End Set
+        End Property
+
+
+        Private mNroRecibo As Long
+        Public Property NroRecibo() As Long
+            Get
+                Return mNroRecibo
+            End Get
+            Set(ByVal value As Long)
+                mNroRecibo = value
+            End Set
+        End Property
+
+
+        Private mMonto As Integer
+        Public Property Monto() As Integer
+            Get
+                Return mMonto
+            End Get
+            Set(ByVal value As Integer)
+                mMonto = value
+            End Set
+        End Property
+
+        Private mMontoDecimal As Decimal
+        Public Property MontoDecimal() As Decimal
+            Get
+                Return mMontoDecimal
+            End Get
+            Set(ByVal value As Decimal)
+                mMontoDecimal = value
+            End Set
+        End Property
+
+        Private mNroComercio As String
+        Public Property NroComercio() As String
+            Get
+                Return mNroComercio
+            End Get
+            Set(ByVal value As String)
+                mNroComercio = value
+            End Set
+        End Property
+
+        Private mLotes As String
+        Public Property Lotes() As String
+            Get
+                Return mLotes
+            End Get
+            Set(ByVal value As String)
+                mLotes = value
+            End Set
+        End Property
+
+        Private mFecha As String
+        Public Property Fecha() As String
+            Get
+                Return mFecha
+            End Get
+            Set(ByVal value As String)
+                mFecha = value
+            End Set
+        End Property
+
+        Private mdatosFormulario As String
+        Public Property datosFormulario() As String
+            Get
+                Return mdatosFormulario
+            End Get
+            Set(ByVal value As String)
+                mdatosFormulario = value
+            End Set
+        End Property
+        Public Sub New()
+
+        End Sub
+    End Class
+
+    Public Class RespuestaRapipago
+
+
+        Public Property errorcode As String
+
+        Public Property message As String
+
+        Public Property dataObject As String
+
+        Public Property statusCode() As String
+
+        Public Property cantColisiones As Integer?
+
+        Public Property codPuesto As String
+
+        Public Property codResul As Integer
+
+        Public Property descResul As String
+
+        Public Property facturas As New List(Of facturas)
+
+    End Class
 
     Public Class Parametros
 
@@ -1005,7 +2152,7 @@ Public Class Servicios
         Dim oDs As DataSet
         Dim olstRta As New List(Of Respuesta)
         Try
-            Dim oFusion As New Luse.WsTransaccional.ExternalSales
+            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
             If pObj.Fecha = "" Then
                 pObj.Fecha = Format(Now.Date, "yyyy-MM-dd")
 
@@ -1068,7 +2215,7 @@ Public Class Servicios
             mRes.Append("[")
 
             For Each Item As DataRow In oDs.Tables(0).Rows
-                mRes.Append("{""Producto"":""" & Item("NombreProducto") & """,""Fecha"":""" & Item("Fecha") & """,""Monto"": """ & Item("Monto") & """, ""IdTransaccion"": """ & Item("IdTransaccion") & """,""Destino"": """ & Item("Destino") & """,""Usuario"": """ & Item("UserCode") & """,""IDVenta"": """ & Item("IDVenta") & """,""Estado"": """ & Item("Estado") & """},")
+                mRes.Append("{""Producto"":""" & Item("NombreProducto") & """,""Fecha"":""" & Item("Fecha") & """,""Monto"": """ & Item("Monto") & """, ""IdTransaccion"": """ & Item("IdTransaccion") & """,""Destino"": """ & Item("Destino") & """,""Respuesta"": """ & Item("Respuesta") & """,""Usuario"": """ & Item("UserCode") & """,""IDVenta"": """ & Item("IDVenta") & """,""Estado"": """ & Item("Estado") & """},")
 
             Next
             Dim oREST As String
@@ -1228,6 +2375,69 @@ Public Class Servicios
 
     End Function
 
+
+    <WebMethod()>
+    Public Function GetMovRapiPago(pObj As Parametros) As List(Of Respuesta)
+
+        Dim oRta As New Respuesta
+        Dim oDs As DataSet
+        Dim oRes As String
+        Dim olstRta As New List(Of Respuesta)
+        Try
+            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            If pObj.Fecha = "" Then
+                pObj.Fecha = Format(Now.Date, "yyyy-MM-dd")
+            End If
+            If pObj.FechaHasta = "" Then
+                pObj.FechaHasta = Format(Now.Date, "yyyy-MM-dd")
+            End If
+            oRes = oFusion.GetMovRapiPagoWebLiviana(pObj.User, pObj.Pass, pObj.Fecha, pObj.FechaHasta)
+
+            oDs = LuSe.Framework.Common.Helper.XmlFunctions.XMLToDataSet(oRes)
+
+            Dim mRes As New StringBuilder
+            mRes.Append("[")
+            Dim mSaldoInicial As String = ""
+            Dim mSaldo As String = ""
+            Dim blnHayVentas As Boolean = False
+            If mSaldoInicial = "" Then
+                mSaldoInicial = Math.Round(Convert.ToDecimal(oDs.Tables(0).Rows(oDs.Tables(0).Rows.Count - 1)("Saldo").ToString.Replace(".", ",")), 2) - Math.Round(Convert.ToDecimal(oDs.Tables(0).Rows(oDs.Tables(0).Rows.Count - 1)("Importe").ToString.Replace(".", ",")), 2)
+            End If
+            For Each Item As DataRow In oDs.Tables(0).Rows
+                blnHayVentas = True
+                If mSaldo = "" Then
+                    mSaldo = Math.Round(Convert.ToDecimal(Item(3).ToString.Replace(".", ",")), 2)
+                    mRes.Append("{""Fecha"":"""",""Descripcion"":""Saldo Actual"",""Monto"": """ & mSaldo & """, ""Saldo"": """"},")
+                End If
+                mRes.Append("{""Fecha"":""" & Convert.ToDateTime(Item("Fecha")) & """,""Descripcion"":""" & Item("Observaciones") & """,""Monto"": """ & Math.Round(Convert.ToDecimal(Item("Importe").ToString.Replace(".", ",")), 2) & """, ""Saldo"": """ & Math.Round(Convert.ToDecimal(Item("Saldo").ToString.Replace(".", ",")), 2) & """},")
+
+            Next
+            mRes.Append("{""Fecha"":"""",""Descripcion"":""Saldo Inicial"",""Monto"": """ & mSaldoInicial & """, ""Saldo"": """"},")
+
+
+            If Not blnHayVentas Then
+
+                Throw New Exception("Sin Movimientos por el momento")
+            End If
+
+            Dim oREST As String
+            oREST = mRes.ToString.Substring(0, mRes.Length - 1)
+
+
+            oRta.Estado = True
+            oRta.Mensaje = oREST & "]"
+            olstRta.Add(oRta)
+            Return olstRta
+        Catch ex As Exception
+            oRta.Estado = False
+            oRta.Mensaje = "Error: " & ex.Message
+            olstRta.Add(oRta)
+            Return olstRta
+        End Try
+
+    End Function
+
+
     <WebMethod()>
     Public Function GetMovStock(pObj As Parametros) As List(Of Respuesta)
 
@@ -1270,6 +2480,5 @@ Public Class Servicios
         End Try
 
     End Function
-
 
 End Class

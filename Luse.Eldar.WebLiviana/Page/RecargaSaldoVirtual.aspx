@@ -317,7 +317,7 @@
 
                         $('#lblCargando').css({ display: 'none' });
                         $('#btnGrabar').attr('disabled', false);
-                        $("#txtMonto").val(0);
+                        $("#txtMonto").val("");
                         var opcion_seleccionada = $("#cboCompania option:selected").text();
                         //alert(opcion_seleccionada);
                         if (val == 'Ok') {
@@ -326,7 +326,7 @@
 
                             $("#lblresultok").html(text);
                             $("#txtDestino").val("");
-                            $("#txtMonto").val(0);
+                            $("#txtMonto").val("");
 
                             //var url = UrlSitio + "/mailtemplates/MostrarImpresionTicket.aspx?Page=http://" + UrlSitioTicket + "/Reportes/Trabajo/" + CodigoTicket + "TicketVenta.html";
 
@@ -342,7 +342,7 @@
 
                         }
                         else {
-                            $("#txtMonto").val(0);
+                            $("#txtMonto").val("");
                             $('#btnGrabar').attr('disabled', false);
                             $("#lblresultok").css("display", "none");
                             $("#lblresultokfail").css("display", "block");
@@ -363,7 +363,7 @@
                 $("#lblresultok").css("display", "none");
                 $("#lblresultokfail").css("display", "none");
                 $("#lblCargando").css("display", "none");
-                $("#txtMonto").val(0);
+                $("#txtMonto").val("");
                 $("#txtDestino").val("");
                 $("#txtPrefijo").val("");
                 // $("#dvfondo").im("");

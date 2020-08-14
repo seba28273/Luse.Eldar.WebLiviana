@@ -532,6 +532,10 @@ h1,
     font-size: 36px;
 }
 
+.btnrapipago {
+    font-size: medium;
+}
+
 .btn {
     font-size: xx-large;
 }
@@ -1272,9 +1276,9 @@ pre {
     }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
     .container {
-        max-width: 970px;
+        max-width: 1920px;
     }
 
     .col-md-1,
@@ -1484,9 +1488,9 @@ pre {
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1950px) {
     .container {
-        max-width: 1170px;
+        max-width: 1920px;
     }
 
     .col-lg-1,
@@ -1876,7 +1880,7 @@ table th[class*="col-"] {
     border-color: #f8e5be;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1950px) {
     .table-responsive {
         width: 100%;
         margin-bottom: 15px;
@@ -5319,6 +5323,31 @@ a.list-group-item.active > .badge,
 
 }
 
+
+@media screen and (max-width: 1950px) {
+    .jumbotron {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .container .jumbotron .jumbotronlogin {
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+
+    .jumbotron h1 {
+        font-size: 63px;
+    }
+
+    .jumbotronlogin {
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+
+        .jumbotronlogin h1 {
+            font-size: 63px;
+        }
+}
 .thumbnail {
     display: inline-block;
     display: block;
@@ -7243,5 +7272,53 @@ td.visible-print {
     th.hidden-print,
     td.hidden-print {
         display: none !important;
+    }
+}
+
+.jumbotronrapipago {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    color: inherit;
+    background-color: #eee
+}
+
+    .jumbotronrapipago .h1, .jumbotronrapipago h1 {
+        color: inherit
+    }
+
+    .jumbotronrapipago p {
+        margin-bottom: 15px;
+        font-size: 21px;
+        font-weight: 200
+    }
+
+    .jumbotronrapipago > hr {
+        border-top-color: #d5d5d5
+    }
+
+.Contenedorrapipago .jumbotronrapipago, .container-fluid .jumbotronrapipago {
+    padding-right: 15px;
+    padding-left: 15px;
+    border-radius: 6px
+}
+
+.jumbotronrapipago .container {
+    max-width: 100%
+}
+
+@media screen and (min-width:768px) {
+    .jumbotronrapipago {
+        padding-top: 48px;
+        padding-bottom: 48px
+    }
+
+    .container .jumbotronrapipago, .container-fluid .jumbotronrapipago {
+        padding-right: 60px;
+        padding-left: 60px
+    }
+
+    .jumbotronrapipago .h1, .jumbotronrapipago h1 {
+        font-size: 63px
     }
 }

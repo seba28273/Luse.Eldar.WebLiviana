@@ -15,6 +15,8 @@ Partial Class SIte2
         End If
         usrLogin2.InnerText = " " & Session("Usuario")
         usrAgencia.InnerText = " " & Session("NombreAgencia")
+        mnuRP.Disabled = Not Convert.ToBoolean(Session("mnuRP"))
+
         'SaldoAgencia.InnerText = " " & Session("Saldo")
         ' SaldoSube.InnerText = " " & Session("SaldoSube")
         Session("datos") = True

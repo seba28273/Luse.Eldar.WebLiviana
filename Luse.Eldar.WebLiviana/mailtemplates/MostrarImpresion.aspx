@@ -1,19 +1,19 @@
-﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="MostrarImpresionSube.aspx.vb" Inherits="mailtemplates_MostrarImpresionSube" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="MostrarImpresion.aspx.vb" Inherits="mailtemplates_MostrarImpresion" %>
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html style="width: 170px" xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
 </head>
-<body>
-    <form id="form1" runat="server">
-        <div id="Imprimir" clientidmode="Static" runat="server">
+<body style="width: 170px">
 
-            <%-- <h3 id="hContenedor" runat="server"></h3>--%>
+    <form id="form1" runat="server">
+        <div id="Imprimir" style="width: 170px; text-align: left; font-weight: 100;"
+            clientidmode="Static" runat="server">
         </div>
-        <center> <input type="image" height="110px" width="150px" src="../Img/printer.jpg" onclick="printDiv('Imprimir')" value="imprimir" /></center>
+        <center> <input type="image" height="80px" width="120px" src="../Img/printer.jpg" onclick="printDiv('Imprimir')" value="imprimir" /></center>
 
     </form>
 

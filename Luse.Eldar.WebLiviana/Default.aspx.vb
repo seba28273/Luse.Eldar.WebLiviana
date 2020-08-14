@@ -26,15 +26,19 @@ Partial Class Default2
         Dim mSaldo As String = ""
         Dim mSaldoSube As String = ""
         Dim mIDAgencia As Long
-        Dim mMontoVentas As Long
+
         Dim oEldar As New Luse.WsTransaccional.ExternalSales
         Dim oRes As Boolean
         Dim mAptoCredito As Int32
         Dim mIDPrestamoBase As Long
-        Dim mMsnCredito As String
-        oRes = oEldar.LoginWeb(usr.Value, pwd.Value,
+        Dim mMsnCredito As String = ""
+        Dim mCodPuestoRP As Long
+        Dim mAgenteRP As Long
+        Dim mSucursalRP As Long
+        Dim mIDAcceso As Long
+        oRes = oEldar.LoginEscritorioWithRP(usr.Value, pwd.Value,
                                eTipoAccesoSistema.Escritorio, mMsn, mIDAgencia, mNombre, mSaldo,
-                               mSaldoSube, mDireccionAgencia, mIDPrestamoBase, mAptoCredito, mMsnCredito)
+                               mSaldoSube, mDireccionAgencia, mIDPrestamoBase, mAptoCredito, mMsnCredito, mCodPuestoRP, mAgenteRP, mSucursalRP, mIDAcceso)
 
 
 
@@ -55,7 +59,19 @@ Partial Class Default2
         Session("IDPrestamoBase") = mIDPrestamoBase
         Session("AptoCredito") = mAptoCredito
         Session("MensajeCredito") = mMsnCredito
+        Session("IDAcceso") = mIDAcceso
         'Cargar estas variables segun el usuario para saber si el mismo tendra autorizaciones
+
+
+        Session("CodPuestoRP") = mCodPuestoRP.ToString.PadLeft(6, "0")
+        Session("AgenteRP") = mAgenteRP.ToString.PadLeft(5, "0")
+        Session("SucursalRP") = mSucursalRP
+        If mCodPuestoRP = 0 Then
+            Session("mnuRPVisible") = False
+        Else
+            Session("mnuRPVisible") = True
+
+        End If
 
 
         Response.Redirect("Page/Noticias.aspx")
