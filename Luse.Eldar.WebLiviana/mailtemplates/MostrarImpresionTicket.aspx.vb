@@ -32,6 +32,7 @@ Partial Class mailtemplates_MostrarImpresionTicket
         Catch ex As Exception
             mFecha = Format(Now, "dd/MM/yyyy HH:mm:ss")
         End Try
+        '& "  Mensaje: " & mMsn & "  <br /></center>" _
         Imprimir.InnerHtml = "<h3><center><img src='../Img/cp200px.png';></center></h3>" _
            & " <center><b>" & mNombreAgencia & "</b> <br /> " _
             & " Direccion:" & mDireccionAgencia & "<br />" _
@@ -41,7 +42,6 @@ Partial Class mailtemplates_MostrarImpresionTicket
             & "  Destino:" & mDestino & "<br />" _
            & "  Monto: $ " & mMonto & "  <br />" _
            & "  Estado:<b> " & mEstado & "</b> <br />" _
-           & "  Mensaje: " & mMsn & "  <br /></center>" _
            & "  <h3 style = 'font-size:13px'><center><i><b>Gracias por Operar con CargaPlus</center>"
 
     End Sub

@@ -10,6 +10,7 @@
     <script src="../Scripts/jquery.min.js"></script>
     <script src="../Scripts/bootstrap.min.js"></script>
     <link href="../Content/btnPrestamo.css?version=1.0.5" rel="stylesheet" />
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <%--<script src="../Scripts/jquery.timers.js"></script>--%>
     <style>
         .navbar-custom {
@@ -118,7 +119,7 @@
                                 <li><a href="SolicitudSaldo.aspx"><i class="glyphicon glyphicon-usd"></i> Solicitud Saldo</a></li>
                                 <li><a href="ConsultaVentas.aspx"><i class="glyphicon glyphicon-list-alt"></i> Consulta Venta</a></li>
                                 <li><a href="MovimientosStock.aspx"><i class="glyphicon glyphicon-barcode"></i> Movimientos de Stock</a></li>
-                                <li><a href="MovimientosCtaCteRapipago.aspx"><i class="glyphicon glyphicon-file"></i> Movimientos de .</a></li>
+                                <li><a href="MovimientosCtaCteRapipago.aspx"><i class="glyphicon glyphicon-file"></i> Movimientos de Rapipago</a></li>
                                 <li><a href="MovimientosCtaCte.aspx"><i class="glyphicon glyphicon-file"></i> Movimientos de Cta. Cte.</a></li>
                                 <li><a href="ConsultaPrestamos.aspx"><i class="glyphicon glyphicon-file"></i> Consulta Prestamos.</a></li>
                             </ul>
@@ -166,7 +167,7 @@
             <footer>
                 <br />
                 <br />
-                <p>&copy; <%: DateTime.Now.Year %> - Eldar - Ver.: 1.2.4</p>
+                <p>&copy; <%: DateTime.Now.Year %> - Eldar - Ver.: 1.2.4-5.13</p>
             </footer>
         </div>
     </form>

@@ -7,9 +7,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
 </head>
-<body>
+<body style="width: 170px">
     <form id="form1" runat="server">
-   <div id="Imprimir" clientidmode="Static" runat="server">
+   <div id="Imprimir" style="width: 170px; text-align: left; font-weight: 100;"
+            clientidmode="Static" runat="server">
+        </div>
       
 
     </div>

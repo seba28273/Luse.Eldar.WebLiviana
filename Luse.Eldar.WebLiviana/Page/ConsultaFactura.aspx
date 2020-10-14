@@ -34,6 +34,7 @@
 
             <div class="form-group">
 
+
                 <div class="input-group">
                     <span class="input-group-addon">Cod Barra:</span>
                     <input type="text" class="form-control" runat="server" style="text-align: right; font-size: x-large; max-width: 600px"
@@ -84,7 +85,7 @@
                 <div class="input-group">
                     <span class="input-group-addon">Modalidad:</span>
                     <asp:DropDownList data-placeholder="Modalidad.."
-                        ClientIDMode="Static" ID="cboModalidad" Style="font-size-adjust; max-width: 500px;" runat="server" class="form-control">
+                        ClientIDMode="Static" ID="cboModalidad" Style="width:650px; font-size-adjust; max-width: 800px;" runat="server" class="form-control">
                     </asp:DropDownList>
 
                 </div>
@@ -100,7 +101,7 @@
                 <div class="input-group">
                     <span class="input-group-addon">Importe $:</span>
                     <input type="number" class="form-control" runat="server" style="text-align: justify; width: 100%"
-                        id="txtMonto" onclick="this.setSelectionRange(0, this.value.length)" onkeypress="return validar(event)" clientidmode="Static">
+                        id="txtMonto" onclick="this.setSelectionRange(0, this.value.length)" onkeypress="return noenter()" clientidmode="Static">
                     <select clientidmode="Static" id="cboMonto" style="display: none" runat="server" class="form-control">
                     </select>
 
@@ -108,7 +109,7 @@
 
             </div>
             <div style="text-align: center; height: 45px">
-                <button type="button" runat="server" id="btnAgregar" clientidmode="Static" style="font-size: x-large;" class="btn btn-info"><span class="glyphicon glyphicon-plus"></span>&nbsp;Agregar</button>
+                <button type="button" runat="server" id="btnAgregar" clientidmode="Static" style="font-size: x-large;" class="btn btn-info"><span class="glyphicon glyphicon-plus"></span>&nbsp;Buscar Facturas</button>
                 <button type="button" runat="server" id="btnLimpiar" onclick="Limpiar();" clientidmode="Static" style="font-size: x-large;" class="btn btn-warning"><span class="glyphicon glyphicon-clean"></span>&nbsp;Limpiar</button>
             </div>
             <br />
@@ -141,17 +142,24 @@
                 <div class="input-group">
                     <span class="input-group-addon">Total a Recaudar.:</span>
                     <input type="text" runat="server" disabled="disabled" clientidmode="Static" class="form-control" id="txtTotal" />
+                    <span class="input-group-addon">Dinero Recibido:</span>
+                    <input type="text" runat="server" clientidmode="Static" class="form-control" id="txtDineroRecibido" />
+                    <span class="input-group-addon">Vuelto:</span>
+                    <input type="text" runat="server" disabled="disabled" clientidmode="Static" class="form-control" id="txtVuelto" />
                 </div>
             </div>
         </div>
 
     </div>
+    <div style="text-align: center; height: 65px;">
+        <button type="button" runat="server" id="btnCalcularVuelto" style="font-size: x-large;" clientidmode="Static" class="btn btn-warning"><i clientidmode="Static" id="spnCalcular" class="fas fa-calculator"></i>&nbsp;Calcular Vuelto</button>
+    </div>
     <div style="text-align: center; height: 45px;">
         <button type="button" runat="server" id="btnAceptar" style="font-size: x-large;" clientidmode="Static" class="btn btn-primary"><i clientidmode="Static" id="spnConfirmar" class="glyphicon glyphicon-ok"></i>&nbsp;Confirmar Operaciones</button>
         <button type="button" runat="server" id="btnEliminar" style="font-size: x-large;" clientidmode="Static" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i>&nbsp;Eliminar Seleccionada</button>
 
-        <button type="button" runat="server" id="btnConfirmar" style="font-size: x-large;" clientidmode="Static" visible="true" class="btn btn-success">&nbsp;Confirmar</button>
-        <button type="button" runat="server" id="btnConsultarUltTransaccion" style="font-size: x-large;" visible="true" clientidmode="Static" class="btn btn-Info">&nbsp;Buscar</button>
+        <button type="button" runat="server" id="btnConfirmar" style="font-size: x-large;" clientidmode="Static" visible="false" class="btn btn-success">&nbsp;Confirmar</button>
+        <button type="button" runat="server" id="btnConsultarUltTransaccion" style="font-size: x-large;" visible="false" clientidmode="Static" class="btn btn-Info">&nbsp;Buscar</button>
     </div>
     <br />
     <br />
@@ -207,6 +215,8 @@
         function TranslateError(pCodError, pEmpresa, pImpItem) {
             var mError;
             switch (pCodError) {
+                case 58: mError = " Fecha del Cliente desconfigurada.</br>"
+                    break;
                 case 50: mError = " El importe total de la factura no coincide a la suma de sus ítems.</br>"
                     break;
                 case 22: mError = "Las siguientes formas de pago: [PESOS] estan fuera del rango permitido para cobrar.</br>"
@@ -217,7 +227,7 @@
                     break;
                 case 40: mError = "Cod. de Barra incorrecto.</br>"
                     break;
-                case 42: mError = "El importe del ítem no es válido, se deberá ingresar el importe de la factura.</br>"
+                case 42: mError = "El importe de uno o varios ítem no es válido, se deberá ingresar el importe de la factura que corresponda.</br>"
                     break;
                 case 44: mError = "La factura de " + pEmpresa + " ya se encuentra paga.</br>"
                     break;
@@ -247,7 +257,7 @@
                     break;
                 case 197: mError = "Faltan Completar campos para generar el cobro</br>"
                     break;
-                default: mError = "Error " + pCodError + "</br>"
+                default: mError = "Error al Cobrar La Factura, reintente mas tarde</br>"
 
             }
 
@@ -424,6 +434,8 @@
             $("#txtCodBarra").val("");
             $("#cboEmpresa").val("");
             $("#cboModalidad").val("");
+            $("#txtVuelto").val(0);
+            $("#txtDineroRecibido").val(0);
             $("#txtMonto").val(0);
             $("#cboMonto").css({ display: 'none' });
             $("#txtMonto").css({ display: 'block' });
@@ -435,11 +447,19 @@
 
         function LimpiarGrillaExtras() {
 
-
+            $("#Tr0").remove();
+            $("#Tr1").remove();
+            $("#Tr2").remove();
+            $("#Tr3").remove();
+            $("#FilaGrilla0").remove();
             $("#FilaGrilla1").remove();
             $("#FilaGrilla2").remove();
             $("#FilaGrilla3").remove();
             $("#FilaGrilla4").remove();
+            $("#FilaGrilla5").remove();
+            $("#FilaGrilla6").remove();
+            $("#FilaGrilla7").remove();
+            $("#FilaGrilla8").remove();
 
         }
 
@@ -449,20 +469,44 @@
             $("#cboModalidad").val("");
             $("#txtMonto").val(0);
             //$("#txtTotal").val(0);
-            $("#fila1").remove();
-            $("#fila2").remove();
-            $("#fila3").remove();
-            $("#fila4").remove();
-            $("#fila5").remove();
-            $("#fila6").remove();
-            $("#fila7").remove();
-            $("#fila8").remove();
-            $("#fila9").remove();
+            // $("#fila0").remove();
+            try {
+                $("#fila1").remove();
+                $("#fila2").remove();
+                $("#fila3").remove();
+                $("#fila4").remove();
+                $("#fila5").remove();
+                $("#fila6").remove();
+                $("#fila7").remove();
+                $("#fila8").remove();
+                $("#fila9").remove();
+            } catch (e) {
 
-            $("#FilaGrilla1").remove();
-            $("#FilaGrilla2").remove();
-            $("#FilaGrilla3").remove();
-            $("#FilaGrilla4").remove();
+            }
+
+            try {
+                $("#Tr0").remove();
+                $("#Tr1").remove();
+                $("#Tr2").remove();
+                $("#Tr3").remove();
+            } catch (e) {
+
+            }
+
+            try {
+                $("#FilaGrilla0").remove();
+                $("#FilaGrilla1").remove();
+                $("#FilaGrilla2").remove();
+                $("#FilaGrilla3").remove();
+                $("#FilaGrilla4").remove();
+                $("#FilaGrilla5").remove();
+                $("#FilaGrilla6").remove();
+                $("#FilaGrilla7").remove();
+                $("#FilaGrilla8").remove();
+            } catch (e) {
+
+            }
+
             CalcularTotal();
 
         }
@@ -490,6 +534,10 @@
             })
             mTotal = round(mTotal);
             $("#txtTotal").val(mTotal);
+        }
+
+        function noenter() {
+            return !(window.event && window.event.keyCode == 13);
         }
 
         function AgregarCamposAdicionales() {
@@ -527,15 +575,28 @@
                             //LABEL
                             //CHECK_BOX 
                             $("#ItemAdicional" + i).val(models[i].nombre);
+                            console.log(models[i].tipoComponenteVisual);
+                            console.log(models[i].nombre);
+                            console.log(models[i].tipo);
                             if (models[i].tipoComponenteVisual == "TEXT_FIELD" || models[i].tipoComponenteVisual == "HIDDEN_TEXT_FIELD") {
                                 var maxleng = models[i].longitud;
                                 var tipo = models[i].tipo;
-                                if (tipo == "ALF")
+                                // alert(tipo);
+                                if (tipo == "ALF") {
                                     tipo = "text";
-                                else
-                                    tipo = "number";
+                                }
+                                else {
+                                    if (tipo == "FEC") {
 
-                                nuevocampo = '<br clientidmode="Static" class="inputbr"/><div class="form-groupAdd"><div class="input-group"><span class="input-group-addon">' + models[i].etiqueta + ':</span><input maxlength="' + maxleng + '"  type="' + tipo + '" class="form-control" style="text-align: justify; width: 100%" id="' + models[i].nombre + '" clientidmode="Static"></div></div>';
+                                        tipo = "text";
+                                    }
+                                    else {
+                                        tipo = "number";
+                                    }
+                                }
+
+
+                                nuevocampo = '<br clientidmode="Static" class="inputbr"/><div class="form-groupAdd"><div class="input-group"><span class="input-group-addon">' + models[i].etiqueta + ':</span><input maxlength="' + maxleng + '"  type="' + tipo + '" class="form-control" onKeyPress="return noenter()" style="text-align: justify; width: 100%" id="' + models[i].nombre + '" clientidmode="Static"></div></div>';
                                 $("#ContenedorModalidad").append(nuevocampo);
 
                             }
@@ -592,7 +653,10 @@
             $('#tablaFactura tbody tr').each(function () {
                 var mCodBarra;
                 mEsPrimeraFila = 0;
+                //console.log($.trim($(this).find('td').eq(3).text());
                 mCodBarra = $.trim($(this).find('td').eq(3).text());
+                //console.log(mCodBarra);
+                //console.log(cols[1].innerText);
                 //Quiere decir que existe
                 if (mCodBarra == cols[1].innerText) {
                     $('#lblfailAgregar').css({ display: 'block' });
@@ -600,8 +664,13 @@
                     return;
                 }
                 else {
+                    var CantFila = 0;
+                    CantFila = $('#tablaFactura tbody tr').length + 1;
+                    var mNameFila;
+                    mNameFila = "FilaGrilla" + CantFila;
+
                     $("#idMod").val($('#cboModalidad :selected').val().split("|")[0]);
-                    $("#tablaFactura").append("<tr id='FilaGrilla1' class='success'><td> <input type='checkbox' /></td>" +
+                    $("#tablaFactura").append("<tr class='success'><td> <input type='checkbox' /></td>" +
                         "<td style='display:none'> " + $("#cboEmpresa").val() + "</td > " +
                         "<td> " + $('#cboEmpresa :selected').text() + "</td > " +
                         "<td> " + cols[1].innerText + "</td >" +
@@ -618,13 +687,14 @@
                     CalcularTotal();
                     eliminarCamposAdicionales();
                     $('#btnAgregar').removeAttr('disabled');
+                    return;
                 }
             });
 
             if (mEsPrimeraFila == 1) {
 
                 $("#idMod").val($('#cboModalidad :selected').val().split("|")[0]);
-                $("#tablaFactura").append("<tr id='FilaGrilla1' class='success'><td> <input type='checkbox' /></td>" +
+                $("#tablaFactura").append("<tr class='success'><td> <input type='checkbox' /></td>" +
                     "<td style='display:none'> " + $("#cboEmpresa").val() + "</td > " +
                     "<td> " + $('#cboEmpresa :selected').text() + "</td > " +
                     "<td> " + cols[1].innerText + "</td >" +
@@ -705,33 +775,51 @@
 
 
 
-                            var mNameFila;
-                            var mClaseGrilla = "";
-                            mNameFila = "FilaGrilla" + i;
-                            if (mClaseGrilla == "") {
-                                mClaseGrilla = "success";
-                            }
-                            else {
-                                mClaseGrilla = "";
-                            }
-                            var detallegrilla = "<tr id=" + mNameFila + " class=" + mClaseGrilla + "><td>" +
-                                "<button style='width:20px;height:30px;' type='button' " +
-                                "onclick='SelFact(this);' " +
-                                "class='btn btn-info'><i style='margin-left:-6px;' class='glyphicon glyphicon-plus'></i>" +
-                                "</button>"
 
-                            for (var i = 0; i < modelsvalores.length; i++) {
 
-                                if (modelsvalores[i].codCampo != 'DAF' && modelsvalores[i].codCampo != 'codTI' && modelsvalores[i].codCampo != 'descTI') {
-                                    detallegrilla = detallegrilla + "<td id=" + modelsvalores[i].codCampo + ">" + modelsvalores[i].valor + "</td>";
 
+                            var i = 0;
+
+                            var leng = modelsvalores.length / models.length;
+
+                            for (var j = 0; j < leng; j++) {
+                                var mNameFila;
+                                var mClaseGrilla = "";
+                                mNameFila = "FilaGrilla" + j;
+                                if (mClaseGrilla == "") {
+                                    mClaseGrilla = "success";
                                 }
+                                else {
+                                    mClaseGrilla = "";
+                                }
+                                var detallegrilla = "<tr id=" + mNameFila + " class=" + mClaseGrilla + "><td>" +
+                                    "<button style='width:20px;height:30px;font-size: 12px;' type='button' " +
+                                    "onclick='SelFact(this);' " +
+                                    "class='btn btn-info'><i style='margin-left:-6px;' class='glyphicon glyphicon-plus'></i>" +
+                                    "</button>"
 
+                                //for (i < models.length; i++;) {
+                                var r = 0;
+                                while (r < models.length) {
+
+
+                                    if (modelsvalores[i]["codCampo"] != 'DAF' && modelsvalores[i]["codCampo"] != 'codTI' && modelsvalores[i]["codCampo"] != 'descTI') {
+                                        detallegrilla = detallegrilla + "<td id=" + modelsvalores[i].codCampo + ">" + modelsvalores[i].valor + "</td>";
+
+                                    }
+                                    r = r + 1;
+                                    i = i + 1;
+                                }
+                                //r = r + models.length;
+
+                                detallegrilla = detallegrilla + "</tr>";
+                                console.log(detallegrilla);
+                                $("#tablafacturasCSF").append(detallegrilla);
                             }
-                            detallegrilla = detallegrilla + "</tr>";
+
                             //}
 
-                            $("#tablafacturasCSF").append(detallegrilla);
+
                             SendObjLotedatosFormulario = {};
 
                         } else {
@@ -835,11 +923,12 @@
             if ($('#cboModalidad :selected').val().split("|")[1] == "CSF" || $('#cboModalidad :selected').val().split("|")[1] == "SFM") {
                 ArmarGrillaCSF();
             }
-            else {
-                if ($('#TipoCobranza').val() == "CEI") {
+            else
+            {
+                if ($('#cboModalidad :selected').val().split("|")[1] == "CEI") {
 
                     $("#idMod").val($('#cboModalidad :selected').val().split("|")[0]);
-                    $("#tablaFactura").append("<tr id=" + mNombre + " class='" + mClase + "'><td> <input type='checkbox' /></td>" +
+                    $("#tablaFactura").append("<tr class='" + mClase + "'><td> <input type='checkbox' /></td>" +
                         "<td style='display:none'> " + $("#cboEmpresa").val() + "</td > " +
                         "<td> " + $('#cboEmpresa :selected').text() + "</td > " +
                         "<td> " + $("#txtCodBarra").val() + "</td >" +
@@ -850,9 +939,22 @@
                         "<td  style='display:none'> " + JSON.stringify(SendObjLotedatosFormulario) + "</td >" +
                         "</tr > ");
 
-                } else {
+                }
+                else {
+
+
+
+                    //if ($('#cboModalidad :selected').val().split("|")[1] == "CAB") {
+
+                    //    $('#lblresultokfail').css({ display: 'block' });
+                    //    $('#lblresultokfail').html("La Cobranza Abierta no esta permitida. Busque el comprobante");
+                    //    return;
+
+                    //}
+                    //else {
+
                     $("#idMod").val($('#cboModalidad :selected').val().split("|")[0]);
-                    $("#tablaFactura").append("<tr id=" + mNombre + " class='" + mClase + "'><td> <input type='checkbox' /></td>" +
+                    $("#tablaFactura").append("<tr class='" + mClase + "'><td> <input type='checkbox' /></td>" +
                         "<td style='display:none'> " + $("#cboEmpresa").val() + "</td > " +
                         "<td> " + $('#cboEmpresa :selected').text() + "</td > " +
                         "<td> " + $("#txtCodBarra").val() + "</td >" +
@@ -862,8 +964,8 @@
                         "<td style='display:none'> " + $("#idMod").val() + "</td >" +
                         "<td  style='display:none'> " + JSON.stringify(SendObjLotedatosFormulario) + "</td >" +
                         "</tr > ");
+                    //}
                 }
-
 
 
                 SendObjLotedatosFormulario = {};
@@ -1102,8 +1204,7 @@
                     mTipoCob = $.trim($(this).find('td').eq(6).text());
 
 
-
-                    if (mTipoCob == "CAB")
+                    if (mTipoCob == "CAB" && mCodBarra == "")
                         mCodBarra = "";
 
                     var SendObjFormaPago = {
@@ -1219,7 +1320,7 @@
 
                             }
                             itemTic = itemTic + 1;
-                            var url = "../mailtemplates/MostrarImpresion.aspx?Div=" + mTextoTicket;
+                            var url = "http://localhost:52245/mailtemplates/MostrarImpresionRapipago.aspx?Div=" + mTextoTicket;
                             window.open(url, "_blank", "toolbar=no,menubar=no, width=350, height=500, scrollbars=no, resizable=no,location=no, directories=no, status=no");
                             mTextoTicket = "";
                         }
@@ -1235,6 +1336,15 @@
 
                         LimpiarGrillaExtras();
                         LimpiarCamposPosSave();
+
+                    }
+                    if (responsepago.d.codResul == "999") {
+                        $('#lblresultokfail').css({ display: 'block' });
+                        $('#lblresultokfail').html("Solo Puede enviar una factura para cobro");
+                        $('#spnConfirmar').removeClass('fa fa-circle-o-notch fa-spin');
+                        $('#spnConfirmar').addClass('glyphicon glyphicon-ok');
+                        $('#btnAceptar').removeAttr('disabled');
+                        return;
 
                     }
                     if (responsepago.d.codResul != "0" && msn == "") {
@@ -1526,13 +1636,22 @@
                 PagarFactura();
 
             });
+            $("#btnCalcularVuelto").click(function () {
 
+                var mTotal = 0;
+
+                mTotal = $("#txtDineroRecibido").val() - $("#txtTotal").val();
+
+                mTotal = round(mTotal);
+                $("#txtVuelto").val(mTotal);
+
+            });
 
             $("#btnConsultarUltTransaccion").click(function () {
 
                 $.ajax({
                     type: "GET",
-                    url: "http://200.123.144.250/version3//transaccion/ultima?codPuesto=" + $("#codPuesto").val(),
+                    url: "http://200.123.144.198/fase2/transaccion/ultima?codPuesto=" + $("#codPuesto").val(),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     beforeSend: function (response) {
@@ -1552,6 +1671,7 @@
                         $('#lblCargando').css({ display: 'none' });
                         $('#lblresultokfail').css({ display: 'block' });
                         $('#lblresultokfail').html(Msn.responseJSON.descResul);
+                        console.log(Msn)
                     },
 
                 });
@@ -1649,13 +1769,13 @@
 
 
             $("#btnBuscarEmpresa").click(function () {
-                if ($("#txtDescEmpresa").val().length < 3) {
-                    $('#lblresultokfail').css({ display: 'block' });
-                    $('#lblresultokfail').html("Error: para buscar debe ingresar al menos 3 digitos");
+                //if ($("#txtDescEmpresa").val().length < 3) {
+                //    $('#lblresultokfail').css({ display: 'block' });
+                //    $('#lblresultokfail').html("Error: para buscar debe ingresar al menos 3 digitos");
 
-                    return;
-                }
-                lblfailAgregar
+                //    return;
+                //}
+
                 $('#lblfailAgregar').css({ display: 'none' });
                 $('#lblresultokfail').css({ display: 'none' });
                 BuscarEmpresas($("#txtDescEmpresa").val());

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="MostrarImpresion.aspx.vb" Inherits="mailtemplates_MostrarImpresion" %>
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="MostrarImpresionRapipago.aspx.vb" Inherits="mailtemplates_MostrarImpresion" %>
 
 <!DOCTYPE html>
 

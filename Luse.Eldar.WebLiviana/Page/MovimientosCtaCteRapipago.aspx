@@ -80,6 +80,7 @@
                         <thead>
                             <tr id="fila0" class="info">
                                 <th>#</th>
+                                <th>Imprimir</th>
                                 <th>Fecha</th>
                                 <th>Descripcion</th>
                                 <th>Monto</th>
@@ -231,6 +232,32 @@
 
         }
 
+        function PrintSale(ctl) {
+            var _row = null;
+
+            _row = $(ctl).parents("tr");
+            var cols = _row.children("td");
+            console.log(cols);
+            var mMsn;
+           
+
+            var itemTic = 0;
+            var mTextoTicket;
+            
+            mTextoTicket = cols[6].innerText
+            //for (var f = 0; f < responsepago.d.items[i].tic.length; f++) {
+
+            //    mTextoTicket = mTextoTicket + responsepago.d.items[i].tic[f] + "|";
+            //    mres = 1;
+
+            //}
+            //itemTic = itemTic + 1;
+            var url = "https://ventas.cargaplus.com.ar/mailtemplates/MostrarImpresionRapipago.aspx?Div=" + mTextoTicket;
+            window.open(url, "_blank", "toolbar=no,menubar=no, width=350, height=500, scrollbars=no, resizable=no,location=no, directories=no, status=no");
+            mTextoTicket = "";
+        }
+
+
 
         $(document).ready(function () {
 
@@ -315,10 +342,17 @@
 
                             $("#tablaVentas").append("<tr id=" + mNombre + " class='" + mClase + "'>" +
                                 "<td> " + (i + 1) + "</td > " +
+                                "<td style='width: 34px; height: 33px;'>" +
+                                "<button type='button' " +
+                                "onclick='PrintSale(this);' " +
+                                "class='glyphicon glyphicon-print'>" +
+                                "</button>" +
+                                "</td>" +
                                 "<td> " + models[i].Fecha + "</td > " +
                                 "<td> " + models[i].Descripcion + "</td >" +
                                 "<td style='text-align: right;'> $" + models[i].Monto + "</td >" +
                                 "<td style='text-align: right;'> $" + models[i].Saldo + "</td >" +
+                                "<td style='text-align: right; display:none;'> $" + models[i].Ticket + "</td >" +
                                 "</tr > ");
                         }
 

@@ -368,7 +368,7 @@
                             }
                             try {
 
-                                mMonto = models[i].Monto.split(',')[0];
+                                mMonto = models[i].Monto;
                             } catch (e) {
                                 mMonto = models[i].Monto;
                             }
@@ -432,6 +432,7 @@
                     var aaa = 0;
                     var TotalVentasUsuario = 0;
                     var CantidadVentas = 0;
+                   
                     for (var i = 0; i < models.length; i++) {
                         if ($('#chkUsrActivo').is(":checked")) {
                             // $("#btnTotalUsuario").css("display", "block");
@@ -446,8 +447,8 @@
                                     mClase = "";
                                 }
                                 try {
-
-                                    mMonto = models[i].Monto.split(',')[0];
+                                    //alert(models[i].Monto);
+                                    mMonto = models[i].Monto.toFixed(2);
                                 } catch (e) {
                                     mMonto = models[i].Monto;
                                 }
@@ -462,6 +463,8 @@
                                     mEstado = "ERROR";
                                 }
 
+                                mMonto = mMonto.replace(",", ".");
+                                mMonto = dosDecimales(mMonto);
                                 $("#tablaVentas").append("<tr id=" + mNombre + " class='" + mClase + "'>" +
                                     "<td> " + (aaa + 1) + "</td > " +
                                     "<td> " + models[i].Fecha + "</td > " +
@@ -494,8 +497,8 @@
                                 mClase = "";
                             }
                             try {
-
-                                mMonto = models[i].Monto.split(',')[0];
+                                //alert(models[i].Monto);
+                                mMonto = models[i].Monto.toFixed(2);
                             } catch (e) {
                                 mMonto = models[i].Monto;
                             }
@@ -514,13 +517,13 @@
 
 
                             try {
-
-                                mMonto = models[i].Monto.split(',')[0];
+                                //alert(models[i].Monto);
+                                mMonto = models[i].Monto;
                             } catch (e) {
                                 mMonto = models[i].Monto;
                             }
-
-
+                            mMonto = mMonto.replace(",", ".");
+                            mMonto = dosDecimales(mMonto);
 
                             $("#tablaVentas").append("<tr id=" + mNombre + " class='" + mClase + "'>" +
                                 "<td> " + (i + 1) + "</td > " +
@@ -561,6 +564,12 @@
 
 
         });
+
+        function dosDecimales(n) {
+            let t = n.toString();
+            let regex = /(\d*.\d{0,2})/;
+            return t.match(regex)[0];
+        }
 
     </script>
 
