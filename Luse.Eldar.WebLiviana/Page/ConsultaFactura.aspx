@@ -85,7 +85,7 @@
                 <div class="input-group">
                     <span class="input-group-addon">Modalidad:</span>
                     <asp:DropDownList data-placeholder="Modalidad.."
-                        ClientIDMode="Static" ID="cboModalidad" Style="width:650px; font-size-adjust; max-width: 800px;" runat="server" class="form-control">
+                        ClientIDMode="Static" ID="cboModalidad" Style="width:750px; font-size-adjust; max-width: 800px;" runat="server" class="form-control">
                     </asp:DropDownList>
 
                 </div>
@@ -447,20 +447,20 @@
 
         function LimpiarGrillaExtras() {
 
-            $("#Tr0").remove();
-            $("#Tr1").remove();
-            $("#Tr2").remove();
-            $("#Tr3").remove();
-            $("#FilaGrilla0").remove();
-            $("#FilaGrilla1").remove();
-            $("#FilaGrilla2").remove();
-            $("#FilaGrilla3").remove();
-            $("#FilaGrilla4").remove();
-            $("#FilaGrilla5").remove();
-            $("#FilaGrilla6").remove();
-            $("#FilaGrilla7").remove();
-            $("#FilaGrilla8").remove();
+            $('#tablaFactura tbody tr').each(function () {
+                $(this).remove();
+                return false;
+            }); 
 
+            $('#tablafacturasCSF tr').each(function () {
+                $(this).remove();
+                return false;
+            });
+            $('#tablafacturasCSF th').each(function () {
+                $(this).remove();
+                return false;
+            });;
+           
         }
 
         function LimpiarCamposPosSave() {
@@ -468,44 +468,20 @@
             $("#cboEmpresa").val("");
             $("#cboModalidad").val("");
             $("#txtMonto").val(0);
-            //$("#txtTotal").val(0);
-            // $("#fila0").remove();
-            try {
-                $("#fila1").remove();
-                $("#fila2").remove();
-                $("#fila3").remove();
-                $("#fila4").remove();
-                $("#fila5").remove();
-                $("#fila6").remove();
-                $("#fila7").remove();
-                $("#fila8").remove();
-                $("#fila9").remove();
-            } catch (e) {
+            
+            $('#tablaFactura tbody tr').each(function () {
+                $(this).remove();
+                return false;
+            });
+            $('#tablafacturasCSF tr').each(function () {
+                $(this).remove();
+                return false;
+            });
+            $('#tablafacturasCSF th').each(function () {
+                $(this).remove();
+                return false;
+            });
 
-            }
-
-            try {
-                $("#Tr0").remove();
-                $("#Tr1").remove();
-                $("#Tr2").remove();
-                $("#Tr3").remove();
-            } catch (e) {
-
-            }
-
-            try {
-                $("#FilaGrilla0").remove();
-                $("#FilaGrilla1").remove();
-                $("#FilaGrilla2").remove();
-                $("#FilaGrilla3").remove();
-                $("#FilaGrilla4").remove();
-                $("#FilaGrilla5").remove();
-                $("#FilaGrilla6").remove();
-                $("#FilaGrilla7").remove();
-                $("#FilaGrilla8").remove();
-            } catch (e) {
-
-            }
 
             CalcularTotal();
 
@@ -1320,7 +1296,7 @@
 
                             }
                             itemTic = itemTic + 1;
-                            var url = "http://localhost:52245/mailtemplates/MostrarImpresionRapipago.aspx?Div=" + mTextoTicket;
+                            var url = "https://ventas.cargaplus.com.ar/mailtemplates/MostrarImpresionRapipago.aspx?Div=" + mTextoTicket;
                             window.open(url, "_blank", "toolbar=no,menubar=no, width=350, height=500, scrollbars=no, resizable=no,location=no, directories=no, status=no");
                             mTextoTicket = "";
                         }
