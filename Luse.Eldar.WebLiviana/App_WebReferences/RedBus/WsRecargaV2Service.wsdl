@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservices.controllers.bko/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="WsRecargaV2Service" targetNamespace="http://webservices.controllers.bko/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://webservices.controllers.bko/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="recarga" type="tns:recarga" />
+      <xs:complexType name="recargaDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="fecha" type="xs:string" />
+          <xs:element minOccurs="0" name="idTransaccion" type="xs:string" />
+          <xs:element name="importe" type="xs:double" />
+          <xs:element minOccurs="0" name="login" type="xs:string" />
+          <xs:element name="nroExternoTJT" type="xs:long" />
+          <xs:element minOccurs="0" name="password" type="xs:string" />
+          <xs:element minOccurs="0" name="proveedor" type="xs:string" />
+          <xs:element minOccurs="0" name="proyecto" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="recarga">
+        <xs:sequence>
+          <xs:element name="id" type="xs:long" />
+          <xs:element name="idProveedor" type="xs:string" />
+          <xs:element name="fechaRecarga" type="xs:dateTime" />
+          <xs:element name="fechaImpactada" type="xs:dateTime" />
+          <xs:element name="importe" type="xs:double" />
+          <xs:element name="estado" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="reversaDTO">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="idTransaccion" type="xs:string" />
+          <xs:element minOccurs="0" name="login" type="xs:string" />
+          <xs:element minOccurs="0" name="password" type="xs:string" />
+          <xs:element minOccurs="0" name="proveedor" type="xs:string" />
+          <xs:element minOccurs="0" name="proyecto" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="recargaArray" final="#all">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="item" nillable="true" type="tns:recarga" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="RecargaException" type="tns:RecargaException" />
+      <xs:complexType name="RecargaException">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="message" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="registrarRecarga">
+    <wsdl:part name="recargaDTO" type="tns:recargaDTO" />
+  </wsdl:message>
+  <wsdl:message name="getEstadoRecargasResponse">
+    <wsdl:part name="return" type="tns:recargaArray" />
+  </wsdl:message>
+  <wsdl:message name="registrarReversaResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="registrarRecargaResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="RecargaException">
+    <wsdl:part name="RecargaException" element="tns:RecargaException" />
+  </wsdl:message>
+  <wsdl:message name="getEstadoRecargas">
+    <wsdl:part name="recargaDTO" type="tns:recargaDTO" />
+  </wsdl:message>
+  <wsdl:message name="registrarReversa">
+    <wsdl:part name="reversaDTO" type="tns:reversaDTO" />
+  </wsdl:message>
+  <wsdl:portType name="WsRecargaV2">
+    <wsdl:operation name="registrarRecarga">
+      <wsdl:input name="registrarRecarga" message="tns:registrarRecarga" />
+      <wsdl:output name="registrarRecargaResponse" message="tns:registrarRecargaResponse" />
+      <wsdl:fault name="RecargaException" message="tns:RecargaException" />
+    </wsdl:operation>
+    <wsdl:operation name="getEstadoRecargas">
+      <wsdl:input name="getEstadoRecargas" message="tns:getEstadoRecargas" />
+      <wsdl:output name="getEstadoRecargasResponse" message="tns:getEstadoRecargasResponse" />
+      <wsdl:fault name="RecargaException" message="tns:RecargaException" />
+    </wsdl:operation>
+    <wsdl:operation name="registrarReversa">
+      <wsdl:input name="registrarReversa" message="tns:registrarReversa" />
+      <wsdl:output name="registrarReversaResponse" message="tns:registrarReversaResponse" />
+      <wsdl:fault name="RecargaException" message="tns:RecargaException" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WsRecargaV2ServiceSoapBinding" type="tns:WsRecargaV2">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="registrarRecarga">
+      <soap:operation soapAction="" style="rpc" />
+      <wsdl:input name="registrarRecarga">
+        <soap:body use="literal" namespace="http://webservices.controllers.bko/" />
+      </wsdl:input>
+      <wsdl:output name="registrarRecargaResponse">
+        <soap:body use="literal" namespace="http://webservices.controllers.bko/" />
+      </wsdl:output>
+      <wsdl:fault name="RecargaException">
+        <soap:fault use="literal" name="RecargaException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getEstadoRecargas">
+      <soap:operation soapAction="" style="rpc" />
+      <wsdl:input name="getEstadoRecargas">
+        <soap:body use="literal" namespace="http://webservices.controllers.bko/" />
+      </wsdl:input>
+      <wsdl:output name="getEstadoRecargasResponse">
+        <soap:body use="literal" namespace="http://webservices.controllers.bko/" />
+      </wsdl:output>
+      <wsdl:fault name="RecargaException">
+        <soap:fault use="literal" name="RecargaException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="registrarReversa">
+      <soap:operation soapAction="" style="rpc" />
+      <wsdl:input name="registrarReversa">
+        <soap:body use="literal" namespace="http://webservices.controllers.bko/" />
+      </wsdl:input>
+      <wsdl:output name="registrarReversaResponse">
+        <soap:body use="literal" namespace="http://webservices.controllers.bko/" />
+      </wsdl:output>
+      <wsdl:fault name="RecargaException">
+        <soap:fault use="literal" name="RecargaException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WsRecargaV2Service">
+    <wsdl:port name="WsRecargaV2Port" binding="tns:WsRecargaV2ServiceSoapBinding">
+      <soap:address location="https://190.15.195.19/Recargas/webservices/recargaServiceV2" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

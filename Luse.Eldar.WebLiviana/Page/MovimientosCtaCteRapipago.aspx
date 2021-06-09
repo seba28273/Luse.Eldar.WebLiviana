@@ -3,14 +3,14 @@
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-   <div class="subpres">
-      <%--  <a href="http://www.cargaplus.com.ar/accesorios_plus.html#"  target="_blank">
+    <div class="subpres">
+        <%--  <a href="http://www.cargaplus.com.ar/accesorios_plus.html#"  target="_blank">
             <div class="BtnAuxiliarcelulartecnologia">
 
                 <img class="imgcssgrande" src="../Img/boton_moto_01.png" />
             </div>
         </a>--%>
-        <a href="http://www.cargaplus.com.ar/factura_plus.html#"  target="_blank">
+        <a href="http://www.cargaplus.com.ar/factura_plus.html#" target="_blank">
             <div class="BtnAuxiliarAccesorios">
 
                 <img class="imgcssgrande" src="../Img/boton_factura_02.png" />
@@ -32,7 +32,7 @@
                 <img class="imgcssgrande" src="../Img/boton_celular_01.png" />
             </div>
         </a>
-       <%-- <a href="http://www.cargaplus.com.ar/motos_plus.html#" target="_blank">
+        <%-- <a href="http://www.cargaplus.com.ar/motos_plus.html#" target="_blank">
             <div class="BtnAuxiliarMotos">
                 <img class="imgcssgrande" src="../Img/boton_moto_01.png" />
             </div>
@@ -40,12 +40,15 @@
     </div>
     <div class="jumbotron" style="position: relative;">
         <h2>Movimientos de Rapipago</h2>
-        <ul id="mnuSaldo" style="position: absolute; text-orientation:sideways;     list-style-type: none; top: 10px; max-width: 200px;">
-            <li><button type="button" id="btnSaldo" class="btn btn-success">Saldo <span id="Saldo" class="badge"></span></button>
+        <ul id="mnuSaldo" style="position: absolute; text-orientation: sideways; list-style-type: none; top: 10px; max-width: 200px;">
+            <li>
+                <button type="button" id="btnSaldo" class="btn btn-success">Saldo <span id="Saldo" class="badge"></span></button>
             </li>
-            <li><button type="button" id="btnTotalVentas" class="btn btn-primary">Total Ventas OK<span id="TotalVentas" class="badge"></span></button>
+            <li>
+                <button type="button" id="btnTotalVentas" class="btn btn-primary">Total Ventas OK<span id="TotalVentas" class="badge"></span></button>
             </li>
-            <li> <button type="button"  id="btnCantVentas" class="btn btn-primary">Cant Ventas OK<span id="CantVentas" class="badge"></span></button>
+            <li>
+                <button type="button" id="btnCantVentas" class="btn btn-primary">Cant Ventas OK<span id="CantVentas" class="badge"></span></button>
             </li>
         </ul>
         <div class="container">
@@ -54,18 +57,18 @@
                 <div class="input-group">
                     <span class="input-group-addon">Fecha      </span>
                     <input type="date" value="" min="2018-01-01" runat="server" class="form-control" clientidmode="Static" id="txtFecha" />
-                 
+
                 </div>
 
                 <asp:HiddenField ClientIDMode="Static" ID="User" runat="server" />
                 <asp:HiddenField ClientIDMode="Static" ID="Pass" runat="server" />
-                 <asp:hiddenfield clientidmode="Static" id="MontoVentas" runat="server" />
-                    <asp:hiddenfield clientidmode="Static" id="AptoCredito" runat="server" />
+                <asp:hiddenfield clientidmode="Static" id="MontoVentas" runat="server" />
+                <asp:hiddenfield clientidmode="Static" id="AptoCredito" runat="server" />
                 <br />
                 <div class="input-group">
                     <span class="input-group-addon">Fecha Hasta</span>
                     <input type="date" value="" min="2018-01-01" runat="server" class="form-control" clientidmode="Static" id="txtFechaHasta" />
-                 
+
                 </div>
                 <br />
                 <div class="form-group">
@@ -75,7 +78,7 @@
                 </div>
 
                 <div class="table-responsive">
-         
+
                     <table clientidmode="Static" id="tablaVentas" class="table">
                         <thead>
                             <tr id="fila0" class="info">
@@ -239,11 +242,11 @@
             var cols = _row.children("td");
             console.log(cols);
             var mMsn;
-           
+
 
             var itemTic = 0;
             var mTextoTicket;
-            
+
             mTextoTicket = cols[6].innerText
             //for (var f = 0; f < responsepago.d.items[i].tic.length; f++) {
 
@@ -267,9 +270,9 @@
 
             $("#btnIngresar").click(function () {
 
-            
+
                 eliminaFilas();
-                
+
                 $("#lblresultokfail").css("display", "none");
                 $("#lblresultokfail").html("");
                 $('#btnIngresar').attr('disabled', true);
@@ -323,43 +326,48 @@
                         var mClase = "";
 
                         for (var i = 0; i < models.length; i++) {
+                            try {
 
-                            mNombre = "fila" + (i + 1);
-                            if (mClase == "") {
-                                mClase = "success";
-                            }
-                            else {
-                                mClase = "";
-                            }
-                            if (models[i].Estado == "2") {
-                                mEstado = "OK";
-                            }
-                            else if (models[i].Estado == "4") {
-                                mEstado = "ANULADA";
-                            } else {
-                                mEstado = "ERROR";
-                            }
 
-                            $("#tablaVentas").append("<tr id=" + mNombre + " class='" + mClase + "'>" +
-                                "<td> " + (i + 1) + "</td > " +
-                                "<td style='width: 34px; height: 33px;'>" +
-                                "<button type='button' " +
-                                "onclick='PrintSale(this);' " +
-                                "class='glyphicon glyphicon-print'>" +
-                                "</button>" +
-                                "</td>" +
-                                "<td> " + models[i].Fecha + "</td > " +
-                                "<td> " + models[i].Descripcion + "</td >" +
-                                "<td style='text-align: right;'> $" + models[i].Monto + "</td >" +
-                                "<td style='text-align: right;'> $" + models[i].Saldo + "</td >" +
-                                "<td style='text-align: right; display:none;'> $" + models[i].Ticket + "</td >" +
-                                "</tr > ");
+                                mNombre = "fila" + (i + 1);
+                                if (mClase == "") {
+                                    mClase = "success";
+                                }
+                                else {
+                                    mClase = "";
+                                }
+                                if (models[i].Estado == "2") {
+                                    mEstado = "OK";
+                                }
+                                else if (models[i].Estado == "4") {
+                                    mEstado = "ANULADA";
+                                } else {
+                                    mEstado = "ERROR";
+                                }
+
+                                $("#tablaVentas").append("<tr id=" + mNombre + " class='" + mClase + "'>" +
+                                    "<td> " + (i + 1) + "</td > " +
+                                    "<td style='width: 34px; height: 33px;'>" +
+                                    "<button type='button' " +
+                                    "onclick='PrintSale(this);' " +
+                                    "class='glyphicon glyphicon-print'>" +
+                                    "</button>" +
+                                    "</td>" +
+                                    "<td> " + models[i].Fecha + "</td > " +
+                                    "<td> " + models[i].Descripcion + "</td >" +
+                                    "<td style='text-align: right;'> $" + models[i].Monto + "</td >" +
+                                    "<td style='text-align: right;'> $" + models[i].Saldo + "</td >" +
+                                    "<td style='text-align: right; display:none;'> $" + models[i].Ticket + "</td >" +
+                                    "</tr > ");
+                            } catch (e) {
+                                console.log(e.Descripcion)
+                            }
                         }
 
                         $("#lblresultok").css("display", "none");
                         $("#lblresultokfail").css("display", "none");
 
-                        
+
                     },
 
                     error: function (jqXHR, textStatus, errorThrown) {

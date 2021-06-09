@@ -29,7 +29,7 @@ Partial Class mailtemplates_MostrarImpresion
         mMsn = mVariableas.Split("|")
 
         Dim mInicio As String = ""
-        Dim mINtermedio As String = "<h3><img width='150px' src='../Img/rapipagoprint.png';></h3>"
+        Dim mINtermedio As String = "<h3><img width='120px' src='../Img/rapipagoprint.png';></h3>"
 
         Dim mCuerpo As String = ""
         For Each item As String In mMsn

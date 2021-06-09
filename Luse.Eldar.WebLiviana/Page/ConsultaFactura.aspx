@@ -37,8 +37,8 @@
 
                 <div class="input-group">
                     <span class="input-group-addon">Cod Barra:</span>
-                    <input type="text" class="form-control" runat="server" style="text-align: right; font-size: x-large; max-width: 600px"
-                        id="txtCodBarra" onclick="this.setSelectionRange(0, this.value.length)" placeholder="ingrese cod de barra" clientidmode="Static" onkeypress="return soloNumeros(event)">
+                    <input type="text" class="form-control" runat="server" style="text-align: right; text-transform: uppercase; font-size: x-large; max-width: 100%"
+                        id="txtCodBarra" onclick="this.setSelectionRange(0, this.value.length)" placeholder="ingrese cod de barra" clientidmode="Static" onkeypress="return IngresoCodbarra(event)">
                 </div>
                 <input type="image" class="rapipagoimg"
                     src="../img/rapipago.png" />
@@ -59,6 +59,7 @@
                     <button type="button" runat="server" id="btnBuscarEmpresa" clientidmode="Static" style="font-size: x-large;" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>&nbsp;Buscar Empresa</button>
                     <div>
                         <label id="lblfailEmpresa" class="alert alert-danger" style="display: none" clientidmode="Static" runat="server"></label>
+                        <label id="lblfailEmpresa2" class="alert alert-danger" style="display: none" clientidmode="Static" runat="server"></label>
                     </div>
 
 
@@ -68,16 +69,21 @@
                 <div class="input-group">
                     <span class="input-group-addon">Empresa:</span>
                     <asp:DropDownList data-placeholder="Seleccione Empresa..."
-                        ClientIDMode="Static" ID="cboEmpresa" Style="font-size-adjust; max-width: 800px;" runat="server" class="form-control">
+                        ClientIDMode="Static" ID="cboEmpresa" Style="max-width: 100%;" runat="server" class="form-control">
                     </asp:DropDownList>
+
+                </div>
+                <div>
+                    <label id="lblMensajeEmpresa" class="alert alert-info" style="display: none; font-size: small" clientidmode="Static" runat="server"></label>
+
                 </div>
             </div>
 
-            <div class="form-group">
+            <div style="display: none" class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon">Forma Pago:</span>
                     <asp:DropDownList data-placeholder="Forma Pago.."
-                        ClientIDMode="Static" ID="cbofPago" Style="font-size-adjust; max-width: 500px;" runat="server" class="form-control">
+                        ClientIDMode="Static" ID="cbofPago" Style="max-width: 500px;" runat="server" class="form-control">
                     </asp:DropDownList>
                 </div>
             </div>
@@ -85,16 +91,13 @@
                 <div class="input-group">
                     <span class="input-group-addon">Modalidad:</span>
                     <asp:DropDownList data-placeholder="Modalidad.."
-                        ClientIDMode="Static" ID="cboModalidad" Style="width:750px; font-size-adjust; max-width: 800px;" runat="server" class="form-control">
+                        ClientIDMode="Static" ID="cboModalidad" Style="max-width: 90%;" runat="server" class="form-control">
                     </asp:DropDownList>
 
                 </div>
-            </div>
-
-            <div class="container">
-                <%--<h2>Lotes Pendientes</h2>--%>
-                <table id="tablafacturasCSF" style="display: none; font-size: x-small;" clientidmode="Static" class="table">
-                </table>
+                <img id="imgCom"  style="display: none; width: 50px; height: 50px; float: right; margin-top: -50px; margin-right: 35px;"
+                    clientidmode="Static" src="../Img/compag.png"></img>
+                <img id="imgNoCom"  style="display: none; width: 50px; height: 50px; float: right; margin-top: -50px; margin-right: 35px;" clientidmode="Static" src="../Img/comnopag.png"></img>
             </div>
 
             <div id="lblMonto" class="form-group">
@@ -108,6 +111,13 @@
                 </div>
 
             </div>
+            <div class="container">
+                <%--<h2>Lotes Pendientes</h2>--%>
+                <table id="tablafacturasCSF" style="display: none;" clientidmode="Static" class="table">
+                </table>
+            </div>
+
+
             <div style="text-align: center; height: 45px">
                 <button type="button" runat="server" id="btnAgregar" clientidmode="Static" style="font-size: x-large;" class="btn btn-info"><span class="glyphicon glyphicon-plus"></span>&nbsp;Buscar Facturas</button>
                 <button type="button" runat="server" id="btnLimpiar" onclick="Limpiar();" clientidmode="Static" style="font-size: x-large;" class="btn btn-warning"><span class="glyphicon glyphicon-clean"></span>&nbsp;Limpiar</button>
@@ -124,7 +134,7 @@
                 <table id="tablaFactura" clientidmode="Static" class="table">
                     <thead>
                         <tr id="fila0" class="info">
-                            <th>#</th>
+                            <th style='display: none'>#</th>
                             <th style="display: none">Cod. Empresa</th>
                             <th>Empresa</th>
                             <th>Codigo de Barras</th>
@@ -133,6 +143,7 @@
                             <th>T. Cob</th>
                             <th style="display: none">IDMod</th>
                             <th style="display: none">datosFormulario</th>
+                            <th>#</th>
                         </tr>
                     </thead>
 
@@ -156,7 +167,7 @@
     </div>
     <div style="text-align: center; height: 45px;">
         <button type="button" runat="server" id="btnAceptar" style="font-size: x-large;" clientidmode="Static" class="btn btn-primary"><i clientidmode="Static" id="spnConfirmar" class="glyphicon glyphicon-ok"></i>&nbsp;Confirmar Operaciones</button>
-        <button type="button" runat="server" id="btnEliminar" style="font-size: x-large;" clientidmode="Static" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i>&nbsp;Eliminar Seleccionada</button>
+        <button type="button" runat="server" id="btnEliminar" style="font-size: x-large;" visible="false" clientidmode="Static" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i>&nbsp;Eliminar Seleccionada</button>
 
         <button type="button" runat="server" id="btnConfirmar" style="font-size: x-large;" clientidmode="Static" visible="false" class="btn btn-success">&nbsp;Confirmar</button>
         <button type="button" runat="server" id="btnConsultarUltTransaccion" style="font-size: x-large;" visible="false" clientidmode="Static" class="btn btn-Info">&nbsp;Buscar</button>
@@ -169,6 +180,13 @@
 
     <script lang="javascript">
 
+        $(function () {
+            $(document).on('click', '.borrar', function (event) {
+                event.preventDefault();
+                $(this).closest('tr').remove();
+                CalcularTotal();
+            });
+        });
 
         function validar(e) {
             var tecla = (document.all) ? e.keyCode : e.which;
@@ -182,6 +200,29 @@
             }
         }
 
+        function IngresoCodbarra(e) {
+            var key = window.Event ? e.which : e.keyCode
+            if (key != 13)
+                return true;
+            else {
+
+
+                if (key == 13) {
+                    e.preventDefault();
+                    $('#btnAgregar').removeAttr('disabled');
+                    $('#txtMonto').css({ display: 'block' });
+                    $('#lblMonto').css({ display: 'block' });
+
+                    $("#btnAgregar").html('Agregar');
+
+                    BuscarFactura();
+                    $('#dvdGetEmpresa').css({ display: 'block' });
+                    return false;
+                }
+                else
+                    return false;
+            }
+        }
         function soloNumerosSinEnter(e) {
             var key = window.Event ? e.which : e.keyCode
             return (key >= 48 && key <= 57);
@@ -212,6 +253,13 @@
             document.getElementById('MyModal').style.display = 'none';
         }
 
+        function TranslateErrorPago(pCodError, pEmpresa, pdescItem) {
+            var mError;
+            mError = "La factura de " + pEmpresa + " No pudo Cobrarse. Error :" + pdescItem
+
+            return mError
+
+        }
         function TranslateError(pCodError, pEmpresa, pImpItem) {
             var mError;
             switch (pCodError) {
@@ -286,16 +334,22 @@
 
         function Limpiar() {
 
+            $('#imgNoCom').css({ display: 'none' });
+            $('#imgCom').css({ display: 'none' });
+            $('#lblMensajeEmpresa').css({ display: 'none' });
+            $('#txtMonto').attr('disabled', false);
             $('#dvdGetEmpresa').css({ display: 'block' });
             LimpiarCampos();
             LimpiarCamposPosSave();
             LimpiarGrillaExtras();
+            LimpiarGrillaFacturas();
         }
 
 
         function BuscarFactura() {
-            //alert(111111111);
-            // var dateFormat = require('dateformat');
+            $('#imgNoCom').css({ display: 'none' });
+            $('#imgCom').css({ display: 'none' });
+            $('#lblMensajeEmpresa').css({ display: 'none' });
             $('#lblresultok').css({ display: 'none' });
             $('#lblCargando').css({ display: 'none' });
             $('#tablafacturasCSF').css({ display: 'none' });
@@ -315,7 +369,7 @@
             //stringDataPayment = '{"items":[' + stringDataPayment + '],' + SendObj + '}';
 
             stringData = JSON.stringify(SendObjLote);
-            //console.log(stringData);
+            console.log(stringData);
             $.ajax({
                 type: "POST",
                 url: "../Servicios/Servicios.asmx/GetFacturas",
@@ -335,8 +389,23 @@
                     if (response.d.codResul == "0") {
                         var models = (typeof response.d.facturas) == "string" ? eval("(" + response.d.facturas + ")") : response.d.facturas;
 
-                        $("#cboEmpresa").get(0).options.length = 0;
+                        $("#cboEmpresa").get(0).options.length = 2;
+                        $('#lblMensajeEmpresa').css({ display: 'block' });
+                        $('#lblMensajeEmpresa').html(response.d.descResul);
+                        try {
+                            if (response.d.comision == "NO") {
+                                $('#imgCom').css({ display: 'none' });
+                                $('#imgNoCom').css({ display: 'block' });
 
+                            }
+                            else {
+                                $('#imgCom').css({ display: 'block' });
+                                $('#imgNoCom').css({ display: 'none' });
+                            }
+                        } catch (e) {
+                            $('#imgCom').css({ display: 'none' });
+                            $('#imgNoCom').css({ display: 'block' });
+                        }
 
                         for (var i = 0; i < models.length; i++) {
 
@@ -348,14 +417,14 @@
                             $("#cboEmpresa").get(0).options[$("#cboEmpresa").get(0).options.length] = new Option(text, val);
 
                             var textCod = models[i].codEmp;
-                            $("#txtCodEmpresa").val(val)
+                            $("#txtCodEmpresa").val(val);
 
 
                         }
 
                         CargarDatosFactura();
                         eliminarCamposAdicionales();
-                        AgregarCamposAdicionales();
+                        //AgregarCamposAdicionales();
                     }
                     else {
                         var msn;
@@ -443,14 +512,19 @@
             $('#lblresultokfail').css({ display: 'none' });
             $('#lblresultok').css({ display: 'none' });
             $('#lblCargando').css({ display: 'none' });
+            $('#lblMensajeEmpresa').css({ display: 'none' });
         }
 
-        function LimpiarGrillaExtras() {
+        function LimpiarGrillaFacturas() {
 
             $('#tablaFactura tbody tr').each(function () {
                 $(this).remove();
                 return false;
-            }); 
+            });
+        }
+        function LimpiarGrillaExtras() {
+
+
 
             $('#tablafacturasCSF tr').each(function () {
                 $(this).remove();
@@ -460,7 +534,7 @@
                 $(this).remove();
                 return false;
             });;
-           
+
         }
 
         function LimpiarCamposPosSave() {
@@ -468,7 +542,7 @@
             $("#cboEmpresa").val("");
             $("#cboModalidad").val("");
             $("#txtMonto").val(0);
-            
+
             $('#tablaFactura tbody tr').each(function () {
                 $(this).remove();
                 return false;
@@ -520,10 +594,14 @@
             eliminarCamposAdicionales();
             LimpiarGrillaExtras();
             var mUrl;
+            $('#lblMensajeEmpresa').css({ display: 'none' });
+            $('#imgCom').css({ display: 'none' });
             $('#btnAgregar').removeAttr('disabled');
             var SendObjLote = {
                 "codPuesto": $("#codPuesto").val(),
-                "idMod": $("#cboModalidad").val().split("|")[0]
+                "idMod": $("#cboModalidad").val().split("|")[0],
+                "codEmpresa": $("#cboEmpresa").val(),
+                "Modalidad": $('#cboModalidad :selected').text()
             }
 
 
@@ -542,6 +620,22 @@
                     if (response.d.codResul == 0) {
                         var models = response.d.campos;
                         var nextinput = 0;
+                        $('#lblMensajeEmpresa').css({ display: 'block' });
+                        $('#lblMensajeEmpresa').html(response.d.descResul);
+                        try {
+                            if (response.d.comision == "NO") {
+                                $('#imgCom').css({ display: 'none' });
+                                $('#imgNoCom').css({ display: 'block' });
+
+                            }
+                            else {
+                                $('#imgCom').css({ display: 'block' });
+                                $('#imgNoCom').css({ display: 'none' });
+                            }
+                        } catch (e) {
+                            $('#imgCom').css({ display: 'none' });
+                            $('#imgNoCom').css({ display: 'block' });
+                        }
                         for (var i = 0; i < models.length; i++) {
 
                             nextinput++;
@@ -551,14 +645,14 @@
                             //LABEL
                             //CHECK_BOX 
                             $("#ItemAdicional" + i).val(models[i].nombre);
-                            console.log(models[i].tipoComponenteVisual);
-                            console.log(models[i].nombre);
-                            console.log(models[i].tipo);
+                            //console.log(models[i].tipoComponenteVisual);
+                            //console.log(models[i].nombre);
+                            //console.log(models[i].tipo);
                             if (models[i].tipoComponenteVisual == "TEXT_FIELD" || models[i].tipoComponenteVisual == "HIDDEN_TEXT_FIELD") {
                                 var maxleng = models[i].longitud;
                                 var tipo = models[i].tipo;
                                 // alert(tipo);
-                                if (tipo == "ALF") {
+                                if (tipo == "ALF" || tipo == "CBA") {
                                     tipo = "text";
                                 }
                                 else {
@@ -571,8 +665,15 @@
                                     }
                                 }
 
+                                var sEtiqueta;
+                                sEtiqueta = models[i].etiqueta;
 
-                                nuevocampo = '<br clientidmode="Static" class="inputbr"/><div class="form-groupAdd"><div class="input-group"><span class="input-group-addon">' + models[i].etiqueta + ':</span><input maxlength="' + maxleng + '"  type="' + tipo + '" class="form-control" onKeyPress="return noenter()" style="text-align: justify; width: 100%" id="' + models[i].nombre + '" clientidmode="Static"></div></div>';
+                                if (sEtiqueta.includes("BARRA") || sEtiqueta.includes("Barra")) {
+                                    nuevocampo = '<br clientidmode="Static" class="inputbr"/><div class="form-groupAdd"><div class="input-group"><span class="input-group-addon">' + models[i].etiqueta + ':</span><input  maxlength="' + maxleng + '"  type="' + tipo + '" class="form-control" onKeyPress="return noenter()" style="text-align: justify; max-width: 100%; width: 100%" id="' + models[i].nombre + '" clientidmode="Static"></div></div>';
+                                } else {
+                                    nuevocampo = '<br clientidmode="Static" class="inputbr"/><div class="form-groupAdd"><div class="input-group"><span class="input-group-addon">' + models[i].etiqueta + ':</span><input maxlength="' + maxleng + '"  type="' + tipo + '" class="form-control" onKeyPress="return noenter()" style="text-align: justify; width: 100%" id="' + models[i].nombre + '" clientidmode="Static"></div></div>';
+                                }
+
                                 $("#ContenedorModalidad").append(nuevocampo);
 
                             }
@@ -607,7 +708,28 @@
 
                         }
 
+                    } else {
+                        try {
+                            if (response.d.comision == "NO") {
+                                $('#imgCom').css({ display: 'none' });
+                                $('#imgNoCom').css({ display: 'block' });
+
+                            }
+                            else {
+                                $('#imgCom').css({ display: 'block' });
+                                $('#imgNoCom').css({ display: 'none' });
+                            }
+                        } catch (e) {
+                            $('#imgCom').css({ display: 'none' });
+                            $('#imgNoCom').css({ display: 'block' });
+                        }
+
+
+                        $('#lblMensajeEmpresa').css({ display: 'block' });
+                        $('#lblMensajeEmpresa').html(response.d.descResul);
                     }
+
+
 
                 },
 
@@ -621,6 +743,7 @@
 
         function SelFact(ctl) {
             var _row = null;
+
             $('#lblfailAgregar').css({ display: 'none' });
             _row = $(ctl).parents("tr");
             var cols = _row.children("td");
@@ -637,48 +760,37 @@
                 if (mCodBarra == cols[1].innerText) {
                     $('#lblfailAgregar').css({ display: 'block' });
                     $('#lblfailAgregar').html("La factura indicada ya esta agregada para cobrarse");
-                    return;
-                }
-                else {
-                    var CantFila = 0;
-                    CantFila = $('#tablaFactura tbody tr').length + 1;
-                    var mNameFila;
-                    mNameFila = "FilaGrilla" + CantFila;
-
-                    $("#idMod").val($('#cboModalidad :selected').val().split("|")[0]);
-                    $("#tablaFactura").append("<tr class='success'><td> <input type='checkbox' /></td>" +
-                        "<td style='display:none'> " + $("#cboEmpresa").val() + "</td > " +
-                        "<td> " + $('#cboEmpresa :selected').text() + "</td > " +
-                        "<td> " + cols[1].innerText + "</td >" +
-                        "<td> " + $('#cboModalidad :selected').text() + "</td > " +
-                        "<td> " + cols[cols.length - 1].innerText +
-                        "<td > " + $('#cboModalidad :selected').val().split("|")[1] + "</td >" +
-                        "<td style='display:none'> " + $("#idMod").val() + "</td >" +
-                        "<td  style='display:none'> " + JSON.stringify('{}') + "</td >" +
-                        "</tr > ");
-
-
-                    //LimpiarCamposPosSave();
-
-                    CalcularTotal();
-                    eliminarCamposAdicionales();
-                    $('#btnAgregar').removeAttr('disabled');
+                    mEsPrimeraFila = 2;
                     return;
                 }
             });
 
-            if (mEsPrimeraFila == 1) {
+            if (mEsPrimeraFila != 2) {
+                var mMonto;
+                mMonto = cols[cols.length - 1].innerText;
+
+                if ($("#txtMonto").val() > 0) {
+                    mMonto = $("#txtMonto").val();
+                } else {
+                    if ($('#cboEmpresa :selected').val() == 652 && $('#cboModalidad :selected').val().split("|")[0] == "56967652726500006882") {
+                        $('#lblfailAgregar').css({ display: 'block' });
+                        $('#lblfailAgregar').html("Indique Monto a Cargar en la cuenta de Mercado Pago");
+                        mEsPrimeraFila = 2;
+                        return;
+                    }
+                }
 
                 $("#idMod").val($('#cboModalidad :selected').val().split("|")[0]);
-                $("#tablaFactura").append("<tr class='success'><td> <input type='checkbox' /></td>" +
+                $("#tablaFactura").append("<tr class='success'><td style='display:none'> <input type='checkbox' /></td>" +
                     "<td style='display:none'> " + $("#cboEmpresa").val() + "</td > " +
                     "<td> " + $('#cboEmpresa :selected').text() + "</td > " +
                     "<td> " + cols[1].innerText + "</td >" +
                     "<td> " + $('#cboModalidad :selected').text() + "</td > " +
-                    "<td> " + cols[cols.length - 1].innerText +
+                    "<td> " + mMonto +
                     "<td > " + $('#cboModalidad :selected').val().split("|")[1] + "</td >" +
                     "<td style='display:none'> " + $("#idMod").val() + "</td >" +
                     "<td  style='display:none'> " + JSON.stringify('{}') + "</td >" +
+                    "<td><input type='button' class='borrar' style='color: #ffffff;background-color: #d9534f;border-color: #d43f3a;display: inline-block;padding: 6px 12px;margin-bottom: 0;line-height: 1.428571429;text-align: center;white-space: nowrap;vertical-align: middle;cursor: pointer;border: 1px solid transparent;border-radius: 10px;' value='Eliminar' /></td>" +
                     "</tr > ");
 
 
@@ -688,6 +800,32 @@
                 eliminarCamposAdicionales();
                 $('#btnAgregar').removeAttr('disabled');
             }
+
+            //    return;
+
+
+
+            //if (mEsPrimeraFila == 1) {
+
+            //    $("#idMod").val($('#cboModalidad :selected').val().split("|")[0]);
+            //    $("#tablaFactura").append("<tr class='success'><td> <input type='checkbox' /></td>" +
+            //        "<td style='display:none'> " + $("#cboEmpresa").val() + "</td > " +
+            //        "<td> " + $('#cboEmpresa :selected').text() + "</td > " +
+            //        "<td> " + cols[1].innerText + "</td >" +
+            //        "<td> " + $('#cboModalidad :selected').text() + "</td > " +
+            //        "<td> " + cols[cols.length - 1].innerText +
+            //        "<td > " + $('#cboModalidad :selected').val().split("|")[1] + "</td >" +
+            //        "<td style='display:none'> " + $("#idMod").val() + "</td >" +
+            //        "<td  style='display:none'> " + JSON.stringify('{}') + "</td >" +
+            //        "</tr > ");
+
+
+            //    //LimpiarCamposPosSave();
+
+            //    CalcularTotal();
+            //    eliminarCamposAdicionales();
+            //    $('#btnAgregar').removeAttr('disabled');
+            //}
 
 
 
@@ -805,6 +943,7 @@
                             msnerror = TranslateError(response.d.codResul, '', 0)
                             $('#lblfailAgregar').css({ display: 'block' });
                             $('#lblfailAgregar').html(msnerror);
+                            $('#dvdGetEmpresa').css({ display: 'block' });
 
                         }
 
@@ -899,12 +1038,11 @@
             if ($('#cboModalidad :selected').val().split("|")[1] == "CSF" || $('#cboModalidad :selected').val().split("|")[1] == "SFM") {
                 ArmarGrillaCSF();
             }
-            else
-            {
+            else {
                 if ($('#cboModalidad :selected').val().split("|")[1] == "CEI") {
 
                     $("#idMod").val($('#cboModalidad :selected').val().split("|")[0]);
-                    $("#tablaFactura").append("<tr class='" + mClase + "'><td> <input type='checkbox' /></td>" +
+                    $("#tablaFactura").append("<tr class='" + mClase + "'><td style='display:none'> <input type='checkbox' /></td>" +
                         "<td style='display:none'> " + $("#cboEmpresa").val() + "</td > " +
                         "<td> " + $('#cboEmpresa :selected').text() + "</td > " +
                         "<td> " + $("#txtCodBarra").val() + "</td >" +
@@ -913,6 +1051,7 @@
                         "<td> " + $('#cboModalidad :selected').val().split("|")[1] + "</td >" +
                         "<td style='display:none'> " + $("#idMod").val() + "</td >" +
                         "<td  style='display:none'> " + JSON.stringify(SendObjLotedatosFormulario) + "</td >" +
+                        "<td><input type='button' class='borrar' style='color: #ffffff;background-color: #d9534f;border-color: #d43f3a;display: inline-block;padding: 6px 12px;margin-bottom: 0;line-height: 1.428571429;text-align: center;white-space: nowrap;vertical-align: middle;cursor: pointer;border: 1px solid transparent;border-radius: 10px;' value='Eliminar' /></td>" +
                         "</tr > ");
 
                 }
@@ -930,7 +1069,7 @@
                     //else {
 
                     $("#idMod").val($('#cboModalidad :selected').val().split("|")[0]);
-                    $("#tablaFactura").append("<tr class='" + mClase + "'><td> <input type='checkbox' /></td>" +
+                    $("#tablaFactura").append("<tr class='" + mClase + "'><td style='display:none'> <input type='checkbox' /></td>" +
                         "<td style='display:none'> " + $("#cboEmpresa").val() + "</td > " +
                         "<td> " + $('#cboEmpresa :selected').text() + "</td > " +
                         "<td> " + $("#txtCodBarra").val() + "</td >" +
@@ -939,6 +1078,7 @@
                         "<td> " + $('#cboModalidad :selected').val().split("|")[1] + "</td >" +
                         "<td style='display:none'> " + $("#idMod").val() + "</td >" +
                         "<td  style='display:none'> " + JSON.stringify(SendObjLotedatosFormulario) + "</td >" +
+                        "<td><input type='button' class='borrar' style='color: #ffffff;background-color: #d9534f;border-color: #d43f3a;display: inline-block;padding: 6px 12px;margin-bottom: 0;line-height: 1.428571429;text-align: center;white-space: nowrap;vertical-align: middle;cursor: pointer;border: 1px solid transparent;border-radius: 10px;' value='Eliminar' /></td>" +
                         "</tr > ");
                     //}
                 }
@@ -1024,14 +1164,17 @@
                             $("#txtMonto").removeAttr("min");
                             $("#txtMonto").removeAttr("max");
                             $("#txtMonto").val(response.d.facturas["0"].importe);
+                            //alert("tipoCob");
                             //alert(response.d.facturas["0"].tipoCobranza);
+                            //alert("CodTI");
+                            //alert(response.d.facturas["0"].codTI);
                             switch (response.d.facturas["0"].codTI) {
                                 case "CAC":
                                     if (response.d.facturas["0"].importe == "0") {
                                         $('#txtMonto').attr('disabled', false);
                                     }
                                     else {
-                                        $('#txtMonto').attr('disabled', true);
+                                        // $('#txtMonto').attr('disabled', true);
                                     }
                                     break;
                                 case "ESC":
@@ -1039,13 +1182,21 @@
                                         $('#cboMonto').css({ display: 'block' });
                                         $('#txtMonto').css({ display: 'none' });
                                     }
-
                                     else {
-                                        $('#cboMonto').css({ display: 'none' });
-                                        $('#txtMonto').css({ display: 'block' });
-                                        $('#txtMonto').attr('disabled', true);
+                                        if (response.d.facturas["0"].tipoCobranza == "CAB") {
+                                            $('#dvdGetEmpresa').css({ display: 'block' });
+                                            $('#lblfailEmpresa').css({ display: 'block' });
+                                            $('#lblfailEmpresa').html("La Modalidad de Pago de la Empresa No permite el ingreso directo de la barra. Debe hacerlo mediante la busqueda de empresas y completando la informacion solicitada");
+                                            //alert("La Modalidad de Pago de la Empresa No permite el ingreso directo de la barra. Debe hacerlo mediante la busqueda de empresas y completando la informacion solicitada");
+                                            LimpiarCampos();
+                                            //return false;
+                                        }
+                                        else {
+                                            $('#cboMonto').css({ display: 'none' });
+                                            $('#txtMonto').css({ display: 'block' });
+                                            // $('#txtMonto').attr('disabled', true);
+                                        }
                                     }
-
 
                                     break;
                                 case "SAB":
@@ -1302,8 +1453,8 @@
                         }
                         else {
 
-                            msn = msn + TranslateError(responsepago.d.items[i].codResulItem, responsepago.d.items[i].Empresa,
-                                responsepago.d.items[i].Importe);
+                            msn = msn + TranslateErrorPago(responsepago.d.items[i].codResulItem, responsepago.d.items[i].Empresa,
+                                responsepago.d.items[i].descResulItem);
 
                         }
                     }
@@ -1314,9 +1465,47 @@
                         LimpiarCamposPosSave();
 
                     }
-                    if (responsepago.d.codResul == "999") {
+
+                    if (responsepago.d.codResul == "666") {
                         $('#lblresultokfail').css({ display: 'block' });
-                        $('#lblresultokfail').html("Solo Puede enviar una factura para cobro");
+                        $('#lblresultokfail').html("Rapipago Momentaneamente sin servicio, reintente mas tarde.");
+                        $('#spnConfirmar').removeClass('fa fa-circle-o-notch fa-spin');
+                        $('#spnConfirmar').addClass('glyphicon glyphicon-ok');
+                        $('#btnAceptar').removeAttr('disabled');
+                        return;
+
+                    }
+
+                    //if (responsepago.d.codResul == "999") {
+                    //    $('#lblresultokfail').css({ display: 'block' });
+                    //    $('#lblresultokfail').html("Solo Puede enviar una factura para cobro");
+                    //    $('#spnConfirmar').removeClass('fa fa-circle-o-notch fa-spin');
+                    //    $('#spnConfirmar').addClass('glyphicon glyphicon-ok');
+                    //    $('#btnAceptar').removeAttr('disabled');
+                    //    return;
+
+                    //}
+                    if (responsepago.d.codResul == "777") {
+                        $('#lblresultokfail').css({ display: 'block' });
+                        $('#lblresultokfail').html("Fuera de Horario de Atencion. Horario Habilitado desde las 07:00 hasta las 20:00");
+                        $('#spnConfirmar').removeClass('fa fa-circle-o-notch fa-spin');
+                        $('#spnConfirmar').addClass('glyphicon glyphicon-ok');
+                        $('#btnAceptar').removeAttr('disabled');
+                        return;
+
+                    }
+                    if (responsepago.d.codResul == "888") {
+                        $('#lblresultokfail').css({ display: 'block' });
+                        $('#lblresultokfail').html("Rapipago Momentaneamente fuera de servicio");
+                        $('#spnConfirmar').removeClass('fa fa-circle-o-notch fa-spin');
+                        $('#spnConfirmar').addClass('glyphicon glyphicon-ok');
+                        $('#btnAceptar').removeAttr('disabled');
+                        return;
+
+                    }
+                    if (responsepago.d.codResul == "222") {
+                        $('#lblresultokfail').css({ display: 'block' });
+                        $('#lblresultokfail').html("Rapipago Momentaneamente fuera de servicio..");
                         $('#spnConfirmar').removeClass('fa fa-circle-o-notch fa-spin');
                         $('#spnConfirmar').addClass('glyphicon glyphicon-ok');
                         $('#btnAceptar').removeAttr('disabled');
@@ -1365,6 +1554,7 @@
             $("#idMod").val(0);
             $("#txtMonto").val(0);
             $("#cboModalidad").val("");
+            $('#lblMensajeEmpresa').css({ display: 'none' });
             $('#lblresultokfail').css({ display: 'none' });
             $('#lblfailAgregar').css({ display: 'none' });
             $('#lblfailEmpresa').css({ display: 'none' });
@@ -1393,7 +1583,8 @@
                     if (response.d.codResul == "0") {
                         var models = (typeof response.d.empresas) == "string" ? eval("(" + response.d.empresas + ")") : response.d.empresas;
 
-
+                        $('#lblMensajeEmpresa').css({ display: 'block' });
+                        $('#lblMensajeEmpresa').html(response.d.descResul);
 
                         $("#cboEmpresa").get(0).options.length = 0;
 
@@ -1578,29 +1769,31 @@
             $("#btnAgregar").click(function () {
                 $('#lblresultokfail').css({ display: 'none' });
                 $('#lblfailAgregar').css({ display: 'none' });
-                if ($("#ItemAdicional0").val() != "") {
-                    if ($("#" + $("#ItemAdicional0").val()).val() == "") {
-                        $('#lblresultokfail').css({ display: 'block' });
-                        $('#lblresultokfail').html("Debe ingresar el valor 1 solicitado");
-                        return;
-                    }
-                }
-                if ($("#ItemAdicional1").val() != "") {
-                    if ($("#" + $("#ItemAdicional1").val()).val() == "") {
-                        $('#lblresultokfail').css({ display: 'block' });
-                        $('#lblresultokfail').html("Debe ingresar el valor 2 solicitado");
-                        return;
-                    }
-                }
-                if ($("#ItemAdicional2").val() != "") {
-                    if ($("#" + $("#ItemAdicional2").val()).val() == "") {
-                        $('#lblresultokfail').css({ display: 'block' });
-                        $('#lblresultokfail').html("Debe ingresar el valor 3 solicitado");
-                        return;
-                    }
-                }
+                //if ($("#ItemAdicional0").val() != "") {
+                //    if ($("#" + $("#ItemAdicional0").val()).val() == "") {
+                //        $('#lblresultokfail').css({ display: 'block' });
+                //        $('#lblresultokfail').html("Debe ingresar el valor 1 solicitado");
+                //        return;
+                //    }
+                //}
+                //if ($("#ItemAdicional1").val() != "") {
+                //    if ($("#" + $("#ItemAdicional1").val()).val() == "") {
+                //        $('#lblresultokfail').css({ display: 'block' });
+                //        $('#lblresultokfail').html("Debe ingresar el valor 2 solicitado");
+                //        return;
+                //    }
+                //}
+                //if ($("#ItemAdicional2").val() != "") {
+                //    if ($("#" + $("#ItemAdicional2").val()).val() == "") {
+                //        $('#lblresultokfail').css({ display: 'block' });
+                //        $('#lblresultokfail').html("Debe ingresar el valor 3 solicitado");
+                //        return;
+                //    }
+                //}
                 AgregarFact();
                 eliminarCamposAdicionales();
+
+                $('#dvdGetEmpresa').css({ display: 'block' });
 
             });
             $("#btnAceptar").click(function () {
@@ -1665,7 +1858,7 @@
                 strConfirmacion = JSON.stringify(SendObjLoteConf);
                 $.ajax({
                     type: "POST",
-                    url: "http://200.123.144.250/version3/transaccion/confirmar/ ",
+                    url: "http://200.123.144.198/fase2/transaccion/confirmar/ ",
                     data: strConfirmacion,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
@@ -1708,8 +1901,8 @@
 
                 if (mTipoCobranza == "CSF" || mTipoCobranza == "SFM") {
                     $("#btnAgregar").html('Buscar Facturas');
-                    $('#txtMonto').css({ display: 'none' });
-                    $('#lblMonto').css({ display: 'none' });
+                    //$('#txtMonto').css({ display: 'none' });
+                    //$('#lblMonto').css({ display: 'none' });
                 }
                 else {
                     $("#btnAgregar").html('Agregar');

@@ -317,6 +317,31 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="GetTransaccionesWebLivianaRedBus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pFechaDesde" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pDestino" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pFechaHasta" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTransaccionesWebLivianaRedBusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTransaccionesWebLivianaRedBusResult">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="GetTransaccionesWebLiviana">
         <s:complexType>
           <s:sequence>
@@ -637,6 +662,83 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="NewSaleWithRefOperadorSubeTest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pDestino" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="pReferenciaOperador" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleWithRefOperadorSubeTestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NewSaleWithRefOperadorSubeTestResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEstadoRedBusElectronico">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="pÌD" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="estado" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fechaImpactada" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fechaRecarga" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="importe" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="idProveedor" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pMsn" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetEstadoRedBusElectronicoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetEstadoRedBusElectronicoResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="estado" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fechaImpactada" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fechaRecarga" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="importe" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="idProveedor" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pMsn" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleWithRefOperadorRedBusElectronico">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pNroTarjeta" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Amount" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewSaleWithRefOperadorRedBusElectronicoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="NewSaleWithRefOperadorRedBusElectronicoResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="IdTransaccion" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SaleData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="SolicitudStockWebLiviana">
         <s:complexType>
           <s:sequence>
@@ -951,6 +1053,12 @@
   <wsdl:message name="GetTransaccionesWebLivianaResumidoSoapOut">
     <wsdl:part name="parameters" element="tns:GetTransaccionesWebLivianaResumidoResponse" />
   </wsdl:message>
+  <wsdl:message name="GetTransaccionesWebLivianaRedBusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTransaccionesWebLivianaRedBus" />
+  </wsdl:message>
+  <wsdl:message name="GetTransaccionesWebLivianaRedBusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTransaccionesWebLivianaRedBusResponse" />
+  </wsdl:message>
   <wsdl:message name="GetTransaccionesWebLivianaSoapIn">
     <wsdl:part name="parameters" element="tns:GetTransaccionesWebLiviana" />
   </wsdl:message>
@@ -1040,6 +1148,24 @@
   </wsdl:message>
   <wsdl:message name="NewSaleWithRefOperadorSubeSoapOut">
     <wsdl:part name="parameters" element="tns:NewSaleWithRefOperadorSubeResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleWithRefOperadorSubeTestSoapIn">
+    <wsdl:part name="parameters" element="tns:NewSaleWithRefOperadorSubeTest" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleWithRefOperadorSubeTestSoapOut">
+    <wsdl:part name="parameters" element="tns:NewSaleWithRefOperadorSubeTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetEstadoRedBusElectronicoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetEstadoRedBusElectronico" />
+  </wsdl:message>
+  <wsdl:message name="GetEstadoRedBusElectronicoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetEstadoRedBusElectronicoResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleWithRefOperadorRedBusElectronicoSoapIn">
+    <wsdl:part name="parameters" element="tns:NewSaleWithRefOperadorRedBusElectronico" />
+  </wsdl:message>
+  <wsdl:message name="NewSaleWithRefOperadorRedBusElectronicoSoapOut">
+    <wsdl:part name="parameters" element="tns:NewSaleWithRefOperadorRedBusElectronicoResponse" />
   </wsdl:message>
   <wsdl:message name="SolicitudStockWebLivianaSoapIn">
     <wsdl:part name="parameters" element="tns:SolicitudStockWebLiviana" />
@@ -1152,6 +1278,10 @@
       <wsdl:input message="tns:GetTransaccionesWebLivianaResumidoSoapIn" />
       <wsdl:output message="tns:GetTransaccionesWebLivianaResumidoSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="GetTransaccionesWebLivianaRedBus">
+      <wsdl:input message="tns:GetTransaccionesWebLivianaRedBusSoapIn" />
+      <wsdl:output message="tns:GetTransaccionesWebLivianaRedBusSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="GetTransaccionesWebLiviana">
       <wsdl:input message="tns:GetTransaccionesWebLivianaSoapIn" />
       <wsdl:output message="tns:GetTransaccionesWebLivianaSoapOut" />
@@ -1211,6 +1341,18 @@
     <wsdl:operation name="NewSaleWithRefOperadorSube">
       <wsdl:input message="tns:NewSaleWithRefOperadorSubeSoapIn" />
       <wsdl:output message="tns:NewSaleWithRefOperadorSubeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorSubeTest">
+      <wsdl:input message="tns:NewSaleWithRefOperadorSubeTestSoapIn" />
+      <wsdl:output message="tns:NewSaleWithRefOperadorSubeTestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEstadoRedBusElectronico">
+      <wsdl:input message="tns:GetEstadoRedBusElectronicoSoapIn" />
+      <wsdl:output message="tns:GetEstadoRedBusElectronicoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorRedBusElectronico">
+      <wsdl:input message="tns:NewSaleWithRefOperadorRedBusElectronicoSoapIn" />
+      <wsdl:output message="tns:NewSaleWithRefOperadorRedBusElectronicoSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="SolicitudStockWebLiviana">
       <wsdl:input message="tns:SolicitudStockWebLivianaSoapIn" />
@@ -1377,6 +1519,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetTransaccionesWebLivianaRedBus">
+      <soap:operation soapAction="http://tempuri.org/GetTransaccionesWebLivianaRedBus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetTransaccionesWebLiviana">
       <soap:operation soapAction="http://tempuri.org/GetTransaccionesWebLiviana" style="document" />
       <wsdl:input>
@@ -1505,6 +1656,33 @@
     </wsdl:operation>
     <wsdl:operation name="NewSaleWithRefOperadorSube">
       <soap:operation soapAction="http://tempuri.org/NewSaleWithRefOperadorSube" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorSubeTest">
+      <soap:operation soapAction="http://tempuri.org/NewSaleWithRefOperadorSubeTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEstadoRedBusElectronico">
+      <soap:operation soapAction="http://tempuri.org/GetEstadoRedBusElectronico" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorRedBusElectronico">
+      <soap:operation soapAction="http://tempuri.org/NewSaleWithRefOperadorRedBusElectronico" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1722,6 +1900,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetTransaccionesWebLivianaRedBus">
+      <soap12:operation soapAction="http://tempuri.org/GetTransaccionesWebLivianaRedBus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetTransaccionesWebLiviana">
       <soap12:operation soapAction="http://tempuri.org/GetTransaccionesWebLiviana" style="document" />
       <wsdl:input>
@@ -1850,6 +2037,33 @@
     </wsdl:operation>
     <wsdl:operation name="NewSaleWithRefOperadorSube">
       <soap12:operation soapAction="http://tempuri.org/NewSaleWithRefOperadorSube" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorSubeTest">
+      <soap12:operation soapAction="http://tempuri.org/NewSaleWithRefOperadorSubeTest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetEstadoRedBusElectronico">
+      <soap12:operation soapAction="http://tempuri.org/GetEstadoRedBusElectronico" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewSaleWithRefOperadorRedBusElectronico">
+      <soap12:operation soapAction="http://tempuri.org/NewSaleWithRefOperadorRedBusElectronico" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
