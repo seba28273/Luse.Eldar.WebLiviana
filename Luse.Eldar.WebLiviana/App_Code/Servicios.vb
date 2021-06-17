@@ -37,6 +37,65 @@ Public Class Servicios
     Dim oConn As New SqlConnection(WebConfigurationManager.AppSettings("ConnStringEldar").ToString())
     Dim ocmd As New SqlCommand()
 
+    Public Function GrabarVentaXRetiros(IDAgencia As Long, IDAcceso As Long, pMonto As Decimal, pEmpresa As String, pCodPuesto As String,
+                                        pCodBarra As String, pIDTransaccion As String, pRefOperador As String, pTicket As String, CodEmpresa As String,
+                                        pSaldoVirtual As Decimal, pSaldoSube As Decimal) As Boolean
+
+        oConn.Open()
+        Try
+            Try
+                If Not IsNumeric(CodEmpresa) Then
+                    CodEmpresa = -999
+                End If
+            Catch ex As Exception
+                CodEmpresa = -999
+            End Try
+
+
+            ocmd = New SqlCommand("Venta_iRapipagoXRetiros", oConn)
+            ocmd.CommandType = CommandType.StoredProcedure
+            ocmd.Parameters.AddWithValue("@IDAgencia", IDAgencia)
+            ocmd.Parameters.AddWithValue("@IDAcceso", IDAcceso)
+            ocmd.Parameters.AddWithValue("@Monto", pMonto)
+            ocmd.Parameters.AddWithValue("@Empresa", pEmpresa)
+            ocmd.Parameters.AddWithValue("@CodPuesto", pCodPuesto)
+            ocmd.Parameters.AddWithValue("@CodBarra", pCodBarra)
+            ocmd.Parameters.AddWithValue("@IDTransaccion", pIDTransaccion)
+            ocmd.Parameters.AddWithValue("@RefOperador", pRefOperador)
+            ocmd.Parameters.AddWithValue("@Ticket", pTicket)
+            ocmd.Parameters.AddWithValue("@CodEmpresa", CodEmpresa)
+            ocmd.Parameters.AddWithValue("@SaldoVirtual", pSaldoVirtual)
+            ocmd.Parameters.AddWithValue("@SaldoSube", pSaldoSube)
+            If ocmd.ExecuteNonQuery() > 0 Then
+
+                Return True
+            Else
+                Try
+                    My.Computer.FileSystem.WriteAllText("C:\Sitios\Httpeldar\LogsRapipago\RetirosCobroNoImpactado_" & DateTime.Now.Day & "_" & DateTime.Now.Month & ".txt", DateTime.Now & " Ticket:" & pTicket &
+                                                         " Ticket:" & pTicket &
+                                                          " IDAgencia:" & IDAgencia &
+                                                           " IDAcceso:" & IDAcceso &
+                                                            " Monto:" & pMonto &
+                                                             " Empresa:" & pEmpresa &
+                                                              " CodPuesto:" & pCodPuesto &
+                                                               " CodBarra:" & pCodBarra &
+                                                               " IDTransaccion:" & pIDTransaccion &
+                                                               " RefOperador:" & pRefOperador &
+                                                               " CodEmpresa:" & CodEmpresa &
+                                                               vbCrLf & vbCrLf, True)
+                Catch ex As Exception
+
+                End Try
+                Return False
+            End If
+
+        Catch ex As Exception
+            Throw ex
+        Finally
+            oConn.Close()
+        End Try
+    End Function
+
     Public Function GrabarVenta(IDAgencia As Long, IDAcceso As Long, pMonto As Decimal, pEmpresa As String, pCodPuesto As String,
                                      pCodBarra As String, pIDTransaccion As String, pRefOperador As String, pTicket As String, CodEmpresa As String) As Boolean
 
@@ -63,12 +122,13 @@ Public Class Servicios
             ocmd.Parameters.AddWithValue("@RefOperador", pRefOperador)
             ocmd.Parameters.AddWithValue("@Ticket", pTicket)
             ocmd.Parameters.AddWithValue("@CodEmpresa", CodEmpresa)
+
             If ocmd.ExecuteNonQuery() > 0 Then
 
                 Return True
             Else
                 Try
-                    My.Computer.FileSystem.WriteAllText("C:\Sitios\Httpeldar\LogsRapipago\CobroNoImpactado_" & DateTime.Now.Day & "_" & DateTime.Now.Month & ".txt", DateTime.Now & " Ticket:" & pTicket &
+                    My.Computer.FileSystem.WriteAllText("C:\Sitios\Httpeldar\LogsRapipago\RetirosCobroNoImpactado_" & DateTime.Now.Day & "_" & DateTime.Now.Month & ".txt", DateTime.Now & " Ticket:" & pTicket &
                                                          " Ticket:" & pTicket &
                                                           " IDAgencia:" & IDAgencia &
                                                            " IDAcceso:" & IDAcceso &
@@ -230,6 +290,372 @@ Public Class Servicios
             Return False
         Finally
             If Not response Is Nothing Then response.Close()
+        End Try
+
+    End Function
+
+    Public Class GrillaResponse
+        Private mBarra As String
+        Public Property Barra() As String
+            Get
+                Return mBarra
+            End Get
+            Set(ByVal value As String)
+                mBarra = value
+            End Set
+        End Property
+        Private mImporte As String
+        Public Property Importe() As String
+            Get
+                Return mImporte
+            End Get
+            Set(ByVal value As String)
+                mImporte = value
+            End Set
+        End Property
+        Private mNombre As String
+        Public Property Nombre() As String
+            Get
+                Return mNombre
+            End Get
+            Set(ByVal value As String)
+                mNombre = value
+            End Set
+        End Property
+        Private mDni As String
+        Public Property Dni() As String
+            Get
+                Return mDni
+            End Get
+            Set(ByVal value As String)
+                mDni = value
+            End Set
+        End Property
+        Private mcodResul As String
+        Public Property codResul() As String
+            Get
+                Return mcodResul
+            End Get
+            Set(ByVal value As String)
+                mcodResul = value
+            End Set
+        End Property
+        Private mdescResul As String
+        Public Property descResul() As String
+            Get
+                Return mdescResul
+            End Get
+            Set(ByVal value As String)
+                mdescResul = value
+            End Set
+        End Property
+    End Class
+
+    <WebMethod()>
+    Public Function GetRetirarDinero(pObj As Parametros) As GrillaResponse
+
+        Dim oGrilla As New Grilla
+        '{"C11":"1","C12":"22316420","C13":"565535","IV1":"100"}
+        '{"C11":"1","C12":"22316420","C13":"365353","IV1":"100"}
+        oGrilla = GetGrilla(pObj.CodPuesto, "61339065972400034072", "", "{""C11"":""1"",""C12"":""" & pObj.Dni & """,""C13"":""" & pObj.NroReferencia & """,""IV1"":""0""}")
+        Dim oRes As New GrillaResponse
+
+        If oGrilla.codResul <> 0 Then
+            Dim oRespuestaPagoControl2 As New GrillaResponse()
+            oRespuestaPagoControl2.codResul = "888"
+            oRespuestaPagoControl2.descResul = oGrilla.descResul
+            Return oRespuestaPagoControl2
+
+        End If
+        oRes.Barra = oGrilla.valoresGri(0).valor
+        oRes.Importe = oGrilla.valoresGri(9).valor
+        oRes.Nombre = oGrilla.valoresGri(3).valor
+        oRes.Dni = oGrilla.valoresGri(4).valor
+        oRes.codResul = "0"
+        Return oRes
+    End Function
+    <WebMethod()>
+    Public Function RetirarDinero(pObj As Parametros) As Pago
+
+        Dim ser As New JavaScriptSerializer()
+        Dim oResError As New RespuestaRapipago
+        Dim oRes As New Pago
+        Dim oRespuestaPago As New Pago
+        Dim oResEnvio As New CabeceraEnviar
+        Dim postStream As Stream = Nothing
+        Dim request As HttpWebRequest
+        Dim response As HttpWebResponse = Nothing
+        Dim address As Uri
+        Dim dataSend As String
+        Dim byteData() As Byte
+        Dim mLog As String
+        Dim mhora As Integer
+        Dim datosFormulario As String
+        mhora = Now.Hour
+
+        pObj.Monto = pObj.Monto * -1
+        datosFormulario = "{""items"":  [{""barra"":""" & pObj.CodBarra & """,""idMod"":""61339065972400034072"",""codEmp"":""8001"",""Empresa"":""MERCADO PAGO - RETIROS EN EFECTIVO"",""fechaHoraLectura"":""" & Format(Now, "yyyy-MM-dd HH:mm:ss") & """,""importeItem"":""" & pObj.Monto & ".0"",""idItem"":""0313953" & pObj.CodPuesto & Format(Now, "yyyyMMddHHmmss") & """, ""formasPago"":{""PES"":""" & pObj.Monto & ".0""},""datosFormulario"":{}}],""codPuesto"":""" & pObj.CodPuesto & """,""idMobile"":""3516339290"",""importeTotal"":""" & pObj.Monto & """,""idTrxAnterior"":""""}"
+
+        mLog = "" & vbCrLf & vbCrLf & vbCrLf & vbCrLf
+        address = New Uri(WebConfigurationManager.AppSettings("UrlRapipago").ToString() & "factura/pago")
+        Try
+            ' Create the web request  
+            request = DirectCast(WebRequest.Create(address), HttpWebRequest)
+
+            ' SETEA A POST  
+            request.Method = "POST"
+
+            request.ContentType = "application/json"
+
+            dataSend = datosFormulario
+            mLog = datosFormulario & vbCrLf & vbCrLf
+            oResEnvio = JsonConvert.DeserializeObject(Of CabeceraEnviar)(datosFormulario)
+
+            Dim oTablaTemp As DataTable
+            Dim cSQL As String = ""
+
+            'Consulta
+            'cSQL = "SELECT ReferenciaOperador From Venta Where ReferenciaOperador like ='" & oRes.idUltimaTrxConfirmada & "'"
+            cSQL = "SELECT IDAgencia From AgenciaRapipago Where codPuesto =" & oResEnvio.codPuesto
+            Try
+                oTablaTemp = GetDatos(cSQL)
+                If oTablaTemp.Rows.Count = 0 Then
+                    Dim oRespuestaPagoControl2 As New Pago()
+                    oRespuestaPagoControl2.codResul = "888"
+                    oRespuestaPagoControl2.descResul = "Rapipago Momentaneamente fuera de servicio"
+                    oRespuestaPagoControl2.idTrx = 0
+                    Return oRespuestaPagoControl2
+
+                End If
+            Catch ex As Exception
+                Dim oRespuestaPagoControl2 As New Pago()
+                oRespuestaPagoControl2.codResul = "222"
+                oRespuestaPagoControl2.descResul = "Rapipago Momentaneamente fuera de servicio."
+                oRespuestaPagoControl2.idTrx = 0
+                Return oRespuestaPagoControl2
+            End Try
+
+            Dim mServicioActivo As Boolean = False
+
+            For index = 1 To 5
+                If ValidarServicio(oResEnvio.codPuesto) Then
+                    mServicioActivo = True
+
+                    Exit For
+                Else
+                    Threading.Thread.Sleep(2000)
+                    Try
+                        My.Computer.FileSystem.WriteAllText("C:\Sitios\Httpeldar\LogsRapipago\RetirosCosultasError_" & DateTime.Now.Day & "_" & DateTime.Now.Month & ".txt", DateTime.Now &
+                                             " Log:" & mLog &
+                                              " IDAgencia:" & pObj.IDAgencia &
+                                               " IDAcceso:" & pObj.User &
+                                               " Intento Fallido Nro ." & index.ToString &
+                                                   vbCrLf & vbCrLf, True)
+                    Catch ex As Exception
+
+                    End Try
+
+                End If
+            Next
+
+
+            Dim oRespuestaPagoControl As New Pago()
+
+            If mServicioActivo = False Then
+                oRespuestaPagoControl.codResul = "666"
+                oRespuestaPagoControl.descResul = "Rapipago Momentaneamente sin servicio, reintente mas tarde."
+                oRespuestaPagoControl.idTrx = 0
+
+                Try
+                    My.Computer.FileSystem.WriteAllText("C:\Sitios\Httpeldar\LogsRapipago\RetirosCosultasError_" & DateTime.Now.Day & "_" & DateTime.Now.Month & ".txt", DateTime.Now &
+                                                 " Log:" & mLog &
+                                                   " IDAgencia:" & pObj.IDAgencia &
+                                               " IDAcceso:" & pObj.User &
+                                                   " Mensaje Error: Rapipago Momentaneamente sin servicio, reintente mas tarde." &
+                                                       vbCrLf & vbCrLf, True)
+                Catch ex As Exception
+
+                End Try
+
+
+
+                Return oRespuestaPagoControl
+            End If
+
+
+
+            If oResEnvio.items.Length > 5 Then
+                oRespuestaPagoControl.codResul = "999"
+                oRespuestaPagoControl.descResul = "Solo Puede enviar como Maximo 5 facturas para cobro"
+                oRespuestaPagoControl.idTrx = 0
+                Return oRespuestaPagoControl
+            End If
+
+            Try
+                oResEnvio.items(0).fechaHoraLectura = Format(Now, "yyyy-MM-dd HH:mm:ss")
+
+            Catch ex As Exception
+
+            End Try
+            ' Create a byte array of the data we want to send  
+            byteData = UTF8Encoding.UTF8.GetBytes(dataSend)
+
+            ' Set the content length in the request headers  
+            request.ContentLength = byteData.Length
+
+            ' Write data  
+            Try
+                postStream = request.GetRequestStream()
+                postStream.Write(byteData, 0, byteData.Length)
+            Finally
+                If Not postStream Is Nothing Then postStream.Close()
+            End Try
+            ' Get response  
+            response = DirectCast(request.GetResponse(), HttpWebResponse)
+
+            ' Get the response stream into a reader  
+            Using StreamReader As New StreamReader(response.GetResponseStream())
+
+                Dim result As String = StreamReader.ReadToEnd()
+                oRes = JsonConvert.DeserializeObject(Of Pago)(result)
+                ' Dim result As String
+                mLog = mLog & result
+
+
+                'result = "{'codPuesto':26936,'items':[{'barra':'579202112947336001084102600000000101000009920052','ticket':[['Puesto: 026936','Fecha: 01/02/2021         Hora: 14:27:29','Empresa: 451 MUNICIPALIDAD DE MENDOZA','2021129473360','Nro.Op:269361612200449606','Cod.Seg:645566F5D0','Forma de Pago                    Importe','PESOS                            $992.00','** TOTAL **                      $992.00','579202112947336001084102600000000101000009920052','','ORIGINAL']],'codResulItem':0,'descResulItem':'OK','idItem':'031395302693620210201142712'},{'barra':'579202112947337002084102600000000101000009420011','ticket':[['Puesto: 026936','Fecha: 01/02/2021         Hora: 14:27:29','Empresa: 451 MUNICIPALIDAD DE MENDOZA','2021129473370','Nro.Op:269361612200449576','Cod.Seg:85014E2AE9','Forma de Pago                    Importe','PESOS                            $942.00','** TOTAL **                      $942.00','579202112947337002084102600000000101000009420011','','ORIGINAL']],'codResulItem':0,'descResulItem':'OK','idItem':'031395302693620210201142714'}],'codResul':0,'descResul':'OK','idTrx':'0269361612200449261'}"
+
+                'Dim ThisToken2 As JObject = Newtonsoft.Json.JsonConvert.DeserializeObject(Of JObject)(result)
+
+                If oRes.codResul = 0 Then
+                    ConfirmarOperacion(oRes.codPuesto, oRes.idTrx)
+                End If
+
+
+                Dim mCantItemsOK As Integer = 0
+                Dim mCantItemsRegistradosOK As Integer = 0
+                For Each item As Item In oRes.items.ToList
+                    If item.codResulItem = 0 Then
+                        mCantItemsOK = mCantItemsOK + 1
+                        For Each itemCab As ItemEnviar In oResEnvio.items
+                            If item.idItem = itemCab.idItem Then
+
+                                Dim mResVenta As Boolean = False
+                                Dim mTicket As String = SepararTicket(result, itemCab.barra)
+
+                                mResVenta = GrabarVentaXRetiros(pObj.IDAgencia, pObj.IDAcceso, Convert.ToDecimal(itemCab.importeItem.Replace(".", ",")), itemCab.Empresa,
+                                oRes.codPuesto, IIf(item.barra = "", "Sin Barra", item.barra), item.idItem, oRes.idTrx, mTicket, itemCab.codEmp, pObj.SaldoVirtual, pObj.SaldoSube)
+                                Threading.Thread.Sleep(1000)
+                                If mResVenta Then
+                                    mCantItemsRegistradosOK = mCantItemsRegistradosOK + 1
+                                End If
+
+                            End If
+                        Next
+                    End If
+                Next
+                If mCantItemsOK <> mCantItemsRegistradosOK Then
+                    Try
+                        My.Computer.FileSystem.WriteAllText("C:\Sitios\Httpeldar\LogsRapipago\RetirosCobroNoImpactadoEnBase_" & DateTime.Now.Day & "_" & DateTime.Now.Month & ".txt", DateTime.Now &
+                                                            " Ticket:" & result &
+                                                            " IDAgencia:" & pObj.IDAgencia &
+                                                            " IDAcceso:" & pObj.User &
+                                                               vbCrLf & vbCrLf, True)
+                    Catch ex As Exception
+
+                    End Try
+                End If
+
+                'Enviar Recarga Eldar
+                oRespuestaPago = New Pago
+                Dim ThisToken As JObject = Newtonsoft.Json.JsonConvert.DeserializeObject(Of JObject)(result)
+                If ThisToken("items").HasValues Then
+                    For i = 0 To ThisToken("items").Count - 1
+
+
+                        Dim ThisTokenTicket As JArray = Newtonsoft.Json.JsonConvert.DeserializeObject(Of JArray)(JsonConvert.SerializeObject(ThisToken("items")))
+                        Dim oItem As New Item
+                        If ThisTokenTicket.Item(i).Item("ticket").HasValues Then
+                            For a = 0 To ThisTokenTicket.Item(i).Item("ticket").Count - 1
+
+                                For c = 0 To ThisTokenTicket.Item(i).Item("ticket").Item(a).Count - 1
+                                    Dim oJValue As New JValue(ThisTokenTicket.Item(i).Item("ticket").Item(a).Item(c).ToString)
+
+                                    oItem.tic.Add(oJValue.Value)
+                                Next
+
+                            Next
+                        End If
+
+
+                        oItem.codResulItem = ThisTokenTicket.Item(i).Item("codResulItem").ToString
+                        oItem.descResulItem = ThisTokenTicket.Item(i).Item("descResulItem").ToString
+                        oItem.barra = ThisTokenTicket.Item(i).Item("barra").ToString
+                        oItem.idItem = ThisTokenTicket.Item(i).Item("idItem").ToString
+
+                        oRespuestaPago.items.Add(oItem)
+                        If oItem.codResulItem <> 0 Then
+
+                            Dim oRespuesta As New RespuestaRapipago
+                            Dim oObj As New ParametrosRapiPago
+                            oObj.CodBarra = oItem.barra
+                            oObj.codPuesto = oRes.codPuesto
+                            Try
+                                oRespuesta = GetFacturas(oObj)
+                            Catch ex As Exception
+                                oRespuesta.cantColisiones = 0
+                            End Try
+
+                            If oRespuesta.cantColisiones = 1 Then
+                                oItem.Empresa = oRespuesta.facturas(0).descEmp
+                                oItem.Importe = oRespuesta.facturas(0).importe
+                                'ElseIf oRespuesta.cantColisiones = 9999 Then
+                                '    'Hay una operacion sin confirmar la busco y actualizo
+                                'Respuesta: por mas que mande 10 facturas a pagar todas se hacen bajo un mismo idtrx
+                                'por lo que si oRes.CodResul=0 significa que por lo menos una de las operaciones se hizo OK
+                                '    For p = 1 To 10
+                                '        'Busco Operaciones Pendientes
+
+                                '    Next
+
+
+                                '    oItem.NombreEmpresa = oRespuesta.facturas(0).descEmp
+                                '    oItem.Importe = oRespuesta.facturas(0).importe
+                            Else
+                                oItem.Empresa = oItem.barra
+                                oItem.Importe = 0
+                            End If
+
+                        End If
+                    Next
+                End If
+                Return oRespuestaPago
+
+            End Using
+        Catch ex As Exception
+            Try
+                'ante un error en la transaccion Anulo la transaccion confirmando la anterior.
+                AnularUltimaTransaccion(oResEnvio.codPuesto)
+                mLog = mLog & ex.Message
+                My.Computer.FileSystem.WriteAllText("C:\Sitios\Httpeldar\LogsRapipago\RetirosCobrosError_" & DateTime.Now.Day & "_" & DateTime.Now.Month & ".txt", DateTime.Now &
+                                                 " Log:" & mLog &
+                                                 " IDAgencia:" & pObj.IDAgencia &
+                                               " IDAcceso:" & pObj.User &
+                                                   " Mensaje Error:" & ex.Message &
+                                                       vbCrLf & vbCrLf, True)
+            Catch ax As Exception
+
+            End Try
+        Finally
+            If Not response Is Nothing Then response.Close()
+            Try
+                My.Computer.FileSystem.WriteAllText("C:\Sitios\Httpeldar\LogsRapipago\RetirosCobros_" & DateTime.Now.Day & "_" & DateTime.Now.Month & ".txt", DateTime.Now &
+                                                 " Log:" & mLog &
+                                                 " IDAgencia:" & pObj.IDAgencia &
+                                               " IDAcceso:" & pObj.User &
+                                                       vbCrLf & vbCrLf, True)
+            Catch ex As Exception
+
+            End Try
         End Try
 
     End Function
@@ -1884,6 +2310,15 @@ Public Class Servicios
                 mIDVenta = value
             End Set
         End Property
+        Private mIDAcceso As Integer
+        Public Property IDAcceso() As Integer
+            Get
+                Return mIDAcceso
+            End Get
+            Set(ByVal value As Integer)
+                mIDAcceso = value
+            End Set
+        End Property
 
         Private mIDProducto As Integer
         Public Property IDProducto() As Integer
@@ -1901,6 +2336,27 @@ Public Class Servicios
             End Get
             Set(ByVal value As String)
                 mPassActual = value
+            End Set
+        End Property
+
+        Private mCodPuesto As String
+        Public Property CodPuesto() As String
+            Get
+                Return mCodPuesto
+            End Get
+            Set(ByVal value As String)
+                mCodPuesto = value
+            End Set
+        End Property
+
+
+        Private mCodBarra As String
+        Public Property CodBarra() As String
+            Get
+                Return mCodBarra
+            End Get
+            Set(ByVal value As String)
+                mCodBarra = value
             End Set
         End Property
 
@@ -2088,7 +2544,25 @@ Public Class Servicios
             End Set
         End Property
 
+        Private mSaldoVirtual As String
+        Public Property SaldoVirtual() As String
+            Get
+                Return mSaldoVirtual
+            End Get
+            Set(ByVal value As String)
+                mSaldoVirtual = value
+            End Set
+        End Property
 
+        Private mSaldoSube As String
+        Public Property SaldoSube() As String
+            Get
+                Return mSaldoSube
+            End Get
+            Set(ByVal value As String)
+                mSaldoSube = value
+            End Set
+        End Property
 
         Private mIDPrestamoBase As Integer
         Public Property IDPrestamoBase() As Integer
@@ -2106,6 +2580,25 @@ Public Class Servicios
             End Get
             Set(ByVal value As Integer)
                 mIDProveedor = value
+            End Set
+        End Property
+        Private mDni As Long
+        Public Property Dni() As Long
+            Get
+                Return mDni
+            End Get
+            Set(ByVal value As Long)
+                mDni = value
+            End Set
+        End Property
+
+        Private mNroReferencia As Long
+        Public Property NroReferencia() As Long
+            Get
+                Return mNroReferencia
+            End Get
+            Set(ByVal value As Long)
+                mNroReferencia = value
             End Set
         End Property
         Public Sub New()
