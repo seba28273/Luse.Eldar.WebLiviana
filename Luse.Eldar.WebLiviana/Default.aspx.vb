@@ -36,9 +36,12 @@ Partial Class Default2
         Dim mAgenteRP As Long
         Dim mSucursalRP As Long
         Dim mIDAcceso As Long
-        oRes = oEldar.LoginEscritorioWithRP(usr.Value, pwd.Value,
+        Dim mHabilitadoEntregaDinero As Integer
+
+        oRes = oEldar.LoginEscritorioWithRPNew(usr.Value, pwd.Value,
                                eTipoAccesoSistema.Escritorio, mMsn, mIDAgencia, mNombre, mSaldo,
-                               mSaldoSube, mDireccionAgencia, mIDPrestamoBase, mAptoCredito, mMsnCredito, mCodPuestoRP, mAgenteRP, mSucursalRP, mIDAcceso)
+                               mSaldoSube, mDireccionAgencia, mIDPrestamoBase, mAptoCredito, mMsnCredito, mCodPuestoRP, mAgenteRP, mSucursalRP, mIDAcceso,
+                               mHabilitadoEntregaDinero)
 
 
 
@@ -60,6 +63,7 @@ Partial Class Default2
         Session("AptoCredito") = mAptoCredito
         Session("MensajeCredito") = mMsnCredito
         Session("IDAcceso") = mIDAcceso
+        Session("HabilitadoEntregaDinero") = mHabilitadoEntregaDinero
         'Cargar estas variables segun el usuario para saber si el mismo tendra autorizaciones
 
 
@@ -73,6 +77,12 @@ Partial Class Default2
 
         End If
 
+        If mHabilitadoEntregaDinero = 0 Then
+            Session("mnuRetiroDinero") = False
+        Else
+            Session("mnuRetiroDinero") = True
+
+        End If
 
         Response.Redirect("Page/Noticias.aspx")
         'Response.Redirect("Page/RecargaSube.aspx")

@@ -403,7 +403,7 @@
                 "Pass": $("#Pass").val(),
                 "IDAgencia": $("#IDAgencia").val(),
                 "IDAcceso": $("#IDAcceso").val(),
-                "CodPuesto": $("#codPuesto").val(),
+                "CodPuesto": "026936", //Reservado para puestos de retiro unicamente
                 "CodBarra": $("#txtCodBarra").val(),
                 "SaldoVirtual": $("#txtSaldoVirtual").val(),
                 "SaldoSube": $("#txtSaldoSube").val()

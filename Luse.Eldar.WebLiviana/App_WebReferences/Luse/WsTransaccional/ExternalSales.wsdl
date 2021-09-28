@@ -64,6 +64,50 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="LoginEscritorioWithRPNew">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AccessId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="AccessType" type="tns:eTipoAccesoSistema" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDAgencia" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="NombreAgencia" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Saldo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pSaldoSUBE" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DireccionAgencia" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDPrestamoBase" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="AptoCredito" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="MensajeCredito" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="CodPuesto" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="Agente" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="sucursal" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDAcceso" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="HabilitadoEntregaDinero" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginEscritorioWithRPNewResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="LoginEscritorioWithRPNewResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDAgencia" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="NombreAgencia" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Saldo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pSaldoSUBE" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DireccionAgencia" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDPrestamoBase" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="AptoCredito" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="MensajeCredito" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="CodPuesto" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="Agente" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="sucursal" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDAcceso" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="HabilitadoEntregaDinero" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="LoginEscritorioWithRP">
         <s:complexType>
           <s:sequence>
@@ -239,6 +283,23 @@
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="GetMovCtaCteWebLivianaResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMovCtaCteWebLivianaSube">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pUser" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pFechaDesde" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pFechaHasta" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMovCtaCteWebLivianaSubeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMovCtaCteWebLivianaSubeResult" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -981,6 +1042,12 @@
   <wsdl:message name="SaveSolicitudPrestamoSoapOut">
     <wsdl:part name="parameters" element="tns:SaveSolicitudPrestamoResponse" />
   </wsdl:message>
+  <wsdl:message name="LoginEscritorioWithRPNewSoapIn">
+    <wsdl:part name="parameters" element="tns:LoginEscritorioWithRPNew" />
+  </wsdl:message>
+  <wsdl:message name="LoginEscritorioWithRPNewSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginEscritorioWithRPNewResponse" />
+  </wsdl:message>
   <wsdl:message name="LoginEscritorioWithRPSoapIn">
     <wsdl:part name="parameters" element="tns:LoginEscritorioWithRP" />
   </wsdl:message>
@@ -1028,6 +1095,12 @@
   </wsdl:message>
   <wsdl:message name="GetMovCtaCteWebLivianaSoapOut">
     <wsdl:part name="parameters" element="tns:GetMovCtaCteWebLivianaResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMovCtaCteWebLivianaSubeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMovCtaCteWebLivianaSube" />
+  </wsdl:message>
+  <wsdl:message name="GetMovCtaCteWebLivianaSubeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMovCtaCteWebLivianaSubeResponse" />
   </wsdl:message>
   <wsdl:message name="GetMovRapiPagoWebLivianaSoapIn">
     <wsdl:part name="parameters" element="tns:GetMovRapiPagoWebLiviana" />
@@ -1230,6 +1303,10 @@
       <wsdl:input message="tns:SaveSolicitudPrestamoSoapIn" />
       <wsdl:output message="tns:SaveSolicitudPrestamoSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="LoginEscritorioWithRPNew">
+      <wsdl:input message="tns:LoginEscritorioWithRPNewSoapIn" />
+      <wsdl:output message="tns:LoginEscritorioWithRPNewSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="LoginEscritorioWithRP">
       <wsdl:input message="tns:LoginEscritorioWithRPSoapIn" />
       <wsdl:output message="tns:LoginEscritorioWithRPSoapOut" />
@@ -1261,6 +1338,10 @@
     <wsdl:operation name="GetMovCtaCteWebLiviana">
       <wsdl:input message="tns:GetMovCtaCteWebLivianaSoapIn" />
       <wsdl:output message="tns:GetMovCtaCteWebLivianaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMovCtaCteWebLivianaSube">
+      <wsdl:input message="tns:GetMovCtaCteWebLivianaSubeSoapIn" />
+      <wsdl:output message="tns:GetMovCtaCteWebLivianaSubeSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetMovRapiPagoWebLiviana">
       <wsdl:input message="tns:GetMovRapiPagoWebLivianaSoapIn" />
@@ -1411,6 +1492,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="LoginEscritorioWithRPNew">
+      <soap:operation soapAction="http://tempuri.org/LoginEscritorioWithRPNew" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="LoginEscritorioWithRP">
       <soap:operation soapAction="http://tempuri.org/LoginEscritorioWithRP" style="document" />
       <wsdl:input>
@@ -1476,6 +1566,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetMovCtaCteWebLiviana">
       <soap:operation soapAction="http://tempuri.org/GetMovCtaCteWebLiviana" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMovCtaCteWebLivianaSube">
+      <soap:operation soapAction="http://tempuri.org/GetMovCtaCteWebLivianaSube" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1792,6 +1891,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="LoginEscritorioWithRPNew">
+      <soap12:operation soapAction="http://tempuri.org/LoginEscritorioWithRPNew" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="LoginEscritorioWithRP">
       <soap12:operation soapAction="http://tempuri.org/LoginEscritorioWithRP" style="document" />
       <wsdl:input>
@@ -1857,6 +1965,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetMovCtaCteWebLiviana">
       <soap12:operation soapAction="http://tempuri.org/GetMovCtaCteWebLiviana" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMovCtaCteWebLivianaSube">
+      <soap12:operation soapAction="http://tempuri.org/GetMovCtaCteWebLivianaSube" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

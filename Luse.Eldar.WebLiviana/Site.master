@@ -100,6 +100,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="ConsultaFactura.aspx"><i class="glyphicon glyphicon-hd-video"></i> Cobrar Factura</a></li>
                                  <li><a href="ConsultaEmpresas.aspx"><i class="glyphicon glyphicon-list-alt"></i> Consulta Empresas</a></li>
+                                 <li id="mnuRetiroDinero" runat="server"><a href="RetiroDinero.aspx"><i class="glyphicon glyphicon-list-alt"></i> Retiro Dinero</a></li>
                                <%--<li><a href="AnularFactura.aspx"><i class="glyphicon glyphicon-credit-card"></i> Anular Factura</a></li>--%>
 
                             </ul>
@@ -127,6 +128,7 @@
                                 <li><a href="MovimientosStock.aspx"><i class="glyphicon glyphicon-barcode"></i> Movimientos de Stock</a></li>
                                 <li><a href="MovimientosCtaCteRapipago.aspx"><i class="glyphicon glyphicon-file"></i> Movimientos de Rapipago</a></li>
                                 <li><a href="MovimientosCtaCte.aspx"><i class="glyphicon glyphicon-file"></i> Movimientos de Cta. Cte.</a></li>
+                                <li><a href="MovimientosCtaCteSube.aspx"><i class="glyphicon glyphicon-file"></i> Movimientos de Cta. Cte. SUBE</a></li>
                                 <li><a href="ConsultaVentasRedBusElectronico.aspx"><i class="glyphicon glyphicon-file"></i> Ventas Red Bus Electronico</a></li>
                                 <li><a href="ConsultaPrestamos.aspx"><i class="glyphicon glyphicon-file"></i> Consulta Prestamos.</a></li>
                             </ul>

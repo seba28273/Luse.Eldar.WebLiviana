@@ -17,11 +17,11 @@
      <form runat="server">
     <div style="background-color: darkorange; height: 100%; display: block; margin: auto;">
 
-        <a href="https://www.facebook.com/cargaplus/" target="_blank">
+        <a href="#">
             <div style="vertical-align: middle; width: 100%; height: 100%;">
 
                 <img class="imgNews"
-                    src="https://www.cargaplus.com.ar/img/sorteo_g5plus_paraweb.gif" />
+                    src="../Img/portadaretirodinero.jpg" />
             </div>
 
         </a>

@@ -9,7 +9,7 @@
 
                 <img class="imgcssgrande" src="../Img/boton_moto_01.png" />
             </div>
-        </a>--%>
+        </a>
         <a href="http://www.cargaplus.com.ar/factura_plus.html#"  target="_blank">
             <div class="BtnAuxiliarAccesorios">
 
@@ -32,7 +32,7 @@
                 <img class="imgcssgrande" src="../Img/boton_celular_01.png" />
             </div>
         </a>
-       <%-- <a href="http://www.cargaplus.com.ar/motos_plus.html#" target="_blank">
+        <a href="http://www.cargaplus.com.ar/motos_plus.html#" target="_blank">
             <div class="BtnAuxiliarMotos">
                 <img class="imgcssgrande" src="../Img/boton_moto_01.png" />
             </div>

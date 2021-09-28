@@ -15,6 +15,10 @@ Partial Class RetiroDinero
         IDAgencia.Value = Session("IDAgencia")
         IDAcceso.Value = Session("IDAcceso")
         codPuesto.Value = Session("CodPuestoRP")
+
+        If Not Convert.ToBoolean(Session("mnuRetiroDinero")) Then
+            Server.Transfer("RecargaSaldoVirtual.aspx")
+        End If
     End Sub
 
 

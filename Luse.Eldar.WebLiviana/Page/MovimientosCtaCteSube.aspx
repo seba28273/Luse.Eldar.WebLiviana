@@ -1,15 +1,15 @@
-﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="MovimientosCtaCte.aspx.vb"
-    Inherits="Page_ConsultaCtacte" %>
+﻿<%@ Page Title="" Language="VB" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="MovimientosCtaCteSube.aspx.vb"
+    Inherits="Page_ConsultaCtacteSube" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <%--<div class="subpres">
-       <a href="http://www.cargaplus.com.ar/accesorios_plus.html#"  target="_blank">
+   <%--<div class="subpres">
+      <%--  <a href="http://www.cargaplus.com.ar/accesorios_plus.html#"  target="_blank">
             <div class="BtnAuxiliarcelulartecnologia">
 
                 <img class="imgcssgrande" src="../Img/boton_moto_01.png" />
             </div>
-        </a>
+        </a>--
         <a href="http://www.cargaplus.com.ar/factura_plus.html#"  target="_blank">
             <div class="BtnAuxiliarAccesorios">
 
@@ -39,7 +39,7 @@
         </a>
     </div>--%>
     <div class="jumbotron" style="position: relative;">
-        <h2>Movimientos de Cta Cte Agencia</h2>
+        <h2>Movimientos de Cta Cte Agencia Sube</h2>
         <ul id="mnuSaldo" style="position: absolute; text-orientation:sideways;     list-style-type: none; top: 10px; max-width: 200px;">
             <li><button type="button" id="btnSaldo" class="btn btn-success">Saldo <span id="Saldo" class="badge"></span></button>
             </li>
@@ -260,7 +260,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "../Servicios/Servicios.asmx/GetMovCtaCte",
+                    url: "../Servicios/Servicios.asmx/GetMovCtaCteSube",
                     data: "{'pObj':" + stringData + "}",
                     contentType: "application/json; charset=utf-8",
                     crossDomain: true,

@@ -1025,6 +1025,8 @@
                 SendObjLotedatosFormulario[$("#ItemAdicional2").val()] = $("#" + $('#ItemAdicional2').val()).val();
             }
 
+            //alert($("#ItemAdicional2").val());
+            //alert($("#ItemAdicional3").val());
             var cadena;
             if (typeof ($("#" + $("#ItemAdicional0").val()).val()) != "undefined") {
                 //alert(4)
@@ -1506,6 +1508,15 @@
                     if (responsepago.d.codResul == "222") {
                         $('#lblresultokfail').css({ display: 'block' });
                         $('#lblresultokfail').html("Rapipago Momentaneamente fuera de servicio..");
+                        $('#spnConfirmar').removeClass('fa fa-circle-o-notch fa-spin');
+                        $('#spnConfirmar').addClass('glyphicon glyphicon-ok');
+                        $('#btnAceptar').removeAttr('disabled');
+                        return;
+
+                    }
+                    if (responsepago.d.codResul == "333") {
+                        $('#lblresultokfail').css({ display: 'block' });
+                        $('#lblresultokfail').html("Limite de Credito alcanzado.");
                         $('#spnConfirmar').removeClass('fa fa-circle-o-notch fa-spin');
                         $('#spnConfirmar').addClass('glyphicon glyphicon-ok');
                         $('#btnAceptar').removeAttr('disabled');
