@@ -304,7 +304,7 @@
                     var mTextoTicket;
                     mTextoTicket = $("#NombreAgencia").val() + "|" + $("#DireccionAgencia").val() + "|" + response.d.estadoRecarga + "|" + response.d.fechaImpacta + "|" + response.d.fechaRecarga + "|" + response.d.proveedor + "|" + mMsn + "|" + response.d.id + "|" + response.d.importe
                     //mTextoTicket = "Eldar|San Martin 1074 22|162239039-2059615634|057000864019732099|100|Ok|La Venta se realizo con exito|Directv"
-                    var url = "https://ventas.cargaplus.com.ar/mailtemplates/MostrarImpresionTicketRedbus.aspx?Div=" + mTextoTicket; //+ "|" + cols[2].innerText + "|" + cols[1].innerText;
+                    var url = "http://ventas.cargaplus.com.ar/mailtemplates/MostrarImpresionTicketRedbus.aspx?Div=" + mTextoTicket; //+ "|" + cols[2].innerText + "|" + cols[1].innerText;
                     window.open(url, "_blank", "toolbar=no,menubar=no, width=350, height=500, scrollbars=no, resizable=no,location=no, directories=no, status=no");
                     window.close();
 

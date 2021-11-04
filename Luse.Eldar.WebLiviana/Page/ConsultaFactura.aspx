@@ -1449,7 +1449,7 @@
 
                             }
                             itemTic = itemTic + 1;
-                            var url = "https://ventas.cargaplus.com.ar/mailtemplates/MostrarImpresionRapipago.aspx?Div=" + mTextoTicket;
+                            var url = "http://ventas.cargaplus.com.ar/mailtemplates/MostrarImpresionRapipago.aspx?Div=" + mTextoTicket;
                             window.open(url, "_blank", "toolbar=no,menubar=no, width=350, height=500, scrollbars=no, resizable=no,location=no, directories=no, status=no");
                             mTextoTicket = "";
                         }
@@ -1523,6 +1523,25 @@
                         return;
 
                     }
+                    if (responsepago.d.codResul == "444") {
+                        $('#lblresultokfail').css({ display: 'block' });
+                        $('#lblresultokfail').html("Cobro Fuera del Horario Permitido.");
+                        $('#spnConfirmar').removeClass('fa fa-circle-o-notch fa-spin');
+                        $('#spnConfirmar').addClass('glyphicon glyphicon-ok');
+                        $('#btnAceptar').removeAttr('disabled');
+                        return;
+
+                    }
+                    if (responsepago.d.codResul == "555") {
+                        $('#lblresultokfail').css({ display: 'block' });
+                        $('#lblresultokfail').html("Servicio de Ingreso de Dinero x MERCADO PAGO o UALA No habilitado.");
+                        $('#spnConfirmar').removeClass('fa fa-circle-o-notch fa-spin');
+                        $('#spnConfirmar').addClass('glyphicon glyphicon-ok');
+                        $('#btnAceptar').removeAttr('disabled');
+                        return;
+
+                    }
+                    
                     if (responsepago.d.codResul != "0" && msn == "") {
                         $('#lblresultokfail').css({ display: 'block' });
                         $('#lblresultokfail').html("Los Items Ingresados no se puedieron cobrar");

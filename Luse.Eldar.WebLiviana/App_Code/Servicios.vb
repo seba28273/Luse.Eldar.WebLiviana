@@ -719,11 +719,11 @@ Public Class Servicios
             'cSQL = "SELECT ReferenciaOperador From Venta Where ReferenciaOperador like ='" & oRes.idUltimaTrxConfirmada & "'"
             'cSQL = "SELECT IDAgencia, LimiteCredito From AgenciaRapipago Where codPuesto =" & oResEnvio.codPuesto
 
-            cSQL = " Select ISNULL(A.IDAgencia, 0) As IDAgencia, ISNULL(A.LimiteCredito,0) As LimiteCredito, ISNULL(SUM(Monto),0) As TotalVendido " &
-                " ,CASE when A.LimiteCredito > SUM(Monto) then 'SI' else 'NO' end as PuedeCobrar " &
-                " From AgenciaRapipago A inner Join Venta As V On V.IDAgencia = A.IDAgencia Where codPuesto = " & oResEnvio.codPuesto & " And EstadoVenta = 2 " &
-                " And Fecha > convert(Date,GETDATE()) " &
-                " Group by A.IDAgencia, A.LimiteCredito "
+            cSQL = " Declare @MontoVenta Decimal(18,2) = (Select SUM(Monto) From Venta inner Join AgenciaRapipago ON AgenciaRapipago.IDAgencia = Venta.IDAgencia where  codPuesto =" & oResEnvio.codPuesto & " AND EstadoVenta = 2 And Fecha > convert(Date,GETDATE()) ) " &
+            " IF @MontoVenta IS NULL SET @MontoVenta = 0 " &
+                 "   Select ISNULL(A.IDAgencia, 0) As IDAgencia, ISNULL(A.LimiteCredito,0) As LimiteCredito, @MontoVenta As TotalVendido " &
+                " ,CASE when A.LimiteCredito > @MontoVenta then 'SI' else 'NO' end as PuedeCobrar , HabilitadoIngresoDinero, convert( char(2),HorarioInicio,108)as  HorarioInicio,convert( char(2),HorarioFin,108)as   HorarioFin " &
+                " From AgenciaRapipago A Where codPuesto = " & oResEnvio.codPuesto
 
             Try
                 oTablaTemp = GetDatos(cSQL)
@@ -743,6 +743,28 @@ Public Class Servicios
                         oRespuestaPagoControl2.descResul = "Limite de Credito alcanzado."
                         oRespuestaPagoControl2.idTrx = 0
                         Return oRespuestaPagoControl2
+                    End If
+
+                    If mhora >= Convert.ToInt32(oTablaTemp.Rows(0)("HorarioFin")) Or
+                        mhora <= Convert.ToInt32(oTablaTemp.Rows(0)("HorarioInicio")) Then
+                        Dim oRespuestaPagoControl2 As New Pago()
+                        oRespuestaPagoControl2.codResul = "444"
+                        oRespuestaPagoControl2.descResul = "Cobro Fuera del Horario Permitido."
+                        oRespuestaPagoControl2.idTrx = 0
+                        Return oRespuestaPagoControl2
+                    End If
+
+                    If Not (oTablaTemp.Rows(0)("HabilitadoIngresoDinero")) Then
+
+                        For Each item As ItemEnviar In oResEnvio.items
+                            If item.idMod = "56967652726500006882" Or item.idMod = "56682331489500011811" Then
+                                Dim oRespuestaPagoControl2 As New Pago()
+                                oRespuestaPagoControl2.codResul = "555"
+                                oRespuestaPagoControl2.descResul = "Servicio de Mercado Pago No habilitado."
+                                oRespuestaPagoControl2.idTrx = 0
+                                Return oRespuestaPagoControl2
+                            End If
+                        Next
                     End If
                 End If
             Catch ex As Exception

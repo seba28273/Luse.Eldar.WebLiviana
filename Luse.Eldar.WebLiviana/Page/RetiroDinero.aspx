@@ -445,7 +445,7 @@
 
                             }
                             itemTic = itemTic + 1;
-                            var url = "https://ventas.cargaplus.com.ar/mailtemplates/MostrarImpresionRapipago.aspx?Div=" + mTextoTicket;
+                            var url = "http://ventas.cargaplus.com.ar/mailtemplates/MostrarImpresionRapipago.aspx?Div=" + mTextoTicket;
                             window.open(url, "_blank", "toolbar=no,menubar=no, width=350, height=500, scrollbars=no, resizable=no,location=no, directories=no, status=no");
                             mTextoTicket = "";
                         }

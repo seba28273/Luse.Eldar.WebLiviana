@@ -292,7 +292,7 @@
             var mTextoTicket;
             mTextoTicket = $("#NombreAgencia").val() + "|" + $("#DireccionAgencia").val() + "|" + cols[5].innerText + "|" + cols[3].innerText + "|" + cols[4].innerText + "|" + cols[8].innerText + "|" + mMsn
             //mTextoTicket = "Eldar|San Martin 1074 22|162239039-2059615634|057000864019732099|100|Ok|La Venta se realizo con exito|Directv"
-            var url = "https://ventas.cargaplus.com.ar/mailtemplates/MostrarImpresionTicket.aspx?Div=" + mTextoTicket + "|" + cols[2].innerText + "|" + cols[1].innerText;
+            var url = "http://ventas.cargaplus.com.ar/mailtemplates/MostrarImpresionTicket.aspx?Div=" + mTextoTicket + "|" + cols[2].innerText + "|" + cols[1].innerText;
 
             window.open(url, "_blank", "toolbar=no,menubar=no, width=350, height=500, scrollbars=no, resizable=no,location=no, directories=no, status=no");
             window.close();
