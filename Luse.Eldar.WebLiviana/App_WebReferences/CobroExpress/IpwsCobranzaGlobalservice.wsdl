@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="urn:pwsCobranzaGlobalIntf" name="IpwsCobranzaGlobalservice" targetNamespace="http://tempuri.org/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xs:schema xmlns="urn:pwsCobranzaGlobalIntf" targetNamespace="urn:pwsCobranzaGlobalIntf">
+      <xs:complexType name="tParamBuscarEmpresas">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="Entidad" type="ns1:tEntidad" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tEntidad">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="Usuario" type="xs:string" />
+          <xs:element name="Clave" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tSalidaBuscarEmpresas">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="ResultadoFuncion" type="ns1:tResultGral" />
+          <xs:element name="Empresas" type="ns1:ListaEmpresa" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tResultGral">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="ID" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ListaEmpresa">
+        <xs:complexContent mixed="false">
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema" />
+            <xs:attribute xmlns:n1="http://schemas.xmlsoap.org/wsdl/" n1:arrayType="ns1:tEmpresa[]" ref="soapenc:arrayType" />
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="tEmpresa">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="Codigo" type="xs:int" />
+          <xs:element name="Nombre" type="xs:string" />
+          <xs:element name="Maximo" type="xs:double" />
+          <xs:element name="Parcial" type="xs:boolean" />
+          <xs:element name="SinFactura" type="xs:boolean" />
+          <xs:element name="IngresoManual" type="ns1:ListaIngresoManual" />
+          <xs:element name="Rubro" type="xs:int" />
+          <xs:element name="orden" type="xs:int" />
+          <xs:element name="NombreAdc" type="xs:string" />
+          <xs:element name="Ayuda" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ListaIngresoManual">
+        <xs:complexContent mixed="false">
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema" />
+            <xs:attribute xmlns:n1="http://schemas.xmlsoap.org/wsdl/" n1:arrayType="ns1:tIngresoManual[]" ref="soapenc:arrayType" />
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="tIngresoManual">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="Codigo" type="xs:int" />
+          <xs:element name="Nombre" type="xs:string" />
+          <xs:element name="Longitud" type="xs:int" />
+          <xs:element name="Tipo" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tParamBuscarResultados">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="Entidad" type="ns1:tEntidad" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tSalidaBuscarResultados">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="ResultadoFuncion" type="ns1:tResultGral" />
+          <xs:element name="Resultado" type="ns1:ListaResultados" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ListaResultados">
+        <xs:complexContent mixed="false">
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema" />
+            <xs:attribute xmlns:n1="http://schemas.xmlsoap.org/wsdl/" n1:arrayType="ns1:tResultado[]" ref="soapenc:arrayType" />
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="tResultado">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="ID" type="xs:int" />
+          <xs:element name="Descri" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tParamValidarDatos">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="Entidad" type="ns1:tEntidad" />
+          <xs:element name="CodEmp" type="xs:int" />
+          <xs:element name="CodBarra" type="xs:string" />
+          <xs:element name="Client" type="xs:string" />
+          <xs:element name="ValoresIngManual" type="ns1:ListaValoresManuales" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ListaValoresManuales">
+        <xs:complexContent mixed="false">
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema" />
+            <xs:attribute xmlns:n1="http://schemas.xmlsoap.org/wsdl/" n1:arrayType="ns1:tValoresManuales[]" ref="soapenc:arrayType" />
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="tValoresManuales">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="CodIngreso" type="xs:int" />
+          <xs:element name="Dato" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tSalidaValidarDatos">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="ResultadoFuncion" type="ns1:tResultGral" />
+          <xs:element name="BoletasACobrar" type="ns1:ListaBoletasACobrar" />
+          <xs:element name="TextoGral" type="xs:string" />
+          <xs:element name="Titulos" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ListaBoletasACobrar">
+        <xs:complexContent mixed="false">
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema" />
+            <xs:attribute xmlns:n1="http://schemas.xmlsoap.org/wsdl/" n1:arrayType="ns1:tBoletasACobrar[]" ref="soapenc:arrayType" />
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="tBoletasACobrar">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="Importe" type="xs:double" />
+          <xs:element name="CodBarra" type="xs:string" />
+          <xs:element name="TextoMostrar" type="xs:string" />
+          <xs:element name="Hash" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tParamBuscarRubros">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="Entidad" type="ns1:tEntidad" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tSalidaBuscarRubros">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="ResultadoFuncion" type="ns1:tResultGral" />
+          <xs:element name="Rubros" type="ns1:ListaRubros" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ListaRubros">
+        <xs:complexContent mixed="false">
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema" />
+            <xs:attribute xmlns:n1="http://schemas.xmlsoap.org/wsdl/" n1:arrayType="ns1:tRubros[]" ref="soapenc:arrayType" />
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="tRubros">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="CodRub" type="xs:int" />
+          <xs:element name="DescriRub" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tParamAnulacion">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="Entidad" type="ns1:tEntidad" />
+          <xs:element name="Motivo" type="xs:string" />
+          <xs:element name="Client" type="xs:string" />
+          <xs:element name="TrnCli" type="xs:string" />
+          <xs:element name="CodEmp" type="xs:int" />
+          <xs:element name="NroOpe" type="xs:int" />
+          <xs:element name="Import" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tSalidaAnulacion">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="ResultadoFuncion" type="ns1:tResultGral" />
+          <xs:element name="Descri" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tParamAnulacionTimeOut">
+        <xs:sequence xmlns="http://www.w3.org/2001/XMLSchema">
+          <xs:element name="Entidad" type="ns1:tEntidad" />
+          <xs:element name="Motivo" type="xs:string" />
+          <xs:element name="Client" type="xs:string" />
+          <xs:element name="TrnCli" type="xs:string" />
+          <xs:element name="CodEmp" type="xs:int" />
+          <xs:element name="Barra" type="xs:string" />
+          <xs:element name="Import" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </types>
+  <message name="BuscarEmpresas0Request">
+    <part name="Param" type="ns1:tParamBuscarEmpresas" />
+  </message>
+  <message name="BuscarEmpresas0Response">
+    <part name="return" type="ns1:tSalidaBuscarEmpresas" />
+  </message>
+  <message name="BuscarResultados1Request">
+    <part name="Param" type="ns1:tParamBuscarResultados" />
+  </message>
+  <message name="BuscarResultados1Response">
+    <part name="return" type="ns1:tSalidaBuscarResultados" />
+  </message>
+  <message name="ValidarDatos2Request">
+    <part name="Param" type="ns1:tParamValidarDatos" />
+  </message>
+  <message name="ValidarDatos2Response">
+    <part name="return" type="ns1:tSalidaValidarDatos" />
+  </message>
+  <message name="BuscarRubros3Request">
+    <part name="Param" type="ns1:tParamBuscarRubros" />
+  </message>
+  <message name="BuscarRubros3Response">
+    <part name="return" type="ns1:tSalidaBuscarRubros" />
+  </message>
+  <message name="Monitor4Request" />
+  <message name="Monitor4Response">
+    <part name="return" type="xs:string" />
+  </message>
+  <message name="Anulacion5Request">
+    <part name="Param" type="ns1:tParamAnulacion" />
+  </message>
+  <message name="Anulacion5Response">
+    <part name="return" type="ns1:tSalidaAnulacion" />
+  </message>
+  <message name="AnulacionTimeOut6Request">
+    <part name="Param" type="ns1:tParamAnulacionTimeOut" />
+  </message>
+  <message name="AnulacionTimeOut6Response">
+    <part name="return" type="ns1:tSalidaAnulacion" />
+  </message>
+  <portType name="IpwsCobranzaGlobal">
+    <operation name="BuscarEmpresas">
+      <input message="tns:BuscarEmpresas0Request" />
+      <output message="tns:BuscarEmpresas0Response" />
+    </operation>
+    <operation name="BuscarResultados">
+      <input message="tns:BuscarResultados1Request" />
+      <output message="tns:BuscarResultados1Response" />
+    </operation>
+    <operation name="ValidarDatos">
+      <input message="tns:ValidarDatos2Request" />
+      <output message="tns:ValidarDatos2Response" />
+    </operation>
+    <operation name="BuscarRubros">
+      <input message="tns:BuscarRubros3Request" />
+      <output message="tns:BuscarRubros3Response" />
+    </operation>
+    <operation name="Monitor">
+      <input message="tns:Monitor4Request" />
+      <output message="tns:Monitor4Response" />
+    </operation>
+    <operation name="Anulacion">
+      <input message="tns:Anulacion5Request" />
+      <output message="tns:Anulacion5Response" />
+    </operation>
+    <operation name="AnulacionTimeOut">
+      <input message="tns:AnulacionTimeOut6Request" />
+      <output message="tns:AnulacionTimeOut6Response" />
+    </operation>
+  </portType>
+  <binding name="IpwsCobranzaGlobalbinding" type="tns:IpwsCobranzaGlobal">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <operation name="BuscarEmpresas">
+      <soap:operation soapAction="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal#BuscarEmpresas" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="BuscarResultados">
+      <soap:operation soapAction="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal#BuscarResultados" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="ValidarDatos">
+      <soap:operation soapAction="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal#ValidarDatos" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="BuscarRubros">
+      <soap:operation soapAction="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal#BuscarRubros" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="Monitor">
+      <soap:operation soapAction="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal#Monitor" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="Anulacion">
+      <soap:operation soapAction="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal#Anulacion" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="AnulacionTimeOut">
+      <soap:operation soapAction="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal#AnulacionTimeOut" style="rpc" />
+      <input>
+        <soap:body use="encoded" namespace="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:pwsCobranzaGlobalIntf-IpwsCobranzaGlobal" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+  </binding>
+  <service name="IpwsCobranzaGlobalservice">
+    <port name="IpwsCobranzaGlobalPort" binding="tns:IpwsCobranzaGlobalbinding">
+      <soap:address location="http://servicios12.cobroexpress.com.ar/pwsCobranzaGlobalTest.dll/soap/IpwsCobranzaGlobal" />
+    </port>
+  </service>
+</definitions>

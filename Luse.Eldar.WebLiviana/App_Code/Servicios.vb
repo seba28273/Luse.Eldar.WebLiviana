@@ -272,7 +272,7 @@ Public Class Servicios
         Public Property PES As String
     End Class
 
-    Public Class DatosFormulario
+    Public Class datosFormulario
     End Class
 
     Public Class ItemEnviar
@@ -284,7 +284,7 @@ Public Class Servicios
         Public Property importeItem As String
         Public Property idItem As String
         Public Property formasPago As FormasPago
-        Public Property datosFormulario As DatosFormulario
+        Public Property datosFormulario As datosFormulario
     End Class
 
     Public Class CabeceraEnviar
@@ -708,9 +708,28 @@ Public Class Servicios
 
             request.ContentType = "application/json"
 
-            dataSend = datosFormulario
-            mLog = datosFormulario & vbCrLf & vbCrLf
+            Dim datosFormularioAlternativo As String = datosFormulario
+            Dim mEntro As Boolean = False
+
             oResEnvio = JsonConvert.DeserializeObject(Of CabeceraEnviar)(datosFormulario)
+            For Each item As ItemEnviar In oResEnvio.items
+
+                If item.codEmp = 1157 Then
+                    item.barra = item.barra.Replace(" ", "        ")
+                    mEntro = True
+                End If
+
+            Next
+            datosFormulario = (New JavaScriptSerializer()).Serialize(oResEnvio)
+
+            If mEntro Then
+                dataSend = datosFormulario
+                mLog = datosFormulario & vbCrLf & vbCrLf
+            Else
+                dataSend = datosFormularioAlternativo
+                mLog = datosFormularioAlternativo & vbCrLf & vbCrLf
+            End If
+
 
             Dim oTablaTemp As DataTable
             Dim cSQL As String = ""
@@ -757,10 +776,10 @@ Public Class Servicios
                     If Not (oTablaTemp.Rows(0)("HabilitadoIngresoDinero")) Then
 
                         For Each item As ItemEnviar In oResEnvio.items
-                            If item.idMod = "56967652726500006882" Or item.idMod = "56682331489500011811" Then
+                            If item.idMod = "56967652726500006882" Or item.idMod = "56682331489500011811" Or item.idMod = "59050009951100000961" Then
                                 Dim oRespuestaPagoControl2 As New Pago()
                                 oRespuestaPagoControl2.codResul = "555"
-                                oRespuestaPagoControl2.descResul = "Servicio de Mercado Pago No habilitado."
+                                oRespuestaPagoControl2.descResul = "Servicio de Ingreso de Dinero No habilitado."
                                 oRespuestaPagoControl2.idTrx = 0
                                 Return oRespuestaPagoControl2
                             End If
@@ -1506,6 +1525,21 @@ Public Class Servicios
 
         Dim data As StringBuilder
         Dim byteData() As Byte
+        'Dim oResRubro As New CobroExpress.tSalidaBuscarRubros()
+        'Try
+        '    Dim o As New CobroExpress.IpwsCobranzaGlobalservice()
+        '    Dim oParam As New CobroExpress.tParamBuscarRubros()
+
+        '    Dim oEnt As New CobroExpress.tEntidad
+        '    oEnt.Usuario = "EldarTest"
+        '    oEnt.Clave = "U4dq45Z"
+        '    oParam.Entidad = oEnt
+
+
+        '    oResRubro = o.BuscarRubros(oParam)
+        'Catch ex As Exception
+        '    Dim owe As New CobroExpress.IpwsCobranzaGlobalservice()
+        'End Try
 
 
 
@@ -4178,7 +4212,7 @@ Public Class Servicios
                 pObj.Fecha = Format(Now.Date, "yyyy-MM-dd")
             End If
             If pObj.FechaHasta = "" Then
-                pObj.FechaHasta = Format(Now.Date, "yyyy-MM-dd")
+                pObj.FechaHasta = Format(Now.Date.AddDays(1), "yyyy-MM-dd")
             End If
             oRes = oFusion.GetMovRapiPagoWebLiviana(pObj.User, pObj.Pass, pObj.Fecha, pObj.FechaHasta)
 
@@ -4196,7 +4230,7 @@ Public Class Servicios
                 blnHayVentas = True
                 If mSaldo = "" Then
                     mSaldo = Math.Round(Convert.ToDecimal(Item(3).ToString.Replace(".", ",")), 2)
-                    mRes.Append("{""Fecha"":"""",""Descripcion"":""Saldo Actual"",""Monto"": """ & mSaldo & """, ""Saldo"": """"},")
+                    mRes.Append("{""Fecha"":"""",""Descripcion"":""Saldo Actual"",""Monto"": """ & mSaldo & """, ""Saldo"": """",""IDVenta"":""""},")
                 End If
                 Dim Str As New StringBuilder
                 If Item("Ticket") <> "0" And Not IsDBNull(Item("Ticket")) Then
@@ -4206,23 +4240,34 @@ Public Class Servicios
 
 
                         For Each itemTicket As String In oRapi.items(0).ticket(0)
-                            Str.Append(itemTicket & "|")
+                            If itemTicket.Contains("NRO DE CUENTA") Then
+                                ' Str.Append(itemTicket & "|")
+                            Else
+                                Str.Append(itemTicket & "|")
+                            End If
+
                         Next
                     Catch ex As Exception
-                        Dim oRapi As TicketRapipagoNew = New JavaScriptSerializer().Deserialize(Of TicketRapipagoNew)(Item("Ticket"))
+                        Try
+                            Dim oRapi As TicketRapipagoNew = New JavaScriptSerializer().Deserialize(Of TicketRapipagoNew)(Item("Ticket"))
 
-                        For i = 0 To oRapi.tic.Length - 1
-                            Str.Append(oRapi.tic(i) & "|")
-                        Next
+                            For i = 0 To oRapi.tic.Length - 1
+                                If oRapi.tic(i).Contains("NRO DE CUENTA") Then
+                                    'Str.Append(oRapi.tic(i) & "|")
+                                Else
+                                    Str.Append(oRapi.tic(i) & "|")
+                                End If
+                            Next
+                        Catch ax As Exception
 
+                        End Try
                     End Try
-
                 End If
 
-                mRes.Append("{""Fecha"":""" & Convert.ToDateTime(Item("Fecha")) & """,""Descripcion"":""" & Item("Observaciones") & """,""Monto"": """ & Math.Round(Convert.ToDecimal(Item("Importe").ToString.Replace(".", ",")), 2) & """, ""Saldo"": """ & Math.Round(Convert.ToDecimal(Item("Saldo").ToString.Replace(".", ",")), 2) & """,""Ticket"":""" & Str.ToString & """},")
+                mRes.Append("{""Fecha"":""" & Convert.ToDateTime(Item("Fecha")) & """,""Descripcion"":""" & Item("Observaciones") & """,""Monto"": """ & Math.Round(Convert.ToDecimal(Item("Importe").ToString.Replace(".", ",")), 2) & """, ""Saldo"": """ & Math.Round(Convert.ToDecimal(Item("Saldo").ToString.Replace(".", ",")), 2) & """,""Ticket"":""" & Str.ToString & """,""IDVenta"":""" & Item("IDVenta").ToString & """},")
 
             Next
-            mRes.Append("{""Fecha"":"""",""Descripcion"":""Saldo Inicial"",""Monto"": """ & mSaldoInicial & """, ""Saldo"": """"},")
+            mRes.Append("{""Fecha"":"""",""Descripcion"":""Saldo Inicial"",""Monto"": """ & mSaldoInicial & """, ""Saldo"": """", ""IDVenta"": """"},")
 
 
             If Not blnHayVentas Then
@@ -4236,6 +4281,7 @@ Public Class Servicios
 
             oRta.Estado = True
             oRta.Mensaje = oREST & "]"
+
             olstRta.Add(oRta)
             Return olstRta
         Catch ex As Exception

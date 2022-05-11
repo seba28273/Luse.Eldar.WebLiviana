@@ -95,9 +95,9 @@
                     </asp:DropDownList>
 
                 </div>
-                <img id="imgCom"  style="display: none; width: 50px; height: 50px; float: right; margin-top: -50px; margin-right: 35px;"
+                <img id="imgCom" style="display: none; width: 50px; height: 50px; float: right; margin-top: -50px; margin-right: 35px;"
                     clientidmode="Static" src="../Img/compag.png"></img>
-                <img id="imgNoCom"  style="display: none; width: 50px; height: 50px; float: right; margin-top: -50px; margin-right: 35px;" clientidmode="Static" src="../Img/comnopag.png"></img>
+                <img id="imgNoCom" style="display: none; width: 50px; height: 50px; float: right; margin-top: -50px; margin-right: 35px;" clientidmode="Static" src="../Img/comnopag.png"></img>
             </div>
 
             <div id="lblMonto" class="form-group">
@@ -169,8 +169,8 @@
         <button type="button" runat="server" id="btnAceptar" style="font-size: x-large;" clientidmode="Static" class="btn btn-primary"><i clientidmode="Static" id="spnConfirmar" class="glyphicon glyphicon-ok"></i>&nbsp;Confirmar Operaciones</button>
         <button type="button" runat="server" id="btnEliminar" style="font-size: x-large;" visible="false" clientidmode="Static" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i>&nbsp;Eliminar Seleccionada</button>
 
-        <button type="button" runat="server" id="btnConfirmar" style="font-size: x-large;" clientidmode="Static" visible="false" class="btn btn-success">&nbsp;Confirmar</button>
-        <button type="button" runat="server" id="btnConsultarUltTransaccion" style="font-size: x-large;" visible="false" clientidmode="Static" class="btn btn-Info">&nbsp;Buscar</button>
+        <%--       <button type="button" runat="server" id="btnConfirmar" style="font-size: x-large;" clientidmode="Static" visible="true" class="btn btn-success">&nbsp;Confirmar</button>
+        <button type="button" runat="server" id="btnConsultarUltTransaccion" style="font-size: x-large;" visible="true" clientidmode="Static" class="btn btn-Info">&nbsp;Buscar</button>--%>
     </div>
     <br />
     <br />
@@ -668,7 +668,7 @@
                                 var sEtiqueta;
                                 sEtiqueta = models[i].etiqueta;
 
-                                if (sEtiqueta.includes("BARRA") || sEtiqueta.includes("Barra")) {
+                                if (sEtiqueta.includes("BARRA") || sEtiqueta.includes("Barra") || sEtiqueta.includes("barra")) {
                                     nuevocampo = '<br clientidmode="Static" class="inputbr"/><div class="form-groupAdd"><div class="input-group"><span class="input-group-addon">' + models[i].etiqueta + ':</span><input  maxlength="' + maxleng + '"  type="' + tipo + '" class="form-control" onKeyPress="return noenter()" style="text-align: justify; max-width: 100%; width: 100%" id="' + models[i].nombre + '" clientidmode="Static"></div></div>';
                                 } else {
                                     nuevocampo = '<br clientidmode="Static" class="inputbr"/><div class="form-groupAdd"><div class="input-group"><span class="input-group-addon">' + models[i].etiqueta + ':</span><input maxlength="' + maxleng + '"  type="' + tipo + '" class="form-control" onKeyPress="return noenter()" style="text-align: justify; width: 100%" id="' + models[i].nombre + '" clientidmode="Static"></div></div>';
@@ -747,15 +747,18 @@
             $('#lblfailAgregar').css({ display: 'none' });
             _row = $(ctl).parents("tr");
             var cols = _row.children("td");
-            //console.log(cols);
+            console.log(cols);
             var mEsPrimeraFila = 1;
             $('#tablaFactura tbody tr').each(function () {
                 var mCodBarra;
                 mEsPrimeraFila = 0;
                 //console.log($.trim($(this).find('td').eq(3).text());
+                //if (item.codEmp = 1157) {
+
+                //}
+                // console.log('text');
                 mCodBarra = $.trim($(this).find('td').eq(3).text());
-                //console.log(mCodBarra);
-                //console.log(cols[1].innerText);
+
                 //Quiere decir que existe
                 if (mCodBarra == cols[1].innerText) {
                     $('#lblfailAgregar').css({ display: 'block' });
@@ -779,6 +782,16 @@
                         return;
                     }
                 }
+
+                console.log('text');
+                console.log(cols[1].innerText);
+                console.log('text');
+                console.log('html');
+                console.log(cols[1].innerhtml);
+                console.log('html');
+                console.log('html');
+                console.log(cols[1]);
+                console.log('html');
 
                 $("#idMod").val($('#cboModalidad :selected').val().split("|")[0]);
                 $("#tablaFactura").append("<tr class='success'><td style='display:none'> <input type='checkbox' /></td>" +
@@ -916,16 +929,25 @@
                                 var r = 0;
                                 while (r < models.length) {
 
+                                    //console.log("modelsvalores[i].valor")
+                                    //console.log(modelsvalores[i].valor);
+                                    //alert(response.d.codEmp);
+                                    var barradesc = modelsvalores[i].valor;
+
+                                    if (response.d.codEmp = 1157) {
+                                        barradesc = barradesc.replace(' ', '        ');
+                                    }
 
                                     if (modelsvalores[i]["codCampo"] != 'DAF' && modelsvalores[i]["codCampo"] != 'codTI' && modelsvalores[i]["codCampo"] != 'descTI') {
-                                        detallegrilla = detallegrilla + "<td id=" + modelsvalores[i].codCampo + ">" + modelsvalores[i].valor + "</td>";
+
+                                        detallegrilla = detallegrilla + "<td id=" + modelsvalores[i].codCampo + ">" + barradesc + "</td>";
 
                                     }
                                     r = r + 1;
                                     i = i + 1;
                                 }
                                 //r = r + models.length;
-
+                                console.log(detallegrilla);
                                 detallegrilla = detallegrilla + "</tr>";
                                 console.log(detallegrilla);
                                 $("#tablafacturasCSF").append(detallegrilla);
@@ -942,7 +964,7 @@
                             var msnerror;
                             msnerror = TranslateError(response.d.codResul, '', 0)
                             $('#lblfailAgregar').css({ display: 'block' });
-                            $('#lblfailAgregar').html(msnerror);
+                            $('#lblfailAgregar').html(response.d.descResul);
                             $('#dvdGetEmpresa').css({ display: 'block' });
 
                         }
@@ -1534,14 +1556,14 @@
                     }
                     if (responsepago.d.codResul == "555") {
                         $('#lblresultokfail').css({ display: 'block' });
-                        $('#lblresultokfail').html("Servicio de Ingreso de Dinero x MERCADO PAGO o UALA No habilitado.");
+                        $('#lblresultokfail').html("Servicio de Ingreso de Dinero No habilitado.");
                         $('#spnConfirmar').removeClass('fa fa-circle-o-notch fa-spin');
                         $('#spnConfirmar').addClass('glyphicon glyphicon-ok');
                         $('#btnAceptar').removeAttr('disabled');
                         return;
 
                     }
-                    
+
                     if (responsepago.d.codResul != "0" && msn == "") {
                         $('#lblresultokfail').css({ display: 'block' });
                         $('#lblresultokfail').html("Los Items Ingresados no se puedieron cobrar");

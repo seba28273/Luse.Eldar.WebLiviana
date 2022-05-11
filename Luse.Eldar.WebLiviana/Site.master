@@ -95,12 +95,13 @@
 
                         </li>
                         <li id="mnuRP" runat ="server"   class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="glyphicon-glyphicon-fire"></i>Rapipago (Nuevo)
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="glyphicon-glyphicon-fire"></i>Rapipago
                             <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="ConsultaFactura.aspx"><i class="glyphicon glyphicon-hd-video"></i> Cobrar Factura</a></li>
                                  <li><a href="ConsultaEmpresas.aspx"><i class="glyphicon glyphicon-list-alt"></i> Consulta Empresas</a></li>
                                  <li id="mnuRetiroDinero" runat="server"><a href="RetiroDinero.aspx"><i class="glyphicon glyphicon-list-alt"></i> Retiro Dinero</a></li>
+                                <li id="mnuCargarBivi" runat="server"><a href="CargarBivi.aspx"><i class="glyphicon glyphicon-list-alt"></i> Cargar Bivi(Nuevo)</a></li>
                                <%--<li><a href="AnularFactura.aspx"><i class="glyphicon glyphicon-credit-card"></i> Anular Factura</a></li>--%>
 
                             </ul>

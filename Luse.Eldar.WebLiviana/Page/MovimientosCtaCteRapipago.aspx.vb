@@ -34,8 +34,8 @@ Partial Class Page_ConsultaCtacte
 
         User.Value = Session("Usuario")
         Pass.Value = Session("Password")
-
-
+        'txtFecha.Value = Format(Now.Date, "yyyy-MM-dd 00:00:00")
+        'txtFechaHasta.Value = Format(Now.Date, "yyyy-MM-dd 23:59:59")
 
     End Sub
 End Class
