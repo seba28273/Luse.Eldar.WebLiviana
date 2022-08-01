@@ -84,8 +84,8 @@ Partial Class Default2
 
         End If
 
-        Response.Redirect("Page/Noticias.aspx")
-        'Response.Redirect("Page/RecargaSube.aspx")
+        'Response.Redirect("Page/Noticias.aspx")
+        Response.Redirect("Page/RecargaSaldoVirtual.aspx")
         'Response.Redirect("Page/Menu.aspx", False)
         'Server.Transfer("Page/Menu.aspx")
 

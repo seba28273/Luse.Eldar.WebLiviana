@@ -3486,17 +3486,180 @@ Public Class Servicios
             Dim pRefOperador As String = "" 'Este Valor lo asigna eldar al enviar la recarga a SUBE.
 
             pObj.Prefijo = "00"
-            mRes = oEldar.NewSaleWithRefOperadorWebLiviana(pObj.User, pObj.Pass, pObj.Destino, pObj.Prefijo, pObj.Monto,
+            If pObj.IDProveedor = 2 Then
+
+                Dim request As New EldarSales2
+                Dim ores As New resEldarSales2
+                request.destino = pObj.Destino
+                request.monto = pObj.Monto
+                request.idProveedor = pObj.IDProveedor
+                request.idProducto = 0
+                request.passWord = pObj.Pass
+                request.userCode = pObj.User
+                request.tipoAcceso = 2
+                request.terminal = "Web liviana"
+                request.referenciaOperador = Now().ToString("yyyyMMddHHmmss") & pObj.Destino
+                ores = NewSaleEldar2(request)
+
+                oRta.IDTransaccion = ores.data.idTransaccion
+
+                oRta.Mensaje = ores.data.message
+                oRta.Destino = pObj.Prefijo & pObj.Destino
+                oRta.Monto = pObj.Monto
+                oRta.Estado = ores.data.saleData
+                oRta.CodigoTicket = CodigoTicket
+            Else
+                mRes = oEldar.NewSaleWithRefOperadorWebLiviana(pObj.User, pObj.Pass, pObj.Destino, pObj.Prefijo, pObj.Monto,
                                                            pObj.IDProveedor, pIDtransaccion, pSaleData, mMsn, CodigoTicket)
 
+                oRta.IDTransaccion = pIDtransaccion
+                oRta.Mensaje = mMsn
+                oRta.Destino = pObj.Prefijo & pObj.Destino
+                oRta.Monto = pObj.Monto
+                oRta.Estado = pSaleData
+                oRta.CodigoTicket = CodigoTicket
+
+            End If
 
 
 
-            oRta.IDTransaccion = pIDtransaccion
-            oRta.Mensaje = mMsn
+
+
+            oRta.UrlSitio = GetSiteRoot()
+            Dim uri As New Uri(oEldar.Url)
+
+            oRta.UrlSitioTicket = uri.Host
+
+            oRta.TemplateTicket = pObj.NombreAgencia & "|" & pObj.DireccionAgencia & "|" & oRta.IDTransaccion & "|" & oRta.Destino & "|" & pObj.Monto & "|" & oRta.Estado & "|" & mMsn
+
+            oList.Add(oRta)
+
+
+
+        Catch ex As Exception
+            oRta.Estado = False
+            oRta.Mensaje = ex.Message
+            oRta.CodigoTicket = "0"
+            oRta.UrlSitio = ""
+            oList.Add(oRta)
+        End Try
+        Return oList
+
+    End Function
+
+
+    Public Function SaveSaletaRapipagoTESTING(UserCode As String, PassWord As String, Monto As Int32, IDProveedor As Int32, Destino As String) As DataTable
+
+        oConn.Open()
+        Try
+
+            ocmd = New SqlCommand("EldarVentaBCNewSaleIN", oConn)
+            ocmd.CommandType = CommandType.StoredProcedure
+            ocmd.Parameters.AddWithValue("@UserCode", UserCode)
+            ocmd.Parameters.AddWithValue("@PassWord", PassWord)
+            ocmd.Parameters.AddWithValue("@IDTipoAcceso", 2)
+            ocmd.Parameters.AddWithValue("@Monto", Monto)
+            ocmd.Parameters.AddWithValue("@IDProveedor", IDProveedor)
+            ocmd.Parameters.AddWithValue("@IDProductoPin", 0)
+            ocmd.Parameters.AddWithValue("@ReferenciaOperador", "545643123424")
+            ocmd.Parameters.AddWithValue("@Terminal", "Web liviana")
+            ocmd.Parameters.AddWithValue("@Destino", Destino)
+            Using da As New SqlDataAdapter
+                Dim dt As New DataSet
+
+                da.Fill(dt)
+                Return dt.Tables(0)
+            End Using
+
+
+
+
+        Catch ex As Exception
+            Throw ex
+        Finally
+            oConn.Close()
+        End Try
+
+    End Function
+
+
+    Public Function SaveAfterSaleRapipagoTESTING(IDTransaccion As String, Estado As Int32, IDVenta As Int64, Respuesta As String, IDAgencia As Int64, IDProducto As Int32) As DataTable
+
+        oConn.Open()
+        Try
+
+            ocmd = New SqlCommand("EldarVentaBCNewSaleUP", oConn)
+            ocmd.CommandType = CommandType.StoredProcedure
+            ocmd.Parameters.AddWithValue("@IDTransaccion", IDTransaccion)
+            ocmd.Parameters.AddWithValue("@Estado", Estado)
+            ocmd.Parameters.AddWithValue("@IDVenta", IDVenta)
+            ocmd.Parameters.AddWithValue("@Respuesta", Respuesta)
+            ocmd.Parameters.AddWithValue("@IDAgencia", IDAgencia)
+            ocmd.Parameters.AddWithValue("@IDProducto", IDProducto)
+            ocmd.Parameters.AddWithValue("@IDVenta", IDVenta)
+            ocmd.Parameters.AddWithValue("@Rdo", "")
+            Using da As New SqlDataAdapter
+                Dim dt As New DataSet
+
+                da.Fill(dt)
+                Return dt.Tables(0)
+            End Using
+
+        Catch ex As Exception
+            Throw ex
+        Finally
+            oConn.Close()
+        End Try
+
+    End Function
+
+    <WebMethod()>
+    Public Function GrabarVentaSaldoTesting(pObj As Parametros) As List(Of RespuestaRecarga)
+        Dim oRta As New RespuestaRecarga
+        Dim oList As New List(Of RespuestaRecarga)
+        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Try
+
+            Dim mRes As Boolean = False
+            Dim mMsn As String = ""
+            Dim pIDtransaccion As String = ""
+            Dim pSaleData As String = ""
+            Dim CodigoTicket As String = ""
+            Dim pRefOperador As String = "" 'Este Valor lo asigna eldar al enviar la recarga a SUBE.
+
+            pObj.Prefijo = "00"
+            'mRes = oEldar.NewSaleWithRefOperadorWebLiviana(pObj.User, pObj.Pass, pObj.Destino, pObj.Prefijo, pObj.Monto,
+            '                                               pObj.IDProveedor, pIDtransaccion, pSaleData, mMsn, CodigoTicket)
+
+            Dim oSale As New RequestSaleTest
+            Dim oresSale As New ResponseSale
+            oSale.idacceso = pObj.IDAcceso
+            oSale.idagencia = pObj.IDAgencia
+            oSale.IDProveedor = pObj.IDProveedor
+            oSale.monto = pObj.Monto
+            oSale.nroLinea = pObj.Destino
+            oSale.puesto = 23280
+            oSale.refoperador = pObj.Destino + pObj.Fecha = Format(Now.Date, "yyyyMMddHHmmss")
+            'Grabar Venta
+            'Dim oTabla As DataTable
+            'oTabla = SaveSaletaRapipagoTESTING(pObj.User, pObj.Pass, pObj.Monto, pObj.IDProveedor, pObj.Destino)
+
+            oresSale = NewSaleRapipago("RapipagoSales/Sale", oSale)
+
+            'Update Venta
+            'SaveAfterSaleRapipagoTESTING(pObj.User, pObj.Pass, pObj.Monto, pObj.IDProveedor, pObj.Destino)
+
+
+            oRta.IDTransaccion = oresSale.pIdTransacccion
+            oRta.Mensaje = oresSale.mensaje
             oRta.Destino = pObj.Prefijo & pObj.Destino
             oRta.Monto = pObj.Monto
-            oRta.Estado = pSaleData
+            If oresSale.estado = "0" Then
+                oRta.Estado = "Ok"
+            Else
+                oRta.Estado = "Error"
+            End If
+
             oRta.CodigoTicket = CodigoTicket
 
             oRta.UrlSitio = GetSiteRoot()
@@ -3520,7 +3683,6 @@ Public Class Servicios
         Return oList
 
     End Function
-
     Public Shared Function GetSiteRoot() As String
         If System.Web.HttpContext.Current IsNot Nothing Then
 
@@ -4140,7 +4302,7 @@ Public Class Servicios
         Dim oRes As String
         Dim olstRta As New List(Of Respuesta)
         Try
-            Dim oFusion As New Luse.WsTransaccional.ExternalSales
+            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
             If pObj.Fecha = "" Then
                 pObj.Fecha = Format(Now.Date, "yyyy-MM-dd")
             End If
@@ -4149,7 +4311,7 @@ Public Class Servicios
             End If
             oRes = oFusion.GetMovCtaCteWebLivianaSube(pObj.User, pObj.Pass, pObj.Fecha, pObj.FechaHasta)
 
-            oDs = Luse.Framework.Common.Helper.XmlFunctions.XMLToDataSet(oRes)
+            oDs = LuSe.Framework.Common.Helper.XmlFunctions.XMLToDataSet(oRes)
 
             Dim mRes As New StringBuilder
             mRes.Append("[")
@@ -4293,33 +4455,6 @@ Public Class Servicios
 
     End Function
 
-    Public Class ItemTicket
-        Public Property barra As String
-        Public Property ticket As String()()
-        Public Property codResulItem As Integer
-        Public Property descResulItem As String
-        Public Property idItem As String
-    End Class
-
-    Public Class TicketRapipagoNew
-        Public Property barra As String
-        Public Property tic As String()
-        Public Property codResulItem As Integer
-        Public Property descResulItem As String
-        Public Property idItem As String
-        Public Property Empresa As Object
-        Public Property Importe As Object
-    End Class
-
-
-    Public Class TicketRapipago
-        Public Property codPuesto As Integer
-        Public Property items As ItemTicket()
-        Public Property codResul As Integer
-        Public Property descResul As String
-        Public Property idTrx As String
-    End Class
-
     <WebMethod()>
     Public Function GetMovStock(pObj As Parametros) As List(Of Respuesta)
 
@@ -4362,5 +4497,274 @@ Public Class Servicios
         End Try
 
     End Function
+
+
+
+    Public Class RequestSaleRapi
+        Public Property codPuesto As String
+        Public Property idCliente As String
+        Public Property codEmp As String
+        Public Property idMod As String
+        Public Property fechaHoraLectura As String
+        Public Property formasPago As FormasPago
+        Public Property importe As String
+        Public Property idRecarga As String
+        Public Property idTrxAnterior As Object
+    End Class
+    Private Function NewSaleRapipago(endpoint As String, req As RequestSaleTest) As ResponseSale
+
+        Dim postStream As Stream = Nothing
+
+        Dim request As HttpWebRequest
+        Dim response As HttpWebResponse = Nothing
+        Dim address As Uri
+        Dim dataSend As String
+        Dim byteData() As Byte
+        Dim oRes As New ResponseSale
+        'address = New Uri("http://192.168.5.32:8091/" + endpoint)
+        address = New Uri("http://200.123.144.198:81/version3/recarga/pago/")
+
+        Try
+            Dim orequest As New RequestSaleRapi
+            Dim orequestFP As New FormasPago
+            orequestFP.PES = "100"
+            orequest.codEmp = "1488"
+            orequest.codPuesto = "28214"
+            orequest.fechaHoraLectura = String.Format("yyyy-MM-dd HH:mm:ss", DateTime.Now().ToString())
+            orequest.formasPago = orequestFP
+            orequest.idCliente = "1112345678"
+            orequest.idMod = "29453037476400000114"
+            orequest.idRecarga = "0313953" + orequest.codPuesto + DateTime.Now.ToString("yyyyMMddHHmmss")
+            orequest.idTrxAnterior = ""
+            orequest.importe = "100"
+            ' Create the web request  
+            request = DirectCast(WebRequest.Create(address), HttpWebRequest)
+            request.Method = "POST"
+
+            dataSend = JsonConvert.SerializeObject(orequest)
+            request.ContentType = "application/json"
+
+            byteData = UTF8Encoding.UTF8.GetBytes(dataSend)
+
+            ' Set the content length in the request headers  
+            request.ContentLength = byteData.Length
+
+            ' Write data  
+            Try
+                postStream = request.GetRequestStream()
+                postStream.Write(byteData, 0, byteData.Length)
+            Finally
+                If Not postStream Is Nothing Then postStream.Close()
+            End Try
+
+            ' Get response  
+            response = DirectCast(request.GetResponse(), HttpWebResponse)
+
+            ' Get the response stream into a reader  
+            Using StreamReader As New StreamReader(response.GetResponseStream())
+
+                Dim result As String = StreamReader.ReadToEnd()
+                Dim result2 = JsonConvert.DeserializeObject(Of Object)(result)
+
+                oRes = JsonConvert.DeserializeObject(Of ResponseSale)(result2)
+
+
+            End Using
+        Catch ex As Exception
+            oRes.estado = -1
+            oRes.mensaje = ex.Message
+            oRes.pIdTransacccion = 0
+            oRes.trama = ""
+        End Try
+        Return oRes
+
+    End Function
+    Private Function NewSaleEldar2(requestsale As EldarSales2) As resEldarSales2
+
+        Dim postStream As Stream = Nothing
+
+        Dim request As HttpWebRequest
+        Dim response As HttpWebResponse = Nothing
+        Dim address As Uri
+        Dim dataSend As String
+        Dim byteData() As Byte
+        Dim oRes As New resEldarSales2
+
+        address = New Uri(WebConfigurationManager.AppSettings("UrlEldar2").ToString() & "api/v1/NewSales/NewSaleAsync")
+
+        Try
+
+            ' Create the web request  
+            request = DirectCast(WebRequest.Create(address), HttpWebRequest)
+            request.Method = "POST"
+
+            dataSend = JsonConvert.SerializeObject(requestsale)
+            request.ContentType = "application/json"
+
+            byteData = UTF8Encoding.UTF8.GetBytes(dataSend)
+
+            ' Set the content length in the request headers  
+            request.ContentLength = byteData.Length
+
+            ' Write data  
+            Try
+                postStream = request.GetRequestStream()
+                postStream.Write(byteData, 0, byteData.Length)
+            Finally
+                If Not postStream Is Nothing Then postStream.Close()
+            End Try
+
+            ' Get response  
+            response = DirectCast(request.GetResponse(), HttpWebResponse)
+
+            ' Get the response stream into a reader  
+            Using StreamReader As New StreamReader(response.GetResponseStream())
+
+                Dim result As String = StreamReader.ReadToEnd()
+
+
+                oRes = JsonConvert.DeserializeObject(Of resEldarSales2)(result)
+
+
+            End Using
+        Catch ex As Exception
+            oRes.data.saleData = "Error"
+            oRes.data.message = ex.Message
+            oRes.data.idTransaccion = 0
+            oRes.errors = ex.Message
+        End Try
+        Return oRes
+
+    End Function
+End Class
+
+Public Class Data
+    Public Property rdo As Boolean
+    Public Property idAcceso As Integer
+    Public Property idAgencia As Integer
+    Public Property idProducto As Integer
+    Public Property observaciones As String
+    Public Property endPointExterno As String
+    Public Property idVenta As Integer
+    Public Property saleData As String
+    Public Property message As String
+    Public Property idTransaccion As String
+    Public Property conector As Integer
+End Class
+
+Public Class resEldarSales2
+    Public Property data As Data
+    Public Property isSuccess As Boolean
+    Public Property message As String
+    Public Property errors As Object
+End Class
+Public Class EldarSales2
+    Public Property userCode As String
+    Public Property passWord As String
+    Public Property tipoAcceso As Integer
+    Public Property destino As String
+    Public Property monto As Integer
+    Public Property idProveedor As Integer
+    Public Property idProducto As Integer
+    Public Property referenciaOperador As String
+    Public Property terminal As String
+End Class
+
+Public Class ItemTicket
+    Public Property barra As String
+    Public Property ticket As String()()
+    Public Property codResulItem As Integer
+    Public Property descResulItem As String
+    Public Property idItem As String
+End Class
+
+Public Class TicketRapipagoNew
+    Public Property barra As String
+    Public Property tic As String()
+    Public Property codResulItem As Integer
+    Public Property descResulItem As String
+    Public Property idItem As String
+    Public Property Empresa As Object
+    Public Property Importe As Object
+End Class
+
+
+Public Class TicketRapipago
+    Public Property codPuesto As Integer
+    Public Property items As ItemTicket()
+    Public Property codResul As Integer
+    Public Property descResul As String
+    Public Property idTrx As String
+End Class
+
+
+Public Class RequestSaleTest
+    <Required>
+    Public Property nroLinea As String = String.Empty
+    <Required>
+    Public Property refoperador As String = String.Empty
+    <Required>
+    Public Property monto As String = String.Empty
+    <Required>
+    Public Property puesto As String = String.Empty
+    <Required>
+    Public Property idagencia As Integer = 0
+    <Required>
+    Public Property idacceso As Integer = 0
+    Public Property IDProveedor As Integer
+
+End Class
+
+
+Public Class ResponseSale
+
+    Private _pIdTransacccion As String
+    Public Property pIdTransacccion() As String
+        Get
+            Return _pIdTransacccion
+        End Get
+        Set(ByVal value As String)
+            _pIdTransacccion = value
+        End Set
+    End Property
+    Private _mensaje As String
+    Public Property mensaje() As String
+        Get
+            Return _mensaje
+        End Get
+        Set(ByVal value As String)
+            _mensaje = value
+        End Set
+    End Property
+
+    Private _estado As String
+    Public Property estado() As String
+        Get
+            Return _estado
+        End Get
+        Set(ByVal value As String)
+            _estado = value
+        End Set
+    End Property
+    Private _trama As String
+    Public Property trama() As String
+        Get
+            Return _trama
+        End Get
+        Set(ByVal value As String)
+            _trama = value
+        End Set
+    End Property
+    Private _codError As String
+    Public Property codError() As String
+        Get
+            Return _codError
+        End Get
+        Set(ByVal value As String)
+            _codError = value
+        End Set
+    End Property
+
+
 
 End Class

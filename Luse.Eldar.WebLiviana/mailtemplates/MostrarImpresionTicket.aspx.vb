@@ -33,16 +33,28 @@ Partial Class mailtemplates_MostrarImpresionTicket
             mFecha = Format(Now, "dd/MM/yyyy HH:mm:ss")
         End Try
         '& "  Mensaje: " & mMsn & "  <br /></center>" _
-        Imprimir.InnerHtml = "<h3><center><img src='../Img/cp200px.png';></center></h3>" _
-           & " <center><b>" & mNombreAgencia & "</b> <br /> " _
-            & " Direccion:" & mDireccionAgencia & "<br />" _
-           & "  Fecha-Hora:  " & mFecha & " <br /><br />" _
-           & "  ID Trans.:" & mIDtransaccion & " <br />" _
-            & "  <b>Producto:" & mNombreProducto & "</b><br />" _
-            & "  Destino:" & mDestino & "<br />" _
-           & "  Monto: $ " & mMonto & "  <br />" _
-           & "  Estado:<b> " & mEstado & "</b> <br />" _
-           & "  <h3 style = 'font-size:13px'><center><i><b>Gracias por Operar con CargaPlus</center>"
+        If mNombreProducto.ToUpper().Contains("CLARO") Then
+            Imprimir.InnerHtml = "<center>Fecha-Hora:  " & mFecha & " <br /><br />" _
+                 & "  Destino:" & mDestino & "<br />" _
+                 & "  Codigo de Transaccion Nº:" & mIDtransaccion & " <br />" _
+                 & "  Monto: $ " & mMonto & "  <br />" _
+                 & "  Estado:<b> " & mEstado & "</b> <br />" _
+                 & "  PDV: " & mNombreAgencia & "<br /> " _
+                 & "  Direccion:" & mDireccionAgencia & "<br />" _
+                & "  <h3 style = 'font-size:10px'><center><i><b>Distribucion prestada por carga al toque</center>"
+        Else
+            Imprimir.InnerHtml = "<h3><center><img src='../Img/cp200px.png';></center></h3>" _
+          & " <center><b>" & mNombreAgencia & "</b> <br /> " _
+           & " Direccion:" & mDireccionAgencia & "<br />" _
+          & "  Fecha-Hora:  " & mFecha & " <br /><br />" _
+          & "  ID Trans.:" & mIDtransaccion & " <br />" _
+           & "  <b>Producto:" & mNombreProducto & "</b><br />" _
+           & "  Destino:" & mDestino & "<br />" _
+          & "  Monto: $ " & mMonto & "  <br />" _
+          & "  Estado:<b> " & mEstado & "</b> <br />" _
+          & "  <h3 style = 'font-size:13px'><center><i><b>Gracias por Operar con CargaPlus</center>"
+        End If
+
 
     End Sub
 
