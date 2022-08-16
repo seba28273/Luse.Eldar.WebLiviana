@@ -3339,29 +3339,50 @@ Public Class Servicios
             Dim pRefOperador As String = "" 'Este Valor lo asigna eldar al enviar la recarga a SUBE.
             Dim mDireccion As String = ""
             Dim mRazonSocial As String = ""
-            Dim sFecha As String = Format(Now(), "yyyyMMddHHmmss")
+            Dim sFecha As String = Format(Now(), "HHmmss")
 
             pObj.NroTarjeta = "606126" & pObj.NroTarjeta
             pRefOperador = pObj.NroTarjeta + sFecha
-            mRes = oEldar.NewSaleWithRefOperadorSube(pObj.User,
-                                                pObj.Pass, pObj.NroTarjeta, pObj.Monto,
-                                                pRefOperador, pIDtransaccion, pSaleData,
-                                                 mMsn)
+
+            'mRes = oEldar.NewSaleWithRefOperadorSube(pObj.User,
+            '                                    pObj.Pass, pObj.NroTarjeta, pObj.Monto,
+            '                                    pRefOperador, pIDtransaccion, pSaleData,
+            '                                     mMsn)
 
 
 
 
-            oRespuestaRecarga.IDTransaccion = pIDtransaccion
-            oRespuestaRecarga.Mensaje = mMsn
+            'oRespuestaRecarga.IDTransaccion = pIDtransaccion
+            'oRespuestaRecarga.Mensaje = mMsn
+
+            Dim request As New EldarSales2
+            Dim ores As New resEldarSales2
+            request.destino = pObj.NroTarjeta
+            request.monto = pObj.Monto
+            request.idProveedor = 29 '36 Sube Test //29 Sube prod
+            request.idProducto = 0
+            request.passWord = pObj.Pass
+            request.userCode = pObj.User
+            request.tipoAcceso = 2
+            request.terminal = "Web liviana EBC"
+            request.referenciaOperador = Now().ToString("yyyyMMddHHmmss") & pObj.Destino
+            ores = NewSaleEldar2(request)
+
+            oRespuestaRecarga.IDTransaccion = ores.data.idTransaccion
+
+            oRespuestaRecarga.Mensaje = ores.data.message
+            oRespuestaRecarga.Destino = pObj.NroTarjeta
+            oRespuestaRecarga.Monto = pObj.Monto
+            oRespuestaRecarga.Estado = ores.data.saleData
             Dim mNroTarOfuscado As String = "XXXX XXXX XXXX " & pObj.NroTarjeta.Substring(12, 3) & "X"
             oRespuestaRecarga.NroTarjeta = mNroTarOfuscado
             oRespuestaRecarga.Monto = pObj.Monto
-            oRespuestaRecarga.Estado = pSaleData
+            oRespuestaRecarga.Estado = ores.data.saleData
             oRespuestaRecarga.UrlSitio = GetSiteRoot()
 
-            If pSaleData = "Ok" Then
+            If oRespuestaRecarga.Estado = "Ok" Then
 
-                oRespuestaRecarga.TemplateTicket = pObj.NombreAgencia & "|" & pObj.DireccionAgencia & "|" & pIDtransaccion & "|" & mNroTarOfuscado & "|" & pObj.Monto
+                oRespuestaRecarga.TemplateTicket = pObj.NombreAgencia & "|" & pObj.DireccionAgencia & "|" & oRespuestaRecarga.IDTransaccion & "|" & mNroTarOfuscado & "|" & pObj.Monto
 
 
             End If
@@ -3391,27 +3412,50 @@ Public Class Servicios
             Dim pSaleData As String = ""
             Dim pRefOperador As String = "" 'Este Valor lo asigna eldar al enviar la recarga a SUBE.
             Dim CodigoTicket As String = ""
-            '15=Proveedor DTV
+
             pObj.Destino = "05700" & pObj.Destino
 
-            mRes = oEldar.NewSaleDirecTVWebLiviana(pObj.User, pObj.Pass, pObj.Destino, pObj.Monto,
-                                                          15, pIDtransaccion, pSaleData, mMsn, CodigoTicket)
 
+            Dim request As New EldarSales2
+            Dim ores As New resEldarSales2
+            request.destino = pObj.Destino
+            request.monto = pObj.Monto
+            request.idProveedor = 15 '15=Proveedor DTV
+            request.idProducto = 0
+            request.passWord = pObj.Pass
+            request.userCode = pObj.User
+            request.tipoAcceso = 2
+            request.terminal = "Web liviana EBC"
+            request.referenciaOperador = Now().ToString("yyyyMMddHHmmss") & pObj.Destino
+            ores = NewSaleEldar2(request)
 
+            oRta.IDTransaccion = ores.data.idTransaccion
 
-
-            oRta.IDTransaccion = pIDtransaccion
-            oRta.Mensaje = mMsn
+            oRta.Mensaje = ores.data.message
             oRta.Destino = pObj.Prefijo & pObj.Destino
             oRta.Monto = pObj.Monto
-            oRta.Estado = pSaleData
+            oRta.Estado = ores.data.saleData
             oRta.CodigoTicket = CodigoTicket
+
+
+            'mRes = oEldar.NewSaleDirecTVWebLiviana(pObj.User, pObj.Pass, pObj.Destino, pObj.Monto,
+            '                                              15, pIDtransaccion, pSaleData, mMsn, CodigoTicket)
+
+
+
+
+            'oRta.IDTransaccion = pIDtransaccion
+            'oRta.Mensaje = mMsn
+            'oRta.Destino = pObj.Prefijo & pObj.Destino
+            'oRta.Monto = pObj.Monto
+            'oRta.Estado = pSaleData
+            'oRta.CodigoTicket = CodigoTicket
             oRta.UrlSitio = GetSiteRoot()
             Dim uri As New Uri(oEldar.Url)
 
             oRta.UrlSitioTicket = uri.Host
 
-            oRta.TemplateTicket = pObj.NombreAgencia & "|" & pObj.DireccionAgencia & "|" & pIDtransaccion & "|" & oRta.Destino & "|" & pObj.Monto & "|" & oRta.Estado & "|" & mMsn
+            oRta.TemplateTicket = pObj.NombreAgencia & "|" & pObj.DireccionAgencia & "|" & oRta.IDTransaccion & "|" & oRta.Destino & "|" & pObj.Monto & "|" & oRta.Estado & "|" & mMsn
 
 
             oList.Add(oRta)
@@ -3497,7 +3541,7 @@ Public Class Servicios
                 request.passWord = pObj.Pass
                 request.userCode = pObj.User
                 request.tipoAcceso = 2
-                request.terminal = "Web liviana"
+                request.terminal = "Web liviana EBC"
                 request.referenciaOperador = Now().ToString("yyyyMMddHHmmss") & pObj.Destino
                 ores = NewSaleEldar2(request)
 
