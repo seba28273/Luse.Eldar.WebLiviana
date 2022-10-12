@@ -3365,7 +3365,7 @@ Public Class Servicios
             request.userCode = pObj.User
             request.tipoAcceso = 2
             request.terminal = "Web liviana EBC"
-            request.referenciaOperador = Now().ToString("yyyyMMddHHmmss") & pObj.Destino
+            request.referenciaOperador = Now().ToString("yyyyMMddHHmmss")
             ores = NewSaleEldar2(request)
 
             oRespuestaRecarga.IDTransaccion = ores.data.idTransaccion
