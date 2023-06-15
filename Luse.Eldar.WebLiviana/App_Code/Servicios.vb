@@ -515,7 +515,7 @@ Public Class Servicios
 
             ' Set the content length in the request headers  
             request.ContentLength = byteData.Length
-
+            request.Timeout = 500000
             ' Write data  
             Try
                 postStream = request.GetRequestStream()
@@ -1424,7 +1424,7 @@ Public Class Servicios
 
             ' SETEA A POST  
             request.Method = "POST"
-
+            request.Timeout = 500000
             request.ContentType = "application/json"
 
             dataSend = "{""codPuesto"":""" & codPuesto & """, ""idTrxAnterior"": """ & idTrxAnterior & """}"
@@ -3201,7 +3201,7 @@ Public Class Servicios
             cSQL = "SELECT a.IDProducto  From agenciaxproducto as a " _
                 & " INNER JOIN Producto as p ON p.IDProducto = a.IDProducto " _
                 & " INNER JOIN Proveedor as Pr On Pr.IDProveedor = p.IDProveedor " _
-                & " WHERE IDAgencia =" & pObj.IDAgencia & " And Pr.IDProveedor = 35 and Asignado = 1 and a.Activo = 1 "
+                & " WHERE IDAgencia =" & pObj.IDAgencia & " And (Pr.IDProveedor = 35 or Pr.IDProveedor = 39 or Pr.IDProveedor = 40 ) and Asignado = 1 and a.Activo = 1 "
 
             Dim mOperacion As String = ""
             oTablaTemp = GetDatos(cSQL)
@@ -3220,20 +3220,69 @@ Public Class Servicios
             End If
 
             Dim mRes As Boolean
-            mRes = oEldar.NewSaleWithRefOperadorRedBusElectronico(pObj.User,
-                                                pObj.Pass, pObj.NroTarjeta, pObj.Monto, pIDtransaccion, pSaleData,
-                                                  mMsn)
+
+
+
+            Dim request As New EldarSales2
+            Dim ores As New resEldarSales2
+            request.destino = pObj.NroTarjeta
+            request.monto = pObj.Monto
+            If mOperacion = "CBA" Then
+                request.idProveedor = 35
+            ElseIf mOperacion = "TCM" Then
+                request.idProveedor = 39
+            Else
+
+                oRespuestaRecarga.Estado = False
+                oRespuestaRecarga.Mensaje = "Producto Red bus Mal configurado"
+                oList.Add(oRespuestaRecarga)
+                Return oList
+            End If
+
+            request.idProducto = 0
+            request.passWord = pObj.Pass
+            request.userCode = pObj.User
+            request.tipoAcceso = 2
+            request.terminal = "Web liviana EBC"
+            request.referenciaOperador = Now().ToString("yyyyMMddHHmmss")
+            ores = NewSaleEldar2(request)
+
+            oRespuestaRecarga.IDTransaccion = ores.data.idTransaccion
+
+            oRespuestaRecarga.Mensaje = ores.data.message
+            oRespuestaRecarga.Destino = pObj.NroTarjeta
+            oRespuestaRecarga.Monto = pObj.Monto
+            oRespuestaRecarga.Estado = ores.data.saleData
+            oRespuestaRecarga.NroTarjeta = pObj.NroTarjeta
+
+            If oRespuestaRecarga.Estado.ToUpper() = "ERROR" Or oRespuestaRecarga.Estado = "" Then
+                mRes = False
+                mMsn = oRespuestaRecarga.Mensaje
+            Else
+                mRes = True
+                oRespuestaRecarga.Mensaje = "La venta se realizo con exito"
+
+            End If
+
+            'Else
+
+            '    mRes = oEldar.NewSaleWithRefOperadorRedBusElectronico(pObj.User,
+            '                                    pObj.Pass, pObj.NroTarjeta, pObj.Monto, pIDtransaccion, pSaleData,
+            '                                      mMsn)
+
+
+            '    oRespuestaRecarga.IDTransaccion = pIDtransaccion
+            '    oRespuestaRecarga.Mensaje = "La venta se realizo con exito"
+            '    oRespuestaRecarga.NroTarjeta = pObj.NroTarjeta
+            '    oRespuestaRecarga.Monto = pObj.Monto
+            '    oRespuestaRecarga.Estado = "Ok"
+
+            'End If
+
 
 
             If mRes Then
 
-
-
-                oRespuestaRecarga.IDTransaccion = pIDtransaccion
-                oRespuestaRecarga.Mensaje = "La venta se realizo con exito"
-                oRespuestaRecarga.NroTarjeta = pObj.NroTarjeta
-                oRespuestaRecarga.Monto = pObj.Monto
-                oRespuestaRecarga.Estado = "Ok"
 
                 If mOperacion = "CBA" Then
                     oRespuestaRecarga.UrlSitio = GetSiteRoot() & "/mailtemplates/MostrarImpresionRedBusCordoba.aspx"
@@ -3243,7 +3292,7 @@ Public Class Servicios
                     oRespuestaRecarga.UrlSitio = GetSiteRoot() & "/mailtemplates/MostrarImpresionRedBusSalta.aspx"
                 End If
 
-                oRespuestaRecarga.TemplateTicket = pObj.NombreAgencia & "|" & pObj.DireccionAgencia & "|" & pIDtransaccion & "|" & pObj.NroTarjeta & "|" & pObj.Monto
+                oRespuestaRecarga.TemplateTicket = pObj.NombreAgencia & "|" & pObj.DireccionAgencia & "|" & oRespuestaRecarga.IDTransaccion & "|" & pObj.NroTarjeta & "|" & pObj.Monto
             Else
                 oRespuestaRecarga.Estado = False
                 oRespuestaRecarga.Mensaje = mMsn
@@ -3339,10 +3388,10 @@ Public Class Servicios
             Dim pRefOperador As String = "" 'Este Valor lo asigna eldar al enviar la recarga a SUBE.
             Dim mDireccion As String = ""
             Dim mRazonSocial As String = ""
-            Dim sFecha As String = Format(Now(), "HHmmss")
+            Dim sFecha As String = Format(Now(), "mmss")
 
             pObj.NroTarjeta = "606126" & pObj.NroTarjeta
-            pRefOperador = pObj.NroTarjeta + sFecha
+            pRefOperador = pObj.NroTarjeta.Substring(6, 10) + sFecha
 
             'mRes = oEldar.NewSaleWithRefOperadorSube(pObj.User,
             '                                    pObj.Pass, pObj.NroTarjeta, pObj.Monto,
@@ -3365,7 +3414,7 @@ Public Class Servicios
             request.userCode = pObj.User
             request.tipoAcceso = 2
             request.terminal = "Web liviana EBC"
-            request.referenciaOperador = Now().ToString("yyyyMMddHHmmss")
+            request.referenciaOperador = pRefOperador 'Now().ToString("yyyyMMddHHmmss")
             ores = NewSaleEldar2(request)
 
             oRespuestaRecarga.IDTransaccion = ores.data.idTransaccion
@@ -3469,6 +3518,75 @@ Public Class Servicios
 
     End Function
 
+    <WebMethod()>
+    Public Function GrabarVentaDTVGO(pObj As Parametros) As List(Of RespuestaRecarga)
+        Dim oRta As New RespuestaRecarga
+        Dim oList As New List(Of RespuestaRecarga)
+        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Try
+
+            Dim mRes As Boolean = False
+            Dim mMsn As String = ""
+            Dim pIDtransaccion As String = ""
+            Dim pSaleData As String = ""
+            Dim pRefOperador As String = "" 'Este Valor lo asigna eldar al enviar la recarga a SUBE.
+            Dim CodigoTicket As String = ""
+
+            pObj.Destino = "05700" & pObj.Destino
+
+
+            Dim request As New EldarSales2
+            Dim ores As New resEldarSales2
+            request.destino = pObj.Destino
+            request.monto = pObj.Monto
+            request.idProveedor = 37 '15=Proveedor DTV
+            request.idProducto = 0
+            request.passWord = pObj.Pass
+            request.userCode = pObj.User
+            request.tipoAcceso = 2
+            request.terminal = "Web liviana EBC"
+            request.referenciaOperador = Now().ToString("yyyyMMddHHmmss") & pObj.Destino
+            ores = NewSaleEldar2(request)
+
+            oRta.IDTransaccion = ores.data.idTransaccion
+
+            oRta.Mensaje = ores.data.message
+            oRta.Destino = pObj.Prefijo & pObj.Destino
+            oRta.Monto = pObj.Monto
+            oRta.Estado = ores.data.saleData
+            oRta.CodigoTicket = CodigoTicket
+
+
+            'mRes = oEldar.NewSaleDirecTVWebLiviana(pObj.User, pObj.Pass, pObj.Destino, pObj.Monto,
+            '                                              15, pIDtransaccion, pSaleData, mMsn, CodigoTicket)
+
+
+
+
+            'oRta.IDTransaccion = pIDtransaccion
+            'oRta.Mensaje = mMsn
+            'oRta.Destino = pObj.Prefijo & pObj.Destino
+            'oRta.Monto = pObj.Monto
+            'oRta.Estado = pSaleData
+            'oRta.CodigoTicket = CodigoTicket
+            oRta.UrlSitio = GetSiteRoot()
+            Dim uri As New Uri(oEldar.Url)
+
+            oRta.UrlSitioTicket = uri.Host
+
+            oRta.TemplateTicket = pObj.NombreAgencia & "|" & pObj.DireccionAgencia & "|" & oRta.IDTransaccion & "|" & oRta.Destino & "|" & pObj.Monto & "|" & oRta.Estado & "|" & mMsn
+
+
+            oList.Add(oRta)
+
+        Catch ex As Exception
+            oRta.Estado = False
+            oRta.Mensaje = ex.Message
+            oList.Add(oRta)
+        End Try
+        Return oList
+
+    End Function
 
     <WebMethod()>
     Public Function GrabarVentaPin(pObj As Parametros) As List(Of RespuestaRecarga)
@@ -3530,7 +3648,7 @@ Public Class Servicios
             Dim pRefOperador As String = "" 'Este Valor lo asigna eldar al enviar la recarga a SUBE.
 
             pObj.Prefijo = "00"
-            If pObj.IDProveedor = 2 Then
+            If pObj.IDProveedor = 2 Or pObj.IDProveedor = 3 Or pObj.IDProveedor = 4 Or pObj.IDProveedor = 37 Or pObj.IDProveedor = 24 Then
 
                 Dim request As New EldarSales2
                 Dim ores As New resEldarSales2
@@ -3775,15 +3893,18 @@ Public Class Servicios
         oProveedores.IDProveedor = 3
         oProveedores.NombreProveedor = "Personal"
         oList.Add(oProveedores)
-        oProveedores = New Proveedores
-        oProveedores.IDProveedor = 5
-        oProveedores.NombreProveedor = "Nextel"
-        oList.Add(oProveedores)
+        'oProveedores = New Proveedores
+        'oProveedores.IDProveedor = 5
+        'oProveedores.NombreProveedor = "Nextel"
+        'oList.Add(oProveedores)
         oProveedores = New Proveedores
         oProveedores.IDProveedor = 24
         oProveedores.NombreProveedor = "Tuenti"
         oList.Add(oProveedores)
-
+        oProveedores = New Proveedores
+        oProveedores.IDProveedor = 37
+        oProveedores.NombreProveedor = "Directv GO"
+        oList.Add(oProveedores)
 
         Return oList
 
@@ -3796,15 +3917,15 @@ Public Class Servicios
         Dim oList As New List(Of MontosDisponibles)
         Dim oMontosDisponibles As New MontosDisponibles
 
-        oMontosDisponibles = New MontosDisponibles
-        'Ej 50 / 100 / 150 / 200 / 250 / 300 / 400 / 500 / 600 / 700 / 800)
-        oMontosDisponibles.IDMonto = 60
-        oMontosDisponibles.Descripcion = "60"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 100
-        oMontosDisponibles.Descripcion = "100"
-        oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        ''Ej 50 / 100 / 150 / 200 / 250 / 300 / 400 / 500 / 600 / 700 / 800)
+        'oMontosDisponibles.IDMonto = 60
+        'oMontosDisponibles.Descripcion = "60"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 100
+        'oMontosDisponibles.Descripcion = "100"
+        'oList.Add(oMontosDisponibles)
         oMontosDisponibles = New MontosDisponibles
         oMontosDisponibles.IDMonto = 150
         oMontosDisponibles.Descripcion = "150"
@@ -3822,8 +3943,16 @@ Public Class Servicios
         oMontosDisponibles.Descripcion = "300"
         oList.Add(oMontosDisponibles)
         oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 350
+        oMontosDisponibles.Descripcion = "350"
+        oList.Add(oMontosDisponibles)
+        oMontosDisponibles = New MontosDisponibles
         oMontosDisponibles.IDMonto = 400
         oMontosDisponibles.Descripcion = "400"
+        oList.Add(oMontosDisponibles)
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 450
+        oMontosDisponibles.Descripcion = "450"
         oList.Add(oMontosDisponibles)
         oMontosDisponibles = New MontosDisponibles
         oMontosDisponibles.IDMonto = 500
@@ -3866,9 +3995,30 @@ Public Class Servicios
         oMontosDisponibles.IDMonto = 1400
         oMontosDisponibles.Descripcion = "1400"
         oList.Add(oMontosDisponibles)
-
-
-
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 1500
+        oMontosDisponibles.Descripcion = "1500"
+        oList.Add(oMontosDisponibles)
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 2000
+        oMontosDisponibles.Descripcion = "2000"
+        oList.Add(oMontosDisponibles)
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 2500
+        oMontosDisponibles.Descripcion = "2500"
+        oList.Add(oMontosDisponibles)
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 3000
+        oMontosDisponibles.Descripcion = "3000"
+        oList.Add(oMontosDisponibles)
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 3500
+        oMontosDisponibles.Descripcion = "3500"
+        oList.Add(oMontosDisponibles)
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 4000
+        oMontosDisponibles.Descripcion = "4000"
+        oList.Add(oMontosDisponibles)
         Return oList
 
 

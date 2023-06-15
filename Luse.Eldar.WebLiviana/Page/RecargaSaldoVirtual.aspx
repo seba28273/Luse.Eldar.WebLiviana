@@ -342,11 +342,24 @@
 
                         }
                         else {
-                            $("#txtMonto").val("");
-                            $('#btnGrabar').attr('disabled', false);
-                            $("#lblresultok").css("display", "none");
-                            $("#lblresultokfail").css("display", "block");
-                            $("#lblresultokfail").html(text);
+                            var prod_seleccionado = $("#cboCompania option:selected").val();
+
+                            if (prod_seleccionado == 37) {
+                                $("#txtMonto").val("2699");
+                                $('#txtMonto').attr('disabled', true);
+                                $('#btnGrabar').attr('disabled', false);
+                                $("#lblresultok").css("display", "none");
+                                $("#lblresultokfail").css("display", "block");
+                                $("#lblresultokfail").html(text);
+                            } else {
+                                $("#txtMonto").val("");
+                                $('#btnGrabar').attr('disabled', false);
+                                $("#lblresultok").css("display", "none");
+                                $("#lblresultokfail").css("display", "block");
+                                $("#lblresultokfail").html(text);
+                            }
+
+                           
 
                         }
 
@@ -366,6 +379,15 @@
                 $("#txtMonto").val("");
                 $("#txtDestino").val("");
                 $("#txtPrefijo").val("");
+                var prod_seleccionado = $("#cboCompania option:selected").val();
+               
+                if (prod_seleccionado == 37) {
+                    $("#txtMonto").val("2699");
+                    $('#txtMonto').attr('disabled', true);
+                } else {
+                    $("#txtMonto").val("");
+                    $('#txtMonto').attr('disabled', false);
+                }
                 // $("#dvfondo").im("");
 
             });
