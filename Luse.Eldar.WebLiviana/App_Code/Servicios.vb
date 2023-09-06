@@ -3926,14 +3926,14 @@ Public Class Servicios
         'oMontosDisponibles.IDMonto = 100
         'oMontosDisponibles.Descripcion = "100"
         'oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 150
-        oMontosDisponibles.Descripcion = "150"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 200
-        oMontosDisponibles.Descripcion = "200"
-        oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 150
+        'oMontosDisponibles.Descripcion = "150"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 200
+        'oMontosDisponibles.Descripcion = "200"
+        'oList.Add(oMontosDisponibles)
         oMontosDisponibles = New MontosDisponibles
         oMontosDisponibles.IDMonto = 250
         oMontosDisponibles.Descripcion = "250"
@@ -4018,6 +4018,15 @@ Public Class Servicios
         oMontosDisponibles = New MontosDisponibles
         oMontosDisponibles.IDMonto = 4000
         oMontosDisponibles.Descripcion = "4000"
+        oList.Add(oMontosDisponibles)
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 5000
+        oMontosDisponibles.Descripcion = "5000"
+        oList.Add(oMontosDisponibles)
+
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 6000
+        oMontosDisponibles.Descripcion = "6000"
         oList.Add(oMontosDisponibles)
         Return oList
 
