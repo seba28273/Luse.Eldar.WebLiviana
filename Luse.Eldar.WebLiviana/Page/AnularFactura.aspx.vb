@@ -5,7 +5,7 @@ Partial Class Page_AnularFactura
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         If Session("Usuario") Is Nothing Then
-            Server.Transfer("../Default.aspx")
+            Response.Redirect("~/")
         End If
 
         Usuario.Value = Session("Usuario")

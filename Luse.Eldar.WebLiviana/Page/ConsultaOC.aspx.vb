@@ -7,7 +7,7 @@ Partial Class Page_ConsultaOC
 
 
         If Session("Usuario") Is Nothing Then
-            Server.Transfer("../Default.aspx")
+            Response.Redirect("~/")
         End If
 
 

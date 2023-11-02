@@ -6,7 +6,7 @@ Partial Class CreditApto
 
         If (Not Page.IsPostBack) Then
             If Session("Usuario") Is Nothing Then
-                Server.Transfer("../Default.aspx")
+                Response.Redirect("~/")
             End If
 
 

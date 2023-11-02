@@ -5,7 +5,7 @@ Partial Class Page_RecargaSube
 
 
         If Session("Usuario") Is Nothing Then
-            Server.Transfer("../Default.aspx")
+            Response.Redirect("~/")
         End If
 
 
@@ -16,6 +16,7 @@ Partial Class Page_RecargaSube
         DireccionAgencia.Value = Session("DireccionAgencia")
         MontoVentas.Value = Session("MontoVentas")
         AptoCredito.Value = Session("AptoCredito")
+        IPCliente.Value = Session("IPCliente")
 
     End Sub
 End Class

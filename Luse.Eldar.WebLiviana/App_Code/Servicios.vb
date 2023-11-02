@@ -35,6 +35,8 @@ Public Class Servicios
     End Function
 
     Dim oConn As New SqlConnection(WebConfigurationManager.AppSettings("ConnStringEldar").ToString())
+    Dim oConnAudit As New SqlConnection(WebConfigurationManager.AppSettings("ConnStringEldarAuditoria").ToString())
+
     Dim ocmd As New SqlCommand()
 
     Public Function GrabarVentaXRetiros(IDAgencia As Long, IDAcceso As Long, pMonto As Decimal, pEmpresa As String, pCodPuesto As String,
@@ -1186,6 +1188,65 @@ Public Class Servicios
         Catch ex As Exception
         Finally
             oConn.Close()
+        End Try
+
+    End Function
+
+    Public Function GetDatosAudit(pCadena As String) As DataTable
+
+        Dim mSql As String = pCadena
+        ocmd = New SqlCommand(mSql, oConnAudit)
+        oConnAudit.Open()
+        mSql = Replace(Replace(Replace(mSql, "'", ""), "--", ""), """", "")
+        Try
+            Dim da As New SqlDataAdapter(ocmd)
+            Dim ds As New DataSet
+            da.Fill(ds)
+
+            Return ds.Tables(0)
+        Catch ex As Exception
+        Finally
+            oConnAudit.Close()
+        End Try
+
+    End Function
+
+    Public Function ExecuteSql(pCadena As String) As Int16
+
+        Dim mSql As String = pCadena
+        ocmd = New SqlCommand(mSql, oConn)
+        oConn.Open()
+        mSql = Replace(Replace(Replace(mSql, "'", ""), "--", ""), """", "")
+        Try
+
+            Dim rowsAffected As Integer = ocmd.ExecuteNonQuery()
+
+
+            Return rowsAffected
+        Catch ex As Exception
+        Finally
+            oConn.Close()
+        End Try
+
+    End Function
+
+
+    Public Function ExecuteSqlAudit(pCadena As String) As Int16
+
+        Dim mSql As String = pCadena
+        ocmd = New SqlCommand(mSql, oConnAudit)
+        oConnAudit.Open()
+        mSql = Replace(Replace(Replace(mSql, "'", ""), "--", ""), """", "")
+        Try
+
+            Dim rowsAffected As Integer = ocmd.ExecuteScalar()
+
+
+            Return rowsAffected
+        Catch ex As Exception
+            ex = ex
+        Finally
+            oConnAudit.Close()
         End Try
 
     End Function
@@ -2391,6 +2452,124 @@ Public Class Servicios
 
     Public Class Parametros
 
+        Private m_responsecaptcha As String
+        Public Property responsecaptcha() As String
+            Get
+                Return m_responsecaptcha
+            End Get
+            Set(ByVal value As String)
+                m_responsecaptcha = value
+            End Set
+        End Property
+        Private mIDAuditoria As Long
+        Public Property IDAuditoria() As Long
+            Get
+                Return mIDAuditoria
+            End Get
+            Set(ByVal value As Long)
+                mIDAuditoria = value
+            End Set
+        End Property
+        Private mIPCliente As String
+        Public Property IPCliente() As String
+            Get
+                Return mIPCliente
+            End Get
+            Set(ByVal value As String)
+                mIPCliente = value
+            End Set
+        End Property
+        Private mMensaje As String
+        Public Property Mensaje() As String
+            Get
+                Return mMensaje
+            End Get
+            Set(ByVal value As String)
+                mMensaje = value
+            End Set
+        End Property
+
+        Private mEstado As Boolean
+        Public Property Estado() As Boolean
+            Get
+                Return mEstado
+            End Get
+            Set(ByVal value As Boolean)
+                mEstado = value
+            End Set
+        End Property
+        Private mAgente As String
+        Public Property Agente() As String
+            Get
+                Return mAgente
+            End Get
+            Set(ByVal value As String)
+                mAgente = value
+            End Set
+        End Property
+        Private mCodPuestoRP As String
+        Public Property CodPuestoRP() As String
+            Get
+                Return mCodPuestoRP
+            End Get
+            Set(ByVal value As String)
+                mCodPuestoRP = value
+            End Set
+        End Property
+        Private mMensajeCredito As String
+        Public Property MensajeCredito() As String
+            Get
+                Return mMensajeCredito
+            End Get
+            Set(ByVal value As String)
+                mMensajeCredito = value
+            End Set
+        End Property
+        Private mHabilitadoEntregaDinero As Boolean
+        Public Property HabilitadoEntregaDinero() As Boolean
+            Get
+                Return mHabilitadoEntregaDinero
+            End Get
+            Set(ByVal value As Boolean)
+                mHabilitadoEntregaDinero = value
+            End Set
+        End Property
+        Private mSucursal As String
+        Public Property Sucursal() As String
+            Get
+                Return mSucursal
+            End Get
+            Set(ByVal value As String)
+                mSucursal = value
+            End Set
+        End Property
+        Private mAptoCredito As String
+        Public Property AptoCredito() As String
+            Get
+                Return mAptoCredito
+            End Get
+            Set(ByVal value As String)
+                mAptoCredito = value
+            End Set
+        End Property
+        Private mImei As String
+        Public Property Imei() As String
+            Get
+                Return mImei
+            End Get
+            Set(ByVal value As String)
+                mImei = value
+            End Set
+        End Property
+        Private mSaldo As Decimal
+        Public Property Saldo() As Decimal
+            Get
+                Return mSaldo
+            End Get
+            Set(ByVal value As Decimal)
+                mSaldo = value
+            End Set
+        End Property
         Private mIDVenta As Integer
         Public Property IDVenta() As Integer
             Get
@@ -2400,12 +2579,12 @@ Public Class Servicios
                 mIDVenta = value
             End Set
         End Property
-        Private mIDAcceso As Integer
-        Public Property IDAcceso() As Integer
+        Private mIDAcceso As String
+        Public Property IDAcceso() As String
             Get
                 Return mIDAcceso
             End Get
-            Set(ByVal value As Integer)
+            Set(ByVal value As String)
                 mIDAcceso = value
             End Set
         End Property
@@ -2507,16 +2686,6 @@ Public Class Servicios
             End Get
             Set(ByVal value As String)
                 mRepNewPass = value
-            End Set
-        End Property
-
-        Private mMensaje As String
-        Public Property Mensaje() As String
-            Get
-                Return mMensaje
-            End Get
-            Set(ByVal value As String)
-                mMensaje = value
             End Set
         End Property
 
@@ -3006,43 +3175,129 @@ Public Class Servicios
         Dim mMsn As String = ""
         Dim oRta As New Respuesta
         Dim olstRta As New List(Of Respuesta)
+        Dim cSQL As String
 
+        If IsNumeric(pObj.IDAcceso) = False Then
+            pObj.IDAcceso = pObj.IDAcceso.Replace(" ", "+")
 
-        If pObj.NewPass <> pObj.RepNewPass Then
-            oRta.Estado = False
-            oRta.Mensaje = "La contraseña nueva y la anterior no coinciden"
-            olstRta.Add(oRta)
-            Return olstRta
+            pObj.IDAcceso = LuSe.Framework.Common.Helper.CryptoFunctions.DecriptText(pObj.IDAcceso.ToString(), GetCryptoKey(), GetCryptoInitKey())
+            pObj.IPCliente = "Cambiando Pass" ' pObj.IDAcceso.Split("|")(1)
+            'pObj.IDAcceso = pObj.IDAcceso ' pObj.IDAcceso.Split("|")(0)
         End If
-
+        If pObj.Pass = "" Or pObj.Pass Is Nothing Then
+            Dim oTabla As DataTable
+            cSQL = "select Usercode, Password from Acceso where IDAcceso = " + pObj.IDAcceso
+            oTabla = GetDatos(cSQL)
+            pObj.Pass = LuSe.Framework.Common.Helper.CryptoFunctions.DecriptText(oTabla.Rows(0)("Password").ToString(), GetCryptoKey(), GetCryptoInitKey())
+            pObj.User = oTabla.Rows(0)("UserCode").ToString()
+        End If
 
         If pObj.PassActual <> "" AndAlso pObj.PassActual <> pObj.Pass Then
             oRta.Estado = False
-            oRta.Mensaje = "el valor ingresado en contraseña actual es incorrecto"
+            oRta.Mensaje = "INTENTO CAMBIO CONTRASENA: el valor ingresado en contraseña actual es incorrecto"
+            cSQL = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',0,'" + oRta.Mensaje & " Pass Actual Ingresado " + pObj.PassActual & " Pass Actual Save " + pObj.Pass + "') SELECT SCOPE_IDENTITY()"
+            ExecuteSqlAudit(cSQL)
             olstRta.Add(oRta)
             Return olstRta
         End If
+
+        If pObj.NewPass <> pObj.RepNewPass Then
+            oRta.Estado = False
+            oRta.Mensaje = "INTENTO CAMBIO CONTRASENA: La contraseña nueva y la confirmacion de contraseña no coinciden"
+            cSQL = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',0,'" + oRta.Mensaje & " Newpass " + pObj.NewPass & " Rep newPass " + pObj.RepNewPass + "') SELECT SCOPE_IDENTITY()"
+            ExecuteSqlAudit(cSQL)
+
+            olstRta.Add(oRta)
+            Return olstRta
+        End If
+
+
+
 
         If pObj.NewPass = pObj.Pass Then
             oRta.Estado = False
-            oRta.Mensaje = "La contraseña nueva debe ser diferente a la actual."
+            oRta.Mensaje = "INTENTO CAMBIO CONTRASENA: La contraseña nueva debe ser diferente a la actual."
+            cSQL = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',0,'" + oRta.Mensaje & " Newpass " + pObj.NewPass & " Pass Actual " + pObj.Pass + "') SELECT SCOPE_IDENTITY()"
+            ExecuteSqlAudit(cSQL)
             olstRta.Add(oRta)
             Return olstRta
         End If
 
-        Dim mCode As String = pObj.PassActual & "|" & pObj.NewPass & "|" & pObj.RepNewPass
 
-        mRes = oEldar.CambiarPassword(pObj.User, pObj.Pass,
-                                mCode, mMsn)
+        ' Verificar longitud mínima
+        If pObj.NewPass.Length < 8 Or pObj.NewPass.Length > 8 Then
+            oRta.Estado = False
+            oRta.Mensaje = "INTENTO CAMBIO CONTRASENA: La contraseña debe tener 8 caracteres."
+            cSQL = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',0,'" + oRta.Mensaje & " Newpass " + pObj.NewPass + "') SELECT SCOPE_IDENTITY()"
+            ExecuteSqlAudit(cSQL)
+            olstRta.Add(oRta)
+            Return olstRta
+        End If
+
+        ' Verificar caracteres especiales
+        'If Not Regex.IsMatch(pObj.NewPass, "[!@#$%^&*()]") Then
+        '    oRta.Mensaje = "La contraseña debe contener al menos un carácter especial."
+        '    olstRta.Add(oRta)
+        '    Return olstRta
+        'End If
+
+        ' Verificar números
+        'If Not Regex.IsMatch(pObj.NewPass, "\d") Then
+        '    oRta.Mensaje = "La contraseña debe contener al menos un número."
+        '    olstRta.Add(oRta)
+        '    Return olstRta
+        'End If
+
+        Dim contieneMayuscula As Boolean = False
+        Dim contieneMinuscula As Boolean = False
+        Dim contieneNumero As Boolean = False
+        For Each caracter As Char In pObj.NewPass
+            If Char.IsUpper(caracter) Then
+                contieneMayuscula = True
+            ElseIf Char.IsLower(caracter) Then
+                contieneMinuscula = True
+            ElseIf Char.IsDigit(caracter) Then
+                contieneNumero = True
+            End If
+        Next
+
+        If contieneMayuscula AndAlso contieneMinuscula AndAlso contieneNumero Then
+            ' La contraseña cumple con los requisitos
+            ' Puedes realizar la acción que desees
+        Else
+            oRta.Estado = False
+            oRta.Mensaje = "INTENTO CAMBIO CONTRASENA: La contraseña no cumple con los requisitos de seguridad. Debe Contener Mayuscula, minuscula y al menos un nro"
+            cSQL = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',0,'" + oRta.Mensaje & " Newpass " + pObj.NewPass + "') SELECT SCOPE_IDENTITY()"
+            ExecuteSqlAudit(cSQL)
+            olstRta.Add(oRta)
+            Return olstRta
+        End If
+
+        'Dim mCode As String = pObj.PassActual & "|" & pObj.NewPass & "|" & pObj.RepNewPass
+
+        'mRes = oEldar.CambiarPassword(pObj.User, pObj.Pass,
+        '                        mCode, mMsn)
 
 
-        oRta.Estado = mRes
-        oRta.Mensaje = mMsn
+        Dim newpass As String = LuSe.Framework.Common.Helper.CryptoFunctions.CriptText(pObj.NewPass, GetCryptoKey(), GetCryptoInitKey())
+
+
+
+
+        cSQL = "Update Acceso set Activo = 1, RecuperarContrasena = 0, ClaveaRecuperar ='', BloqueadoVenta =0, ChangePassword = 0, IntentosFallidos = 0, Password = '" + newpass + "', DateForExpirationPassword = DATEADD(d,CountDaysForExpirationPassword, GETDATE())  where IDAcceso = " + pObj.IDAcceso.ToString()
+
+        ExecuteSql(cSQL)
+        'Server.Execute("../Default.aspx")
+        oRta.Estado = True
+        oRta.Mensaje = "Clave cambiada con exito"
+        cSQL = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',1,'" + oRta.Mensaje & " Newpass " + pObj.NewPass + "') SELECT SCOPE_IDENTITY()"
+        ExecuteSqlAudit(cSQL)
         olstRta.Add(oRta)
         Return olstRta
 
 
     End Function
+
 
     <WebMethod()>
     Public Function GetSaldoAgencia(pObj As Parametros) As List(Of RespuestaRecarga)
@@ -3067,6 +3322,237 @@ Public Class Servicios
 
     End Function
 
+    Public Class resCaptcha
+
+        Private msuccess As Boolean
+        Public Property success() As Boolean
+            Get
+                Return msuccess
+            End Get
+            Set(ByVal value As Boolean)
+                msuccess = value
+            End Set
+        End Property
+        Private mchallenge_ts As DateTime
+        Public Property challenge_ts() As DateTime
+            Get
+                Return mchallenge_ts
+            End Get
+            Set(ByVal value As DateTime)
+                mchallenge_ts = value
+            End Set
+        End Property
+        Private mhostname As String
+        Public Property hostname() As String
+            Get
+                Return mhostname
+            End Get
+            Set(ByVal value As String)
+                mhostname = value
+            End Set
+        End Property
+        Private maction As String
+        Public Property action() As String
+            Get
+                Return maction
+            End Get
+            Set(ByVal value As String)
+                maction = value
+            End Set
+        End Property
+
+    End Class
+    <WebMethod()>
+    Public Function Login(pObj As Parametros) As List(Of Parametros)
+
+        Dim oRta As New Parametros
+        Dim oList As New List(Of Parametros)
+        If pObj.User = "" Or pObj.Pass = "" Then
+            oRta.Estado = False
+            oRta.Mensaje = "Ingrese Usuario y Contraseña"
+            oList.Add(oRta)
+            Return oList
+
+        End If
+
+
+        'Dim response As String = pObj.responsecaptcha
+        'Dim secretKey As String = WebConfigurationManager.AppSettings("ClavePrivadaGoogle").ToString()
+
+
+
+
+        'Dim client As New System.Net.WebClient()
+
+        'Dim Result = client.DownloadString(String.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secretKey, response))
+        'Dim obj As resCaptcha = JsonConvert.DeserializeObject(Of resCaptcha)(Result)
+        'Dim recaptchaValid As Boolean = obj.success
+        'If recaptchaValid = False Then
+        '    'errorcaptcha.Value = "Indique que no es un robot"
+        '    Dim cSQLCaptcha As String
+        '    cSQLCaptcha = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',0,'" + Result + "') SELECT SCOPE_IDENTITY()"
+        '    ExecuteSqlAudit(cSQLCaptcha)
+        '    oRta.Estado = False
+        '    oRta.Mensaje = "Marque la casilla de verificacion"
+        '    oList.Add(oRta)
+        '    Return oList
+        'End If
+        Dim SqlIp As String
+        Dim oTablaIP As DataTable
+        SqlIp = "Select ISNULL(Bloqueada,0)as Bloqueada from Iplist where IP= '" + pObj.IPCliente + "'"
+        oTablaIP = GetDatosAudit(SqlIp)
+        If oTablaIP.Rows.Count > 0 Then
+            If Convert.ToBoolean(oTablaIP.Rows(0)("Bloqueada")) Then
+                oRta.Estado = False
+                oRta.Mensaje = "Usuario y Contraseña mal ingresada Consulte con soporte."
+                oList.Add(oRta)
+                Return oList
+            End If
+        End If
+
+        Dim cSQL As String = ""
+        Dim password As String = LuSe.Framework.Common.Helper.CryptoFunctions.CriptText(pObj.Pass, GetCryptoKey, GetCryptoInitKey())
+
+        cSQL = "SELECT   Acceso.IDAcceso, Agencia.IDAgencia, Agencia.IDAgenciaSup, Agencia.Nombre, Agencia.UpgPos, Acceso.Activo,  " _
+        & "    PoseeSube,(Agencia.Direccion + ' ' + convert(varchar(10),Agencia.DireccionNumero)) as DireccionAgencia  " _
+         & "   ,ISNULL(CodPuesto,0) as CodPuesto, ISNULL(Sucursal,0) as Sucursal , ISNULL(Agente,0) as Agente, ISNULL(HabilitadoEntregaDinero,0), ClaveArecuperar,RecuperarContrasena " _
+       & " as HabilitadoEntregaDinero ,ChangePassword, NotChangePassword, ExpirationPassword, DateExpirationAccount, DateExpiration, S.Cantidad as StockAgencia, SS.Cantidad as StockAgenciaSube, SS.IDStockSube,  ISNULL(IDPrestamoBase,0) as IDPrestamoBase, ISNULL(Mensaje,'')  as MensajeCredito,  ISNULL(PrestamoBase.AptoCredito,0) as AptoCredito " _
+        & "  , CountDaysForExpirationPassword, DateForExpirationPassword, Acceso.IDAgencia, BloqueadoVenta, Acceso.IntentosFallidos, RecuperarContrasena   FROM Agencia INNER JOIN AgenciaXUsers ON Agencia.IDAgencia = AgenciaXUsers.IDAgencia " _
+        & " left join  PrestamoBase ON PrestamoBase.IDAgencia = Agencia.IDAgencia  INNER JOIN Acceso ON Acceso.IDAcceso = AgenciaXUsers.IDUserAcceso left join StockSube as SS On SS.IDAgencia = Agencia.IDAgencia Inner join Stock as S On S.IDAgencia = Agencia.IDAgencia  LEFT JOIN AgenciaRapipago ON " _
+       & " AgenciaRapipago.IDAgencia = Agencia.IDAgencia  WHERE 1=1 and  Acceso.IDTipoAcceso = 2  and  Usercode like '" + pObj.User + "' And (password  like '" + password + "' Or ( ClaveArecuperar  <> '' and ClaveArecuperar like '" + pObj.Pass + "'))"
+
+
+        ''And BloqueadoVenta =0 And Acceso.Activo = 1
+        Dim oservicios As New Servicios
+        Dim oTablaTemp As DataTable
+        Dim blnExito As Boolean = True
+        oTablaTemp = oservicios.GetDatos(cSQL)
+        Dim oTablaAcceso As DataTable
+        Dim mID As Long
+        Dim mobservaciones As String = "Sin Observaciones"
+
+        If oTablaTemp.Rows.Count = 0 Or oTablaTemp.Rows.Count > 1 Then
+            oRta.Estado = False
+            If oTablaTemp.Rows.Count > 1 Then
+                oRta.Mensaje = "Usuario mal configurado."
+            Else
+                oRta.Mensaje = "Usuario y Contraseña mal ingresada o el usuario esta bloqueado."
+
+            End If
+
+            'incrementar intetos fallidos guardar log de login
+
+
+            blnExito = False
+            'Desactivar usuario
+            cSQL = "Update Acceso set IntentosFallidos = IntentosFallidos + 1 where Usercode like '" + pObj.User + "'"
+            ExecuteSql(cSQL)
+
+            cSQL = "Select IntentosFallidos from Acceso where Usercode like '" + pObj.User + "'"
+            oTablaAcceso = oservicios.GetDatos(cSQL)
+            Dim cantaccesosfallidos As Integer = oTablaAcceso.Rows(0)("IntentosFallidos")
+
+            If cantaccesosfallidos > 3 Then
+                cSQL = "Update Acceso set Activo = 0, BloqueadoVenta = 1, ChangePassword = 1 where Usercode like '" + pObj.User + "'"
+                ExecuteSql(cSQL)
+            End If
+            cSQL = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',0,'" + oRta.Mensaje & " IntentosFallidos " & cantaccesosfallidos.ToString() + "') SELECT SCOPE_IDENTITY()"
+            mID = ExecuteSqlAudit(cSQL)
+
+            oList.Add(oRta)
+            Return oList
+        Else
+            If Convert.ToBoolean(oTablaTemp.Rows(0)("BloqueadoVenta")) = True Or Convert.ToBoolean(oTablaTemp.Rows(0)("Activo")) = False Then
+
+                cSQL = "Select IntentosFallidos from Acceso where Usercode like '" + pObj.User + "'"
+                oTablaAcceso = oservicios.GetDatos(cSQL)
+
+
+                cSQL = "Update Acceso set IntentosFallidos = IntentosFallidos + 1 where Usercode like '" + pObj.User + "'"
+                ExecuteSql(cSQL)
+                cSQL = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',0,'" + oRta.Mensaje & " IntentosFallidos Con usuario bloqueado " & oTablaAcceso.Rows(0)("IntentosFallidos").ToString() + "') SELECT SCOPE_IDENTITY()"
+                mID = ExecuteSqlAudit(cSQL)
+
+                oRta.Estado = False
+                oRta.Mensaje = "Usuario y Contraseña mal ingresada o el usuario esta bloqueado..."
+                If Not Convert.ToBoolean(oTablaTemp.Rows(0)("RecuperarContrasena")) Then
+                    oList.Add(oRta)
+                    Return oList
+                End If
+
+            End If
+
+            If DateDiff(DateInterval.Day, oTablaTemp.Rows(0)("DateForExpirationPassword"), Now.Date) >= 0 Then
+                oRta.Estado = False
+                oRta.Mensaje = "Su clave ha expirado. Debe cambiarla!"
+                oRta.IDAcceso = LuSe.Framework.Common.Helper.CryptoFunctions.CriptText(oTablaTemp.Rows(0)("IDAcceso").ToString(), GetCryptoKey, GetCryptoInitKey())
+                'oRta.IDAcceso = LuSe.Framework.Common.Helper.CryptoFunctions.CriptText(oTablaTemp.Rows(0)("IDAcceso").ToString() + "|" + pObj.IPCliente, GetCryptoKey, GetCryptoInitKey())
+                blnExito = False
+                oList.Add(oRta)
+
+                cSQL = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',0,'" + oRta.Mensaje + "') SELECT SCOPE_IDENTITY()"
+                mID = ExecuteSqlAudit(cSQL)
+
+                Return oList
+
+
+            End If
+
+
+            If IsDBNull(oTablaTemp.Rows(0)("IDStockSube")) Then
+                cSQL = "INSERT INTO StockSube(IDProducto,IDAgencia,Cantidad,Activo,CargaInicial,StockPos)VALUES(100," + oTablaTemp.Rows(0)("IDAgencia").ToString() + ",0,1,0,0)"
+                ExecuteSql(cSQL)
+            End If
+
+            'si va todo bien reintentos poner en 0
+            cSQL = "Update Acceso set IntentosFallidos = 0, ChangePassword = 0 where Usercode like '" + pObj.User + "'"
+            ExecuteSql(cSQL)
+
+
+            cSQL = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',1,'" + mobservaciones + "') SELECT SCOPE_IDENTITY()"
+            mID = ExecuteSqlAudit(cSQL)
+
+
+
+            'Cargo valores para la sesion
+            oRta.User = pObj.User
+            oRta.Pass = pObj.Pass
+            oRta.Saldo = oTablaTemp.Rows(0)("StockAgencia")
+            oRta.SaldoSube = oTablaTemp.Rows(0)("StockAgenciaSube")
+            oRta.IDAgencia = oTablaTemp.Rows(0)("IDAgencia")
+            oRta.NombreAgencia = oTablaTemp.Rows(0)("Nombre")
+            oRta.DireccionAgencia = oTablaTemp.Rows(0)("DireccionAgencia")
+
+            oRta.Imei = "" 'oTablaTemp.Rows(0)("ImeI")
+            oRta.IDPrestamoBase = oTablaTemp.Rows(0)("IDPrestamoBase")
+            oRta.AptoCredito = oTablaTemp.Rows(0)("AptoCredito")
+            oRta.MensajeCredito = oTablaTemp.Rows(0)("MensajeCredito")
+            oRta.IDAcceso = oTablaTemp.Rows(0)("IDAcceso")
+            oRta.HabilitadoEntregaDinero = oTablaTemp.Rows(0)("HabilitadoEntregaDinero")
+            oRta.CodPuestoRP = oTablaTemp.Rows(0)("CodPuesto").ToString.PadLeft(6, "0")
+            oRta.Agente = oTablaTemp.Rows(0)("Agente").ToString.PadLeft(5, "0")
+            oRta.Sucursal = oTablaTemp.Rows(0)("Sucursal")
+            oRta.IPCliente = pObj.IPCliente
+            oRta.IDAuditoria = mID
+            oRta.Estado = True
+            oRta.Mensaje = "Ingreso Exitoso"
+
+            oList.Add(oRta)
+            Return oList
+
+        End If
+
+
+
+    End Function
+
+    Public Function GetCryptoInitKey() As Byte()
+        Return New Byte(23) {62, 37, 72, 5, 64, 14, 51, 16, 58, 8, 74, 58, 198, 152, 114, 156, 187, 26, 38, 12, 25, 18, 23, 22}
+    End Function
+
+    Public Function GetCryptoKey() As Byte()
+        Return New Byte(23) {65, 87, 42, 15, 69, 174, 52, 12, 56, 98, 54, 78, 98, 52, 14, 56, 87, 96, 58, 52, 35, 128, 213, 32}
+    End Function
     <WebMethod()>
     Public Function NewSaleRedBus22(pObj As Parametros) As List(Of RespuestaRecarga)
         Dim oEldar As New LuSe.WsTransaccional.ExternalSales
@@ -3243,7 +3729,13 @@ Public Class Servicios
             request.passWord = pObj.Pass
             request.userCode = pObj.User
             request.tipoAcceso = 2
-            request.terminal = "Web liviana EBC"
+            Dim mTerminal As String
+            Try
+                mTerminal = "EBC " + pObj.IPCliente
+            Catch ex As Exception
+                mTerminal = "Web liviana EBC "
+            End Try
+            request.terminal = mTerminal
             request.referenciaOperador = Now().ToString("yyyyMMddHHmmss")
             ores = NewSaleEldar2(request)
 
@@ -3413,7 +3905,14 @@ Public Class Servicios
             request.passWord = pObj.Pass
             request.userCode = pObj.User
             request.tipoAcceso = 2
-            request.terminal = "Web liviana EBC"
+            'request.terminal = "Web liviana EBC"
+            Dim mTerminal As String
+            Try
+                mTerminal = "EBC " + pObj.IPCliente
+            Catch ex As Exception
+                mTerminal = "Web liviana EBC "
+            End Try
+            request.terminal = mTerminal
             request.referenciaOperador = pRefOperador 'Now().ToString("yyyyMMddHHmmss")
             ores = NewSaleEldar2(request)
 
@@ -3474,7 +3973,13 @@ Public Class Servicios
             request.passWord = pObj.Pass
             request.userCode = pObj.User
             request.tipoAcceso = 2
-            request.terminal = "Web liviana EBC"
+            Dim mTerminal As String
+            Try
+                mTerminal = "EBC " + pObj.IPCliente
+            Catch ex As Exception
+                mTerminal = "Web liviana EBC "
+            End Try
+            request.terminal = mTerminal
             request.referenciaOperador = Now().ToString("yyyyMMddHHmmss") & pObj.Destino
             ores = NewSaleEldar2(request)
 
@@ -3649,7 +4154,12 @@ Public Class Servicios
 
             pObj.Prefijo = "00"
             If pObj.IDProveedor = 2 Or pObj.IDProveedor = 3 Or pObj.IDProveedor = 4 Or pObj.IDProveedor = 37 Or pObj.IDProveedor = 24 Then
-
+                Dim mTerminal As String
+                Try
+                    mTerminal = "EBC " + pObj.IPCliente
+                Catch ex As Exception
+                    mTerminal = "Web liviana EBC "
+                End Try
                 Dim request As New EldarSales2
                 Dim ores As New resEldarSales2
                 request.destino = pObj.Destino
@@ -3659,7 +4169,7 @@ Public Class Servicios
                 request.passWord = pObj.Pass
                 request.userCode = pObj.User
                 request.tipoAcceso = 2
-                request.terminal = "Web liviana EBC"
+                request.terminal = mTerminal
                 request.referenciaOperador = Now().ToString("yyyyMMddHHmmss") & pObj.Destino
                 ores = NewSaleEldar2(request)
 
@@ -4855,6 +5365,36 @@ Public Class Data
     Public Property conector As Integer
 End Class
 
+Public Class evento
+
+    Private m_Token As String
+    Public Property Token() As String
+        Get
+            Return m_Token
+        End Get
+        Set(ByVal value As String)
+            m_Token = value
+        End Set
+    End Property
+    Private m_SiteKey As String
+    Public Property SiteKey() As String
+        Get
+            Return m_SiteKey
+        End Get
+        Set(ByVal value As String)
+            m_SiteKey = value
+        End Set
+    End Property
+    Private m_ExpectedAction As String
+    Public Property ExpectedAction() As String
+        Get
+            Return m_ExpectedAction
+        End Get
+        Set(ByVal value As String)
+            m_ExpectedAction = value
+        End Set
+    End Property
+End Class
 Public Class resEldarSales2
     Public Property data As Data
     Public Property isSuccess As Boolean

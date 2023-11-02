@@ -48,27 +48,28 @@
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                 <input data-toggle="password" id="txtpassword" type="password" runat="server"
-                    ClientIDMode="Static" class="form-control" style="max-width:350px;" placeholder="Contraseña Actual">
-                
+                    ClientIDMode="Static" class="form-control" style="max-width:350px;" autocomplete="off" placeholder="Contraseña Actual">
+     
             </div>
              
             <br />
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                 <input data-toggle="password" id="txtNewPassword" type="password" runat="server"
-                    ClientIDMode="Static" class="form-control"  style="max-width:350px;"  placeholder="Nueva Contraseña">
+                    ClientIDMode="Static" class="form-control"  style="max-width:350px;" autocomplete="off"  placeholder="Nueva Contraseña">
             </div>
             <br />
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                 <input data-toggle="password" id="txtRepnewPassword" type="password" runat="server"
-                    ClientIDMode="Static" class="form-control"  style="max-width:350px;"  placeholder="Repetir Nueva Contraseña">
+                    ClientIDMode="Static" class="form-control"  style="max-width:350px;"   autocomplete="off" placeholder="Repetir Nueva Contraseña">
             </div>
             <br />
             <asp:HiddenField ClientIDMode="Static" ID="User" runat="server" />
+            <asp:HiddenField ClientIDMode="Static" ID="IDAcceso" runat="server" />
             <asp:HiddenField ClientIDMode="Static" ID="Pass" runat="server" />
-             <asp:hiddenfield clientidmode="Static" id="MontoVentas" runat="server" />
-                    <asp:hiddenfield clientidmode="Static" id="AptoCredito" runat="server" />
+            <asp:hiddenfield clientidmode="Static" id="MontoVentas" runat="server" />
+            <asp:hiddenfield clientidmode="Static" id="AptoCredito" runat="server" />
             <button type="button" id="btnIngresar" runat="server"  clientidmode="Static" class="btn btn-primary">Cambiar</button>
             <label id="lblCargando" class="alert alert-info" style="display: none" clientidmode="Static" runat="server"></label>
             <label id="lblresultokfail" class="alert alert-danger" style="display: none" clientidmode="Static" runat="server"></label>
@@ -95,13 +96,15 @@
         });
         $("#btnIngresar").click(function () {
 
-           
+            $("#lblCargando").css("display", "none");
+            $("#lblresultokfail").css("display", "none");
             var SendObj = {
                 "PassActual": $("#txtpassword").val(),
                 "NewPass": $("#txtNewPassword").val(),
                 "RepNewPass": $("#txtRepnewPassword").val(),
                 "User": $("#User").val(),
-                "Pass": $("#Pass").val()
+                "Pass": $("#Pass").val(),
+                "IDAcceso": $("#IDAcceso").val()
             }
             var stringData = JSON.stringify(SendObj);
            // alert(stringData)
@@ -128,9 +131,14 @@
 
                    
                     if (val) {
-                       // alert("El cambio de contraseña fue exitoso");
+                        
+                        $("#lblresultok").css("display", "block");
+                        $("#lblresultokfail").css("display", "none");
+                       
+                        $("#lblresultok").html("El cambio de contraseña fue exitoso, en instantes sera redirigido al Login");
+                        setTimeout(redirigir(), 4000);
                        // window.location.href("../Default.aspx");
-                        window.location.href = '../Default.aspx'
+                       
                     }
                     else {
 
@@ -146,6 +154,10 @@
 
             });
         });
-</script>
+        function redirigir() {
+            
+            window.location.href = '../Default.aspx';
+        }
+    </script>
 </asp:Content>
 

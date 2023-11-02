@@ -68,6 +68,7 @@
                     <asp:hiddenfield clientidmode="Static" id="DireccionAgencia" runat="server" />
                     <asp:hiddenfield clientidmode="Static" id="MontoVentas" runat="server" />
                     <asp:hiddenfield clientidmode="Static" id="AptoCredito" runat="server" />
+                    <asp:hiddenfield clientidmode="Static" id="IPCliente" runat="server" />
                 </div>
                 <br />
 
@@ -287,7 +288,8 @@
                     "User": $("#User").val(),
                     "NombreAgencia": $("#NombreAgencia").val(),
                     "DireccionAgencia": $("#DireccionAgencia").val(),
-                    "Pass": $("#Pass").val()
+                    "Pass": $("#Pass").val(),
+                     "IPCliente": $("#IPCliente").val()
                 }
                 var stringData = JSON.stringify(SendObj);
                 $.ajax({

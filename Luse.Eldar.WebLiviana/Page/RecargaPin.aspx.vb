@@ -8,7 +8,7 @@ Partial Class Page_RecargaSube
 
 
         If Session("Usuario") Is Nothing Then
-            Server.Transfer("../Default.aspx")
+            Response.Redirect("~/")
         End If
 
 

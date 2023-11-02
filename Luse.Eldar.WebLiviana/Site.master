@@ -21,8 +21,8 @@
 
 
 
-
-
+     <%--<script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>--%>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="../Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
    <%-- <script type="text/javascript" src="../Scripts/jquery.timers.js"></script>--%>
     <script lang="javascript" type="text/javascript">
@@ -60,6 +60,12 @@
 <%--style="background-color:red"--%>
 
 <body onload="deshabilitaRetroceso();">
+    <script>
+        if (!localStorage.getItem('visited')) {
+            localStorage.setItem('visited', 'true');
+            window.location.href = '../default.aspx'; // Reemplaza '/login' con la URL de tu página de inicio de sesión.
+        }
+    </script>
     <form runat="server">
         <asp:ScriptManager runat="server"></asp:ScriptManager>
         <nav id="menuSistema" runat="server" class="navbar navbar-default bg-success navbar-fixed-top navbar-custom" role="navigation">

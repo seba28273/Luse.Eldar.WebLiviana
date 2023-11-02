@@ -5,7 +5,7 @@ Partial Class Page_RecargaRedBusElectronico
 
 
         If Session("Usuario") Is Nothing Then
-            Server.Transfer("../Default.aspx")
+            Response.Redirect("~/")
         End If
 
 
@@ -16,7 +16,7 @@ Partial Class Page_RecargaRedBusElectronico
         MontoVentas.Value = Session("MontoVentas")
         AptoCredito.Value = Session("AptoCredito")
         IDAgencia.Value = Session("IDAgencia")
-
+        IPCliente.Value = Session("IPCliente")
 
 
 

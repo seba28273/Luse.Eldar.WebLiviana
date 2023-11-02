@@ -5,8 +5,17 @@ Partial Class Page_RecargaSube
 
 
         If Session("Usuario") Is Nothing Then
-            Server.Transfer("../Default.aspx")
+            'Server.Transfer("~/")
+            Response.Redirect("~/")
         End If
+
+
+        '    If (!User.Identity.IsAuthenticated) Then
+        '            {
+        '    // Redirige al usuario a la página de inicio (raíz) del sitio
+        '    Response.Redirect("~/");
+        '}
+
 
 
         User.Value = Session("Usuario")
@@ -16,6 +25,7 @@ Partial Class Page_RecargaSube
         DireccionAgencia.Value = Session("DireccionAgencia")
         MontoVentas.Value = Session("MontoVentas")
         AptoCredito.Value = Session("AptoCredito")
+        IPCliente.Value = Session("IPCliente")
 
     End Sub
     Protected Sub btnSolicitudPrestamo_ServerClick(sender As Object, e As EventArgs)

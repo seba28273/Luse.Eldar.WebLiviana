@@ -38,13 +38,16 @@
     </div>--%>
     <div class="jumbotron" style="position: relative;">
         <h2>Carga Electronica RED BUS</h2>
-       <%-- <img src="../Img/SubeAzul.jpg" class="imgpag" style="position: absolute; right: 10px; bottom: 10px;" />--%>
-       <ul id="mnuSaldo" style="position: absolute; text-orientation:sideways;     list-style-type: none; top: 10px; max-width: 200px;">
-            <li><button type="button" id="btnSaldo" class="btn btn-success">Saldo <span id="Saldo" class="badge"></span></button>
+        <%-- <img src="../Img/SubeAzul.jpg" class="imgpag" style="position: absolute; right: 10px; bottom: 10px;" />--%>
+        <ul id="mnuSaldo" style="position: absolute; text-orientation: sideways; list-style-type: none; top: 10px; max-width: 200px;">
+            <li>
+                <button type="button" id="btnSaldo" class="btn btn-success">Saldo <span id="Saldo" class="badge"></span></button>
             </li>
-            <li><button type="button" id="btnTotalVentas" class="btn btn-primary">Total Ventas OK<span id="TotalVentas" class="badge"></span></button>
+            <li>
+                <button type="button" id="btnTotalVentas" class="btn btn-primary">Total Ventas OK<span id="TotalVentas" class="badge"></span></button>
             </li>
-            <li> <button type="button"  id="btnCantVentas" class="btn btn-primary">Cant Ventas OK<span id="CantVentas" class="badge"></span></button>
+            <li>
+                <button type="button" id="btnCantVentas" class="btn btn-primary">Cant Ventas OK<span id="CantVentas" class="badge"></span></button>
             </li>
         </ul>
         <div class="form-group">
@@ -61,20 +64,21 @@
                 <asp:HiddenField ClientIDMode="Static" ID="Pass" runat="server" />
                 <asp:HiddenField ClientIDMode="Static" ID="NombreAgencia" runat="server" />
                 <asp:HiddenField ClientIDMode="Static" ID="DireccionAgencia" runat="server" />
-                 <asp:hiddenfield clientidmode="Static" id="MontoVentas" runat="server" />
-                    <asp:hiddenfield clientidmode="Static" id="AptoCredito" runat="server" />
-                    <asp:HiddenField ClientIDMode = "Static" ID="IDAgencia" runat="server" />
+                <asp:HiddenField ClientIDMode="Static" ID="MontoVentas" runat="server" />
+                <asp:HiddenField ClientIDMode="Static" ID="AptoCredito" runat="server" />
+                <asp:HiddenField ClientIDMode="Static" ID="IDAgencia" runat="server" />
+                <asp:HiddenField ClientIDMode="Static" ID="IPCliente" runat="server" />
             </div>
-           <br />
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon">Monto</span>
-                        <input type="text" runat="server" maxlength="5" class="form-control"
-                            style="background-color: white; background: white; background: rgba(0, 0, 0,0.1); font-weight: bolder; color: black; text-align: right;"
-                            onkeypress="return soloNumeros(event)"
-                            clientidmode="Static" id="txtMonto" />
-                    </div>
+            <br />
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">Monto</span>
+                    <input type="text" runat="server" maxlength="5" class="form-control"
+                        style="background-color: white; background: white; background: rgba(0, 0, 0,0.1); font-weight: bolder; color: black; text-align: right;"
+                        onkeypress="return soloNumeros(event)"
+                        clientidmode="Static" id="txtMonto" />
                 </div>
+            </div>
 
 
             <div class="form-group">
@@ -108,7 +112,7 @@
             var stringData = JSON.stringify(SendObj);
 
             $.ajax({
-                 
+
 
                 type: "POST",
 
@@ -168,7 +172,7 @@
 
         $(window).load(function () {
 
-            
+
 
         });
         $(document).ready(function () {
@@ -214,7 +218,8 @@
                     "NombreAgencia": $("#NombreAgencia").val(),
                     "DireccionAgencia": $("#DireccionAgencia").val(),
                     "NroTarjeta": $("#txtNroTarjeta").val(),
-                    "IDAgencia": $("#IDAgencia").val()
+                    "IDAgencia": $("#IDAgencia").val(),
+                    "IPCliente": $("#IPCliente").val()
                 }
 
 
