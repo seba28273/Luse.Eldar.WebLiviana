@@ -3287,7 +3287,7 @@ Public Class Servicios
         End If
 
         ' Define el patrón de búsqueda para números iguales de al menos 3 dígitos
-        Dim pattern As String = "(\d)\1+" '"(\d{3,})"
+        Dim pattern As String = "(\d)\1+"
 
         ' Encuentra todas las coincidencias en la cadena de entrada
         Dim matches As MatchCollection = Regex.Matches(pObj.NewPass, pattern)
