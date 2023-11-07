@@ -20,7 +20,7 @@
             <br />
             <div class="input-group">
                 <div class="g-recaptcha" data-sitekey="6LfLouEoAAAAALoCVF-iHUTtaS8T0S4R3ysAuok9" action="LOGIN"></div>
-                 
+
             </div>
             <br />
             <asp:HiddenField ClientIDMode="Static" ID="ipadressext" runat="server" />
@@ -28,6 +28,12 @@
             <%--<button type="button" id="btnLog" runat="server" class="btn btn-primary">Ingresar</button>--%>
             <div class="input-group">
                 <button type="button" id="btnIngresar" runat="server" clientidmode="Static" class="btn btn-primary">Ingresar</button>
+            </div>
+            <br />
+
+            <div class="input-group">
+                <%--<a href="RecuperacionContrasena.aspx">¿Olvidó su contraseña?</a>--%>
+
             </div>
             <br />
             <div class="input-group">
@@ -76,7 +82,7 @@
             var mCaptcha = verificarRecaptcha();
             if (mCaptcha == "error") {
 
-
+                $('#btnIngresar').attr('disabled', false);
                 $("#lblresultokfail").css("display", "block");
                 $('#lblresultokfail').html('Marque la casilla de verificacion');
                 return;
@@ -164,7 +170,7 @@
 
                             }
                             else {
-
+                                $('#btnIngresar').attr('disabled', false);
                                 $("#lblCargando").css("display", "none");
                                 $("#lblresultokfail").css("display", "block");
                                 if (text == "Su clave ha expirado. Debe cambiarla!") {

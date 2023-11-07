@@ -3173,10 +3173,11 @@ Public Class Servicios
         Dim oEldar As New LuSe.WsTransaccional.ExternalSales
         Dim mRes As Boolean = False
         Dim mMsn As String = ""
+        Dim mPasswordRecuperacion As String = ""
         Dim oRta As New Respuesta
         Dim olstRta As New List(Of Respuesta)
         Dim cSQL As String
-
+        Dim mREcuperacionContrasenia As Boolean = False
         If IsNumeric(pObj.IDAcceso) = False Then
             pObj.IDAcceso = pObj.IDAcceso.Replace(" ", "+")
 
@@ -3186,11 +3187,17 @@ Public Class Servicios
         End If
         If pObj.Pass = "" Or pObj.Pass Is Nothing Then
             Dim oTabla As DataTable
-            cSQL = "select Usercode, Password from Acceso where IDAcceso = " + pObj.IDAcceso
+            cSQL = "select Usercode, Password, RecuperarContrasena, ClaveaRecuperar from Acceso where IDAcceso = " + pObj.IDAcceso
             oTabla = GetDatos(cSQL)
             pObj.Pass = LuSe.Framework.Common.Helper.CryptoFunctions.DecriptText(oTabla.Rows(0)("Password").ToString(), GetCryptoKey(), GetCryptoInitKey())
             pObj.User = oTabla.Rows(0)("UserCode").ToString()
+            'mPasswordRecuperacion = oTabla.Rows(0)("ClaveaRecuperar").ToString()
+            'mREcuperacionContrasenia = oTabla.Rows(0)("RecuperarContrasena").ToString()
+            'If mREcuperacionContrasenia Then
+            '    pObj.Pass = mPasswordRecuperacion
+            'End If
         End If
+
 
         If pObj.PassActual <> "" AndAlso pObj.PassActual <> pObj.Pass Then
             oRta.Estado = False
@@ -3200,7 +3207,6 @@ Public Class Servicios
             olstRta.Add(oRta)
             Return olstRta
         End If
-
         If pObj.NewPass <> pObj.RepNewPass Then
             oRta.Estado = False
             oRta.Mensaje = "INTENTO CAMBIO CONTRASENA: La contraseña nueva y la confirmacion de contraseña no coinciden"
@@ -3212,7 +3218,14 @@ Public Class Servicios
         End If
 
 
-
+        If pObj.NewPass.ToUpper() = pObj.User.ToUpper() Then
+            oRta.Estado = False
+            oRta.Mensaje = "INTENTO CAMBIO CONTRASENA: La contraseña nueva debe ser diferente al Usuario."
+            cSQL = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',0,'" + oRta.Mensaje & " Newpass " + pObj.NewPass & " Pass Actual " + pObj.Pass + "') SELECT SCOPE_IDENTITY()"
+            ExecuteSqlAudit(cSQL)
+            olstRta.Add(oRta)
+            Return olstRta
+        End If
 
         If pObj.NewPass = pObj.Pass Then
             oRta.Estado = False
@@ -3267,6 +3280,38 @@ Public Class Servicios
         Else
             oRta.Estado = False
             oRta.Mensaje = "INTENTO CAMBIO CONTRASENA: La contraseña no cumple con los requisitos de seguridad. Debe Contener Mayuscula, minuscula y al menos un nro"
+            cSQL = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',0,'" + oRta.Mensaje & " Newpass " + pObj.NewPass + "') SELECT SCOPE_IDENTITY()"
+            ExecuteSqlAudit(cSQL)
+            olstRta.Add(oRta)
+            Return olstRta
+        End If
+
+        ' Define el patrón de búsqueda para números iguales de al menos 3 dígitos
+        Dim pattern As String = "(\d)\1+" '"(\d{3,})"
+
+        ' Encuentra todas las coincidencias en la cadena de entrada
+        Dim matches As MatchCollection = Regex.Matches(pObj.NewPass, pattern)
+
+        ' Itera a través de las coincidencias
+        For Each match As Match In matches
+            Dim correlativo As String = match.Value
+            oRta.Mensaje = "INTENTO CAMBIO CONTRASENA: No puede indicar un mismo numero mas de 2 veces. NO puede indicar " + correlativo
+            cSQL = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',0,'" + oRta.Mensaje & " Newpass " + pObj.NewPass + "') SELECT SCOPE_IDENTITY()"
+            ExecuteSqlAudit(cSQL)
+            olstRta.Add(oRta)
+            Return olstRta
+        Next
+
+
+        ' Expresión regular para buscar secuencias numéricas correlativas
+        Dim pattern2 As String = "(?:(\d)(?=\d\1))+\d"
+
+
+        Dim match2 As Match = Regex.Match(pObj.NewPass, pattern2)
+
+        If match2.Success Then
+            Dim correlativo As String = match2.Value
+            oRta.Mensaje = "INTENTO CAMBIO CONTRASENA: Se encontro una secuencia correlativa de nros en la contraseña. NO puede indicar " + correlativo
             cSQL = "Insert Into AuditoriaIngreso (Fecha,Usuario, Password, IP, Exito, Observaciones)values(GETDATE(), '" + pObj.User + "', '" + pObj.Pass + "', '" + pObj.IPCliente + "',0,'" + oRta.Mensaje & " Newpass " + pObj.NewPass + "') SELECT SCOPE_IDENTITY()"
             ExecuteSqlAudit(cSQL)
             olstRta.Add(oRta)
