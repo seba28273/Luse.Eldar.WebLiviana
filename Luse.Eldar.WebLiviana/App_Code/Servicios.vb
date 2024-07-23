@@ -4584,67 +4584,67 @@ Public Class Servicios
         'oList.Add(oMontosDisponibles)
         'End If
 
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 500
-        oMontosDisponibles.Descripcion = "500"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 600
-        oMontosDisponibles.Descripcion = "600"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 700
-        oMontosDisponibles.Descripcion = "700"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 800
-        oMontosDisponibles.Descripcion = "800"
-        oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 500
+        'oMontosDisponibles.Descripcion = "500"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 600
+        'oMontosDisponibles.Descripcion = "600"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 700
+        'oMontosDisponibles.Descripcion = "700"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 800
+        'oMontosDisponibles.Descripcion = "800"
+        'oList.Add(oMontosDisponibles)
 
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 900
-        oMontosDisponibles.Descripcion = "900"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 1000
-        oMontosDisponibles.Descripcion = "1000"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 1100
-        oMontosDisponibles.Descripcion = "1100"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 1200
-        oMontosDisponibles.Descripcion = "1200"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 1300
-        oMontosDisponibles.Descripcion = "1300"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 1400
-        oMontosDisponibles.Descripcion = "1400"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 1500
-        oMontosDisponibles.Descripcion = "1500"
-        oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 900
+        'oMontosDisponibles.Descripcion = "900"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 1000
+        'oMontosDisponibles.Descripcion = "1000"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 1100
+        'oMontosDisponibles.Descripcion = "1100"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 1200
+        'oMontosDisponibles.Descripcion = "1200"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 1300
+        'oMontosDisponibles.Descripcion = "1300"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 1400
+        'oMontosDisponibles.Descripcion = "1400"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 1500
+        'oMontosDisponibles.Descripcion = "1500"
+        'oList.Add(oMontosDisponibles)
         oMontosDisponibles = New MontosDisponibles
         oMontosDisponibles.IDMonto = 2000
         oMontosDisponibles.Descripcion = "2000"
         oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 2500
-        oMontosDisponibles.Descripcion = "2500"
-        oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 2500
+        'oMontosDisponibles.Descripcion = "2500"
+        'oList.Add(oMontosDisponibles)
         oMontosDisponibles = New MontosDisponibles
         oMontosDisponibles.IDMonto = 3000
         oMontosDisponibles.Descripcion = "3000"
         oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 3500
-        oMontosDisponibles.Descripcion = "3500"
-        oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 3500
+        'oMontosDisponibles.Descripcion = "3500"
+        'oList.Add(oMontosDisponibles)
         oMontosDisponibles = New MontosDisponibles
         oMontosDisponibles.IDMonto = 4000
         oMontosDisponibles.Descripcion = "4000"
@@ -4659,26 +4659,26 @@ Public Class Servicios
         oMontosDisponibles.Descripcion = "6000"
         oList.Add(oMontosDisponibles)
         'If Now.Date > Convert.ToDateTime("2024-01-31") Then
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 6500
-        oMontosDisponibles.Descripcion = "6500"
-        oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 6500
+        'oMontosDisponibles.Descripcion = "6500"
+        'oList.Add(oMontosDisponibles)
         oMontosDisponibles = New MontosDisponibles
         oMontosDisponibles.IDMonto = 7000
         oMontosDisponibles.Descripcion = "7000"
         oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 7500
-        oMontosDisponibles.Descripcion = "7500"
-        oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 7500
+        'oMontosDisponibles.Descripcion = "7500"
+        'oList.Add(oMontosDisponibles)
         oMontosDisponibles = New MontosDisponibles
         oMontosDisponibles.IDMonto = 8000
         oMontosDisponibles.Descripcion = "8000"
         oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 8500
-        oMontosDisponibles.Descripcion = "8500"
-        oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 8500
+        'oMontosDisponibles.Descripcion = "8500"
+        'oList.Add(oMontosDisponibles)
         oMontosDisponibles = New MontosDisponibles
         oMontosDisponibles.IDMonto = 9000
         oMontosDisponibles.Descripcion = "9000"
