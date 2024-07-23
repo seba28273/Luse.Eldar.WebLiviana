@@ -7,6 +7,11 @@ Partial Class Page_RecargaSube
         If Session("Usuario") Is Nothing Then
             Response.Redirect("~/")
         End If
+        If Now.Date > Convert.ToDateTime("2024-01-31") Then
+            msnSube.Visible = False
+        Else
+            msnSube.Visible = True
+        End If
 
 
         User.Value = Session("Usuario")

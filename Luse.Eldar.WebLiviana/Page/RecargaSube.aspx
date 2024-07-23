@@ -85,6 +85,14 @@
 
             </div>
 
+             <div class="form-group">
+                <div class="input-group">
+
+                    <label id="msnSube" class="alert alert-warning" clientidmode="Static" runat="server">AVISO IMPORTANTE: A Partir del 01/02/2024, SUBE habilitara para este medio de carga los montos 6500,7000,7500,8000,8500,9000</label>
+                </div>
+
+            </div>
+
             <div class="form-group">
                 <div class="input-group">
                     <button type="button" runat="server"

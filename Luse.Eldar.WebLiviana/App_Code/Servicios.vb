@@ -1231,7 +1231,7 @@ Public Class Servicios
     End Function
 
 
-    Public Function ExecuteSqlAudit(pCadena As String) As Int16
+    Public Function ExecuteSqlAudit(pCadena As String) As Int64
 
         Dim mSql As String = pCadena
         ocmd = New SqlCommand(mSql, oConnAudit)
@@ -2939,8 +2939,8 @@ Public Class Servicios
     <WebMethod()>
     Public Function OpenTurn(pObj As Parametros) As List(Of Respuesta)
 
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
-        Dim oRetorno As New LuSe.WsTransaccional.ObjetoRetorno
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
+        Dim oRetorno As New Luse.WsTransaccional.ObjetoRetorno
         Dim mRes As Boolean = False
         Dim mMsn As String = ""
         Dim oRta As New Respuesta
@@ -2975,8 +2975,8 @@ Public Class Servicios
     <WebMethod()>
     Public Function CloseTurn(pObj As Parametros) As List(Of Respuesta)
 
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
-        Dim oRetorno As New LuSe.WsTransaccional.ObjetoRetorno
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
+        Dim oRetorno As New Luse.WsTransaccional.ObjetoRetorno
         Dim mRes As Boolean = False
         Dim mMsn As String = ""
         Dim oRta As New Respuesta
@@ -3011,7 +3011,7 @@ Public Class Servicios
     <WebMethod()>
     Public Function LastTenTurns(pObj As Parametros) As List(Of Respuesta)
 
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
         Dim oRetorno As New DataSet
         Dim oRta As New Respuesta
         Dim olstRta As New List(Of Respuesta)
@@ -3063,13 +3063,13 @@ Public Class Servicios
     <WebMethod()>
     Public Function GetTurnsXDAte(pObj As Parametros) As List(Of Respuesta)
 
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
         Dim oRetorno As New DataSet
         Dim oRta As New Respuesta
         Dim olstRta As New List(Of Respuesta)
 
         Try
-            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
             If pObj.Fecha = "" Then
                 pObj.Fecha = Format(Now.Date, "yyyy-MM-dd")
             End If
@@ -3115,7 +3115,7 @@ Public Class Servicios
     <WebMethod()>
     Public Function GetNews(pObj As Parametros) As List(Of Respuesta)
 
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
         Dim mRes As Boolean = False
         Dim mMsn As String = ""
         Dim oRta As New Respuesta
@@ -3142,7 +3142,7 @@ Public Class Servicios
     <WebMethod()>
     Public Function AddSolicitudStock(pObj As Parametros) As List(Of Respuesta)
 
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
         Dim mRes As String = ""
         Dim mMsn As String = ""
         Dim oRta As New Respuesta
@@ -3170,7 +3170,7 @@ Public Class Servicios
     <WebMethod()>
     Public Function ChangePassword(pObj As Parametros) As List(Of Respuesta)
 
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
         Dim mRes As Boolean = False
         Dim mMsn As String = ""
         Dim mPasswordRecuperacion As String = ""
@@ -3181,22 +3181,22 @@ Public Class Servicios
         If IsNumeric(pObj.IDAcceso) = False Then
             pObj.IDAcceso = pObj.IDAcceso.Replace(" ", "+")
 
-            pObj.IDAcceso = LuSe.Framework.Common.Helper.CryptoFunctions.DecriptText(pObj.IDAcceso.ToString(), GetCryptoKey(), GetCryptoInitKey())
+            pObj.IDAcceso = Luse.Framework.Common.Helper.CryptoFunctions.DecriptText(pObj.IDAcceso.ToString(), GetCryptoKey(), GetCryptoInitKey())
             pObj.IPCliente = "Cambiando Pass" ' pObj.IDAcceso.Split("|")(1)
             'pObj.IDAcceso = pObj.IDAcceso ' pObj.IDAcceso.Split("|")(0)
         End If
-        If pObj.Pass = "" Or pObj.Pass Is Nothing Then
-            Dim oTabla As DataTable
+        'If pObj.Pass = "" Or pObj.Pass Is Nothing Then
+        Dim oTabla As DataTable
             cSQL = "select Usercode, Password, RecuperarContrasena, ClaveaRecuperar from Acceso where IDAcceso = " + pObj.IDAcceso
             oTabla = GetDatos(cSQL)
-            pObj.Pass = LuSe.Framework.Common.Helper.CryptoFunctions.DecriptText(oTabla.Rows(0)("Password").ToString(), GetCryptoKey(), GetCryptoInitKey())
+            pObj.Pass = Luse.Framework.Common.Helper.CryptoFunctions.DecriptText(oTabla.Rows(0)("Password").ToString(), GetCryptoKey(), GetCryptoInitKey())
             pObj.User = oTabla.Rows(0)("UserCode").ToString()
-            'mPasswordRecuperacion = oTabla.Rows(0)("ClaveaRecuperar").ToString()
-            'mREcuperacionContrasenia = oTabla.Rows(0)("RecuperarContrasena").ToString()
-            'If mREcuperacionContrasenia Then
-            '    pObj.Pass = mPasswordRecuperacion
-            'End If
-        End If
+        'mPasswordRecuperacion = oTabla.Rows(0)("ClaveaRecuperar").ToString()
+        'mREcuperacionContrasenia = oTabla.Rows(0)("RecuperarContrasena").ToString()
+        'If mREcuperacionContrasenia Then
+        '    pObj.Pass = mPasswordRecuperacion
+        'End If
+        'End If
 
 
         If pObj.PassActual <> "" AndAlso pObj.PassActual <> pObj.Pass Then
@@ -3324,7 +3324,7 @@ Public Class Servicios
         '                        mCode, mMsn)
 
 
-        Dim newpass As String = LuSe.Framework.Common.Helper.CryptoFunctions.CriptText(pObj.NewPass, GetCryptoKey(), GetCryptoInitKey())
+        Dim newpass As String = Luse.Framework.Common.Helper.CryptoFunctions.CriptText(pObj.NewPass, GetCryptoKey(), GetCryptoInitKey())
 
 
 
@@ -3346,7 +3346,7 @@ Public Class Servicios
 
     <WebMethod()>
     Public Function GetSaldoAgencia(pObj As Parametros) As List(Of RespuestaRecarga)
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
         Dim oRta As New RespuestaRecarga
         Dim oList As New List(Of RespuestaRecarga)
         Try
@@ -3456,7 +3456,7 @@ Public Class Servicios
         End If
 
         Dim cSQL As String = ""
-        Dim password As String = LuSe.Framework.Common.Helper.CryptoFunctions.CriptText(pObj.Pass, GetCryptoKey, GetCryptoInitKey())
+        Dim password As String = Luse.Framework.Common.Helper.CryptoFunctions.CriptText(pObj.Pass, GetCryptoKey, GetCryptoInitKey())
 
         cSQL = "SELECT   Acceso.IDAcceso, Agencia.IDAgencia, Agencia.IDAgenciaSup, Agencia.Nombre, Agencia.UpgPos, Acceso.Activo,  " _
         & "    PoseeSube,(Agencia.Direccion + ' ' + convert(varchar(10),Agencia.DireccionNumero)) as DireccionAgencia  " _
@@ -3530,7 +3530,7 @@ Public Class Servicios
             If DateDiff(DateInterval.Day, oTablaTemp.Rows(0)("DateForExpirationPassword"), Now.Date) >= 0 Then
                 oRta.Estado = False
                 oRta.Mensaje = "Su clave ha expirado. Debe cambiarla!"
-                oRta.IDAcceso = LuSe.Framework.Common.Helper.CryptoFunctions.CriptText(oTablaTemp.Rows(0)("IDAcceso").ToString(), GetCryptoKey, GetCryptoInitKey())
+                oRta.IDAcceso = Luse.Framework.Common.Helper.CryptoFunctions.CriptText(oTablaTemp.Rows(0)("IDAcceso").ToString(), GetCryptoKey, GetCryptoInitKey())
                 'oRta.IDAcceso = LuSe.Framework.Common.Helper.CryptoFunctions.CriptText(oTablaTemp.Rows(0)("IDAcceso").ToString() + "|" + pObj.IPCliente, GetCryptoKey, GetCryptoInitKey())
                 blnExito = False
                 oList.Add(oRta)
@@ -3600,7 +3600,7 @@ Public Class Servicios
     End Function
     <WebMethod()>
     Public Function NewSaleRedBus22(pObj As Parametros) As List(Of RespuestaRecarga)
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
         Dim oList As New List(Of RespuestaRecarga)
         Dim oRespuestaRecarga As New RespuestaRecarga
         Try
@@ -3708,7 +3708,7 @@ Public Class Servicios
 
     <WebMethod()>
     Public Function NewSaleRedBus(pObj As Parametros) As List(Of RespuestaRecarga)
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
 
         Dim oList As New List(Of RespuestaRecarga)
         Dim oRespuestaRecarga As New RespuestaRecarga
@@ -3914,7 +3914,7 @@ Public Class Servicios
 
     <WebMethod()>
     Public Function NewSaleSube(pObj As Parametros) As List(Of RespuestaRecarga)
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
         Dim oList As New List(Of RespuestaRecarga)
         Dim oRespuestaRecarga As New RespuestaRecarga
         Try
@@ -3996,7 +3996,7 @@ Public Class Servicios
     Public Function GrabarVentaDTV(pObj As Parametros) As List(Of RespuestaRecarga)
         Dim oRta As New RespuestaRecarga
         Dim oList As New List(Of RespuestaRecarga)
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
         Try
 
             Dim mRes As Boolean = False
@@ -4072,7 +4072,7 @@ Public Class Servicios
     Public Function GrabarVentaDTVGO(pObj As Parametros) As List(Of RespuestaRecarga)
         Dim oRta As New RespuestaRecarga
         Dim oList As New List(Of RespuestaRecarga)
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
         Try
 
             Dim mRes As Boolean = False
@@ -4140,45 +4140,115 @@ Public Class Servicios
 
     <WebMethod()>
     Public Function GrabarVentaPin(pObj As Parametros) As List(Of RespuestaRecarga)
-        Dim oRta As New RespuestaRecarga
-        Dim oList As New List(Of RespuestaRecarga)
         Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Dim oList As New List(Of RespuestaRecarga)
+        Dim oRespuestaRecarga As New RespuestaRecarga
         Try
 
-            Dim mRes As Boolean = False
             Dim mMsn As String = ""
             Dim pIDtransaccion As String = ""
             Dim pSaleData As String = ""
-            Dim pPinSeguridad As String = ""
-            Dim pNroSerie As String = ""
-            Dim pFechaExp As String = ""
             Dim pRefOperador As String = "" 'Este Valor lo asigna eldar al enviar la recarga a SUBE.
-
-            pObj.Prefijo = "00"
-            mRes = oEldar.NewSalePinWebLiviana(pObj.User, pObj.Pass, pObj.IDProducto, pNroSerie, pPinSeguridad, pFechaExp, mMsn)
-
-
+            Dim mDireccion As String = ""
+            Dim mRazonSocial As String = ""
+            Dim sFecha As String = Format(Now(), "mmss")
 
 
-            oRta.Mensaje = mMsn
-            oRta.Estado = mRes
-            oRta.CodigoTicket = pPinSeguridad
-            oRta.UrlSitio = GetSiteRoot()
+            pRefOperador = DateTime.Now.ToString("yyyyMMddhhmmss")
+
+            Dim request As New EldarSales2
+            Dim ores As New resEldarSales2
+            Dim mValorNominal As Integer = 0
+
+            request.idProducto = pObj.IDProducto
+            request.idProveedor = pObj.IDProveedor
+            mValorNominal = pObj.Monto
+            request.destino = ""
+            request.monto = 0
+            request.passWord = pObj.Pass
+            request.userCode = pObj.User
+            request.tipoAcceso = 2
+            'request.terminal = "Web liviana EBC"
+            Dim mTerminal As String
+            Try
+                mTerminal = "EBC " + IIf(pObj.IPCliente = Nothing, "IP sin Identificar", pObj.IPCliente)
+            Catch ex As Exception
+                mTerminal = "Web liviana EBC "
+            End Try
+            request.terminal = mTerminal
+            request.referenciaOperador = pRefOperador 'Now().ToString("yyyyMMddHHmmss")
+            ores = NewSaleEldar2(request)
+
+            oRespuestaRecarga.IDTransaccion = ores.data.idTransaccion
+
+            If ores.data.saleData = "Ok" Then
+                oRespuestaRecarga.Mensaje = "La Venta se realizo con exito"
+                oRespuestaRecarga.Estado = True
+            Else
+                oRespuestaRecarga.Estado = False
+                oRespuestaRecarga.Mensaje = ores.data.message
+            End If
+
+
+            oRespuestaRecarga.Monto = pObj.Monto
+
+
+            oRespuestaRecarga.UrlSitio = GetSiteRoot()
+
+            oRespuestaRecarga.CodigoTicket = ores.data.PinSeguridad
+            oRespuestaRecarga.UrlSitio = GetSiteRoot()
             Dim uri As New Uri(oEldar.Url)
 
-            oRta.UrlSitioTicket = uri.Host
+            oRespuestaRecarga.UrlSitioTicket = uri.Host
 
-            oRta.TemplateTicket = pObj.NombreAgencia & "|" & pObj.DireccionAgencia & "|" & oRta.Estado & "|" & pNroSerie & "|" & pPinSeguridad & "|" & pFechaExp & "|" & mMsn
+            oRespuestaRecarga.TemplateTicket = pObj.NombreAgencia & "|" & pObj.DireccionAgencia & "|" & oRespuestaRecarga.Estado & "|" & ores.data.PinNumeroSerie & "|" & ores.data.PinSeguridad & "|" & Now.AddMonths(6).ToString("dd-MM-yyyy") & "|" & oRespuestaRecarga.Mensaje
 
-            oList.Add(oRta)
+            oList.Add(oRespuestaRecarga)
+
 
         Catch ex As Exception
-            oRta.Estado = False
-            oRta.Mensaje = ex.Message
-            oRta.CodigoTicket = "0"
-            oRta.UrlSitio = ""
-            oList.Add(oRta)
+            oRespuestaRecarga.Estado = False
+            oRespuestaRecarga.Mensaje = ex.Message
+            oList.Add(oRespuestaRecarga)
         End Try
+
+
+        'Try
+
+        '    Dim mRes As Boolean = False
+        '    Dim mMsn As String = ""
+        '    Dim pIDtransaccion As String = ""
+        '    Dim pSaleData As String = ""
+        '    Dim pPinSeguridad As String = ""
+        '    Dim pNroSerie As String = ""
+        '    Dim pFechaExp As String = ""
+        '    Dim pRefOperador As String = "" 'Este Valor lo asigna eldar al enviar la recarga a SUBE.
+
+        '    pObj.Prefijo = "00"
+        '    mRes = oEldar.NewSalePinWebLiviana(pObj.User, pObj.Pass, pObj.IDProducto, pNroSerie, pPinSeguridad, pFechaExp, mMsn)
+
+
+
+
+        '    oRta.Mensaje = mMsn
+        '    oRta.Estado = mRes
+        '    oRta.CodigoTicket = pPinSeguridad
+        '    oRta.UrlSitio = GetSiteRoot()
+        '    Dim uri As New Uri(oEldar.Url)
+
+        '    oRta.UrlSitioTicket = uri.Host
+
+        '    oRta.TemplateTicket = pObj.NombreAgencia & "|" & pObj.DireccionAgencia & "|" & oRta.Estado & "|" & pNroSerie & "|" & pPinSeguridad & "|" & pFechaExp & "|" & mMsn
+
+        '    oList.Add(oRta)
+
+        'Catch ex As Exception
+        '    oRta.Estado = False
+        '    oRta.Mensaje = ex.Message
+        '    oRta.CodigoTicket = "0"
+        '    oRta.UrlSitio = ""
+        '    oList.Add(oRta)
+        'End Try
         Return oList
 
     End Function
@@ -4187,7 +4257,7 @@ Public Class Servicios
     Public Function GrabarVentaSaldo(pObj As Parametros) As List(Of RespuestaRecarga)
         Dim oRta As New RespuestaRecarga
         Dim oList As New List(Of RespuestaRecarga)
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
         Try
 
             Dim mRes As Boolean = False
@@ -4334,7 +4404,7 @@ Public Class Servicios
     Public Function GrabarVentaSaldoTesting(pObj As Parametros) As List(Of RespuestaRecarga)
         Dim oRta As New RespuestaRecarga
         Dim oList As New List(Of RespuestaRecarga)
-        Dim oEldar As New LuSe.WsTransaccional.ExternalSales
+        Dim oEldar As New Luse.WsTransaccional.ExternalSales
         Try
 
             Dim mRes As Boolean = False
@@ -4489,26 +4559,31 @@ Public Class Servicios
         'oMontosDisponibles.IDMonto = 200
         'oMontosDisponibles.Descripcion = "200"
         'oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 250
-        oMontosDisponibles.Descripcion = "250"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 300
-        oMontosDisponibles.Descripcion = "300"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 350
-        oMontosDisponibles.Descripcion = "350"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 400
-        oMontosDisponibles.Descripcion = "400"
-        oList.Add(oMontosDisponibles)
-        oMontosDisponibles = New MontosDisponibles
-        oMontosDisponibles.IDMonto = 450
-        oMontosDisponibles.Descripcion = "450"
-        oList.Add(oMontosDisponibles)
+        'If Now.Date < Convert.ToDateTime("2024-02-01") Then
+
+
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 250
+        'oMontosDisponibles.Descripcion = "250"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 300
+        'oMontosDisponibles.Descripcion = "300"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 350
+        'oMontosDisponibles.Descripcion = "350"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 400
+        'oMontosDisponibles.Descripcion = "400"
+        'oList.Add(oMontosDisponibles)
+        'oMontosDisponibles = New MontosDisponibles
+        'oMontosDisponibles.IDMonto = 450
+        'oMontosDisponibles.Descripcion = "450"
+        'oList.Add(oMontosDisponibles)
+        'End If
+
         oMontosDisponibles = New MontosDisponibles
         oMontosDisponibles.IDMonto = 500
         oMontosDisponibles.Descripcion = "500"
@@ -4583,6 +4658,33 @@ Public Class Servicios
         oMontosDisponibles.IDMonto = 6000
         oMontosDisponibles.Descripcion = "6000"
         oList.Add(oMontosDisponibles)
+        'If Now.Date > Convert.ToDateTime("2024-01-31") Then
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 6500
+        oMontosDisponibles.Descripcion = "6500"
+        oList.Add(oMontosDisponibles)
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 7000
+        oMontosDisponibles.Descripcion = "7000"
+        oList.Add(oMontosDisponibles)
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 7500
+        oMontosDisponibles.Descripcion = "7500"
+        oList.Add(oMontosDisponibles)
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 8000
+        oMontosDisponibles.Descripcion = "8000"
+        oList.Add(oMontosDisponibles)
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 8500
+        oMontosDisponibles.Descripcion = "8500"
+        oList.Add(oMontosDisponibles)
+        oMontosDisponibles = New MontosDisponibles
+        oMontosDisponibles.IDMonto = 9000
+        oMontosDisponibles.Descripcion = "9000"
+        oList.Add(oMontosDisponibles)
+        'End If
+
         Return oList
 
 
@@ -4595,7 +4697,7 @@ Public Class Servicios
         Dim oDs As DataSet
         Dim olstRta As New List(Of ProductoPin)
         Try
-            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
 
             oDs = oFusion.GetProductsWebLiviana(pObj.User, pObj.Pass, pObj.IDProveedor)
 
@@ -4624,7 +4726,7 @@ Public Class Servicios
         Dim oDs As DataSet
         Dim olstRta As New List(Of ProductoPin)
         Try
-            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
 
             oRta.Estado = oFusion.SaveSolicitudPrestamo(pObj.User, pObj.Pass, pObj.IDPrestamoBase, pObj.Destino)
 
@@ -4697,7 +4799,7 @@ Public Class Servicios
         Dim oDs As DataTable
         Dim olstRta As New List(Of Respuesta)
         Try
-            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
             Dim mWhere As String = ""
             If pObj.CodEmpresa <> "" Then
                 mWhere = " AND CodEmpresa = " & pObj.CodEmpresa
@@ -4739,7 +4841,7 @@ Public Class Servicios
         Dim oDs As DataSet
         Dim olstRta As New List(Of Respuesta)
         Try
-            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
             If pObj.Fecha = "" Then
                 pObj.Fecha = Format(Now.Date, "yyyy-MM-dd")
 
@@ -4779,7 +4881,7 @@ Public Class Servicios
     Public Function GetEstadoVentasRedbus(pObj As Parametros) As RespuestaRedBus
         Dim oRta As New RespuestaRedBus
         Try
-            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
             Dim mEstado As String = ""
             Dim mfechaImpactada As String = ""
             Dim mfechaRecarga As String = ""
@@ -4814,7 +4916,7 @@ Public Class Servicios
         Dim oDs As DataSet
         Dim olstRta As New List(Of Respuesta)
         Try
-            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
             If pObj.Fecha = "" Then
                 pObj.Fecha = Format(Now.Date, "yyyy-MM-dd")
 
@@ -4871,7 +4973,7 @@ Public Class Servicios
         Dim oDs As DataSet
         Dim olstRta As New List(Of Respuesta)
         Try
-            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
             If pObj.Fecha = "" Then
                 pObj.Fecha = Format(Now.Date, "yyyy-MM-dd")
 
@@ -4920,7 +5022,7 @@ Public Class Servicios
         Dim oDs As DataSet
         Dim olstRta As New List(Of Respuesta)
         Try
-            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
 
 
             oDs = oFusion.GetCuotasPrestamo(pObj.User, pObj.Pass, pObj.IDPrestamo)
@@ -4957,7 +5059,7 @@ Public Class Servicios
         Dim oDs As DataSet
         Dim olstRta As New List(Of Respuesta)
         Try
-            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
 
             oDs = oFusion.GetPrestamo(pObj.User, pObj.Pass, pObj.IDAgencia)
 
@@ -4998,7 +5100,7 @@ Public Class Servicios
         Dim oRes As String
         Dim olstRta As New List(Of Respuesta)
         Try
-            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
             If pObj.Fecha = "" Then
                 pObj.Fecha = Format(Now.Date, "yyyy-MM-dd")
             End If
@@ -5007,7 +5109,7 @@ Public Class Servicios
             End If
             oRes = oFusion.GetMovCtaCteWebLiviana(pObj.User, pObj.Pass, pObj.Fecha, pObj.FechaHasta)
 
-            oDs = LuSe.Framework.Common.Helper.XmlFunctions.XMLToDataSet(oRes)
+            oDs = Luse.Framework.Common.Helper.XmlFunctions.XMLToDataSet(oRes)
 
             Dim mRes As New StringBuilder
             mRes.Append("[")
@@ -5060,7 +5162,7 @@ Public Class Servicios
         Dim oRes As String
         Dim olstRta As New List(Of Respuesta)
         Try
-            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
             If pObj.Fecha = "" Then
                 pObj.Fecha = Format(Now.Date, "yyyy-MM-dd")
             End If
@@ -5069,7 +5171,7 @@ Public Class Servicios
             End If
             oRes = oFusion.GetMovCtaCteWebLivianaSube(pObj.User, pObj.Pass, pObj.Fecha, pObj.FechaHasta)
 
-            oDs = LuSe.Framework.Common.Helper.XmlFunctions.XMLToDataSet(oRes)
+            oDs = Luse.Framework.Common.Helper.XmlFunctions.XMLToDataSet(oRes)
 
             Dim mRes As New StringBuilder
             mRes.Append("[")
@@ -5127,7 +5229,7 @@ Public Class Servicios
             Dim mResVenta As Boolean = False
 
 
-            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
             If pObj.Fecha = "" Then
                 pObj.Fecha = Format(Now.Date, "yyyy-MM-dd")
             End If
@@ -5136,7 +5238,7 @@ Public Class Servicios
             End If
             oRes = oFusion.GetMovRapiPagoWebLiviana(pObj.User, pObj.Pass, pObj.Fecha, pObj.FechaHasta)
 
-            oDs = LuSe.Framework.Common.Helper.XmlFunctions.XMLToDataSet(oRes)
+            oDs = Luse.Framework.Common.Helper.XmlFunctions.XMLToDataSet(oRes)
 
             Dim mRes As New StringBuilder
             mRes.Append("[")
@@ -5221,7 +5323,7 @@ Public Class Servicios
         Dim oRes As String
         Dim olstRta As New List(Of Respuesta)
         Try
-            Dim oFusion As New LuSe.WsTransaccional.ExternalSales
+            Dim oFusion As New Luse.WsTransaccional.ExternalSales
             If pObj.Fecha = "" Then
                 pObj.Fecha = Format(Now.Date, "yyyy-MM-dd")
             End If
@@ -5230,7 +5332,7 @@ Public Class Servicios
             End If
             oRes = oFusion.GetMovStockWebLiviana(pObj.User, pObj.Pass, pObj.Fecha, pObj.FechaHasta)
 
-            oDs = LuSe.Framework.Common.Helper.XmlFunctions.XMLToDataSet(oRes)
+            oDs = Luse.Framework.Common.Helper.XmlFunctions.XMLToDataSet(oRes)
 
             Dim mRes As New StringBuilder
             mRes.Append("[")
@@ -5408,6 +5510,9 @@ Public Class Data
     Public Property message As String
     Public Property idTransaccion As String
     Public Property conector As Integer
+    Public Property PinNumeroSerie As String
+    Public Property PinSeguridad As String
+    Public Property PinCAT As String
 End Class
 
 Public Class evento
@@ -5456,6 +5561,9 @@ Public Class EldarSales2
     Public Property idProducto As Integer
     Public Property referenciaOperador As String
     Public Property terminal As String
+    Public Property PinNumeroSerie As String
+    Public Property PinSeguridad As String
+    Public Property PinCAT As String
 End Class
 
 Public Class ItemTicket

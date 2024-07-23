@@ -39,8 +39,8 @@ Partial Class Default2
             Dim valor As Parametros = JsonConvert.DeserializeObject(Of Parametros)(json) ' Obtener el valor enviado desde JavaScript
             If valor IsNot Nothing Then
                 Dim cSQL As String
-                Dim referer As String
-                Dim navegador As String
+                Dim referer As String = "No detectado"
+                Dim navegador As String = "No detectado"
                 Try
                     referer = Request.UrlReferrer.ToString()
                 Catch ex As Exception

@@ -66,7 +66,7 @@
                     <asp:HiddenField ClientIDMode="Static" ID="DireccionAgencia" runat="server" />
                      <asp:hiddenfield clientidmode="Static" id="MontoVentas" runat="server" />
                     <asp:hiddenfield clientidmode="Static" id="AptoCredito" runat="server" />
-
+                    <asp:hiddenfield clientidmode="Static" id="IPCliente" runat="server" />
                 </div>
                 <br />
 
@@ -302,7 +302,8 @@
                     "User": $("#User").val(),
                     "NombreAgencia": $("#NombreAgencia").val(),
                     "DireccionAgencia": $("#DireccionAgencia").val(),
-                    "Pass": $("#Pass").val()
+                    "Pass": $("#Pass").val(),
+                    "IPCliente": $("#IPCliente").val()
                 }
 
                 var stringData = JSON.stringify(SendObj);
@@ -318,7 +319,7 @@
                         $('#lblCargando').html('Realizando Recarga...');
                     },
                     success: function (response) {
-
+                        console.log(response);
                         var models = (typeof response.d) == "string" ? eval("(" + response.d + ")") : response.d;
 
                         var val = models[0].Estado;
@@ -334,7 +335,7 @@
                         var ProveedorSel = $("#cboCompania option:selected").text();
                         var ProductoSel = $("#cboProducto option:selected").text();
 
-                        if (val == 'True') {
+                        if (val == 'True' || val == 'Ok') {
                             $("#lblresultok").css("display", "block");
                             $("#lblresultokfail").css("display", "none");
 

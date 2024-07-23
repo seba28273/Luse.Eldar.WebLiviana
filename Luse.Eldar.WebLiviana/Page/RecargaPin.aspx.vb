@@ -19,7 +19,7 @@ Partial Class Page_RecargaSube
         DireccionAgencia.Value = Session("DireccionAgencia")
         MontoVentas.Value = Session("MontoVentas")
         AptoCredito.Value = Session("AptoCredito")
-
+        IPCliente.Value = Session("IPCliente")
     End Sub
 
 
